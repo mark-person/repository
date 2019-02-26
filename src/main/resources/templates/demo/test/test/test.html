@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link th:replace="common/fragment::common"/>
+
+
+<script type="text/javascript" th:inline="javascript">
+var controllerPath = contextPath + "auto/test/";
+$(function() {
+	$("#pageDiv").page({url:controllerPath + "list", data:[[${list}]]});
+});
+
+template.helper('getType', function(v) {
+	return $("[name=testType]:eq(0)").find("option[value=" + v + "]").text();
+})
+
+var getCallback = function(r) {
+	$("#editTestType").find("option[value='" + r.pojo.testType + "']").attr("selected",true);
+}
+</script>
+</head>
+
+<body>
+<div class="container-fluid">
+
+<div id="pageDiv" th:include="common/fragment::page('基本信息')">
+	<div th:fragment="query">
+		<button type="button" class="btn btn-success btn-sm" th:attr="disabled=${_test_insert==null?true:false}" onclick="alert('test')">测试按键</button>
+	
+		<button type="button" class="btn btn-success btn-sm" onclick="add()">新增</button>
+		<label>名称：</label>
+		<input type="text" class="form-control" name="testName">
+		<button type="button" class="btn btn-default btn-sm"><i class="fa fa-search"></i>搜索</button>
+	</div>
+	<table th:fragment="list">
+		<thead class="thead-light">
+		<tr>
+			<th class="w-id sorting-desc" data-order-name="t.test_id">ID</th>
+			<th class="w-title" data-order-name="t.test_name">测试名称</th>
+			<th class="w-date">测试日期</th>
+			<th class="w-id">测试值</th>
+			<th class="w-id">测试类型</th>
+			<th class="w-time">创建时间</th>
+			<th class="w-action">操作</th>
+		</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+	<table>
+		<tr th:fragment="template">
+			<td>{{v.testId}}</td>
+			<td>{{v.testName}}</td>
+			<td>{{v.testDate}}</td>
+			<td>{{v.testValue}}</td>
+			<td>{{getType(v.testType)}}</td>
+			<td>{{v.created}}</td>
+			<td>
+				<a href="#this" onclick="remove('{{v.testId}}')">[删除]</a>
+				<a href="#this" onclick="edit('{{v.testId}}', getCallback)">[修改]</a>
+			</td>
+		</tr>
+	</table>
+</div>
+
+<div th:fragment="add" th:replace="common/fragment::modal('add', '新增', '')">
+	<div class="form-group form-inline">
+		<label class="col-4"><i class="required">*</i>测试名称：</label>
+		<div class="col-8"><input type="text" name="testName" class="form-control" required maxlength="16"></div>
+	</div>
+	<div class="form-group form-inline">
+		<label class="col-4"><i class="required">*</i>测试值：</label>
+		<div class="col-8"><input type="text" name="testValue" class="form-control" required number=true maxlength="7"></div>
+	</div>
+	<div class="form-group form-inline">
+		<label class="col-4"><i class="required">*</i>测试类型：</label>
+		<div class="col-8">
+			<select class="form-control input-sm" name="testType" required>
+			<option value="">请选择</option>
+			<option th:each="item:${listType}" th:value="${item.typeId}" th:text="${item.typeName}"></option>
+			</select>
+		</div>
+	</div>
+	<div class="form-group form-inline">
+		<label class="col-4"><i class="required">*</i>测试日期：</label>
+		<div class="col-8"><input type="text" name="testDate" class="form-control" required onclick="WdatePicker()"></div>
+	</div>
+</div>
+
+<div th:fragment="edit" th:replace="common/fragment::modalTemplate('edit', '修改', '')">
+	<input type="hidden" name="testId" value="{{pojo.testId}}">
+	<div class="form-group form-inline">
+		<label class="col-4"><i class="required">*</i>测试名称：</label>
+		<div class="col-8"><input type="text" name="testName" class="form-control" required maxlength="16" value="{{pojo.testName}}"></div>
+	</div>
+	<div class="form-group form-inline">
+		<label class="col-4"><i class="required">*</i>测试值：</label>
+		<div class="col-8"><input type="text" name="testValue" class="form-control" required number=true maxlength="7" value="{{pojo.testValue}}"></div>
+	</div>
+	<div class="form-group form-inline">
+		<label class="col-4"><i class="required">*</i>测试类型：</label>
+		<div class="col-8">
+			<select id="editTestType" class="form-control input-sm" name="testType" required>
+			<option value="">请选择</option>
+			<option th:each="item:${listType}" th:value="${item.typeId}" th:text="${item.typeName}"></option>
+			</select>
+		</div>
+	</div>
+	<div class="form-group form-inline">
+		<label class="col-4"><i class="required">*</i>测试日期：</label>
+		<div class="col-8"><input type="text" name="testDate" class="form-control" onclick="WdatePicker()" value="{{pojo.testDate}}"></div>
+	</div>
+</div>
+
+</div>
+</body>
+</html>
+

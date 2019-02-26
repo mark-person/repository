@@ -1,0 +1,2 @@
+info.app.artifactId=@project.artifactId@
+info.app.version=@project.version@
