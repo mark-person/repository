@@ -79,16 +79,6 @@
 									<outputDirectory>${project.build.directory}/classes</outputDirectory>
 								</artifactItem>
 								
-								<!-- 
-								<artifactItem>
-									<groupId>com.ppx.cloud</groupId>
-									<artifactId>base-auth</artifactId>
-									<type>jar</type>
-									<overWrite>true</overWrite>
-									<outputDirectory>${project.build.directory}/classes</outputDirectory>
-								</artifactItem>
-								 -->
-								
 							</artifactItems>
 						</configuration>
 					</execution>
