@@ -18,6 +18,15 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ppx.cloud.common.contoller.ReturnMap;
 import com.ppx.cloud.common.util.ApplicationUtils;
 
+/**
+ * 
+ * convert -quality 30% 3.jpg out.jpg
+ * 
+ * ImageMagick
+ * 
+ * @author mark
+ * @date 2019年2月27日
+ */
 @Controller
 public class UploadImgController {
 	
