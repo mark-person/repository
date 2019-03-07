@@ -23,7 +23,6 @@
                 image : new Image(),
                 getDataURL: function ()
                 {
-					this.image.crossOrigin = 'Anonymous';
                     var width = this.thumbBox.width(),
                         height = this.thumbBox.height(),
                         canvas = document.createElement("canvas"),
