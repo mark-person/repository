@@ -12,9 +12,9 @@
 <body>
 <div class="container" >
   <div class="imageBox" id="container">
-	<div class="thumbBox"></div>
+	<div class="thumbBox"style="display: none"></div>
 	<div class="spinner" style="display: none">Loading...</div>
-	<img id="testImg" src="" align="absmiddle" style="width:180px;margin-top:4px;border-radius:180px;box-shadow:0px 0px 12px #7E7E7E;">
+	<img id="testImg" src="" align="absmiddle" style="width:200px;margin-top:4px;border-radius:200px;box-shadow:0px 0px 12px #7E7E7E;">
   </div>
   <div class="action"> 
 	<div class="new-contentarea tc"> 
@@ -43,6 +43,7 @@
 
 <script type="text/javascript">
 
+/*
 function cropImage(targetCanvas, x, y, width, height) {
     var targetctx = targetCanvas.getContext('2d');
     var targetctxImageData = targetctx.getImageData(x, y, width, height); // sx, sy, sWidth, sHeight
@@ -62,6 +63,10 @@ function cropImage(targetCanvas, x, y, width, height) {
     //document.getElementById('source2').src = c.toDataURL('image/jpeg', 0.92);
     //document.getElementById('source2').style.display = 'initial';
 }
+*/
+
+
+
 
 
 function test() {
@@ -74,6 +79,9 @@ function test() {
 }
 
 var cropper;
+
+currentBgX = -630;
+currentBgY = -153;
 $(window).load(function() {
 	var options =
 	{
@@ -93,11 +101,50 @@ $(window).load(function() {
 	})
 	$('#btnCrop').on('click', function(){
 		var img = cropper.getDataURL();
+		/*
 		$('.cropped').html('');
 		$('.cropped').append('<img src="'+img+'" align="absmiddle" style="width:64px;margin-top:4px;border-radius:64px;box-shadow:0px 0px 12px #7E7E7E;" ><p>64px*64px</p>');
 		$('.cropped').append('<img src="'+img+'" align="absmiddle" style="width:128px;margin-top:4px;border-radius:128px;box-shadow:0px 0px 12px #7E7E7E;"><p>128px*128px</p>');
 		$('.cropped').append('<img src="'+img+'" align="absmiddle" style="width:180px;margin-top:4px;border-radius:180px;box-shadow:0px 0px 12px #7E7E7E;"><p>180px*180px</p>');
 		$("#testImg").attr("src", img);
+		*/
+		$("#testImg").attr("src", img);
+		
+		
+		
+		
+        var canvas = document.createElement("canvas");
+        canvas.width = cropper.image.width;
+        canvas.height = cropper.image.height;
+        var context = canvas.getContext("2d");
+        context.drawImage(cropper.image, 0, 0, cropper.image.width, cropper.image.height, 0, 0, cropper.image.width, cropper.image.height);
+        
+        context.beginPath();
+		
+        
+       var bg = cropper.imageBox.css('background-position').split(' ');
+       var bgX = 630 + parseInt(bg[0]);
+       var bgY = 153 + parseInt(bg[1]);  
+      
+       currentBgX = parseInt(bg[0]);
+       currentBgY = parseInt(bg[1]);
+        
+       // context.translate(bgX, bgY);
+        
+        
+        // context.arc(x,y,radius,starAngle,endAngle,anticlockwise);
+        // 设置虚线4-2-4-2排列
+        context.setLineDash([4,2]);
+        context.arc(cropper.image.width / 2 - bgX,  cropper.image.height / 2 - bgY, 100, 0, Math.PI*2, true);
+        context.stroke();
+        context.closePath();
+        //context.fillStyle = "rgba(255,0,0,0.25)";
+        cropper.image.src = canvas.toDataURL('image/png');
+        
+		
+		
+		
+		
 	})
 	$('#btnZoomIn').on('click', function(){
 		cropper.zoomIn();

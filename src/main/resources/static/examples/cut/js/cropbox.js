@@ -38,7 +38,38 @@
                     canvas.width = width;
                     canvas.height = height;
                     var context = canvas.getContext("2d");
+                    
+                    /**
+                     * img  所要绘制的图像元素
+                     * x    该元素绘制的起点x坐标 （即img左上角x坐标）
+                     * y    该元素绘制的起点y坐标 （即img左上角y坐标）
+                     * width  所要绘制该元素的最长宽度（即画布上允许图像出现的最长宽度）
+                     * height 所要绘制该元素的最大高度（即画布上允许图像出现的最大高度）
+                     * 
+                     * s 相关参数都以原始图片的宽高来参照的：如原始规格长：365、高：549
+                     * sx   指定该元素从什么位置开始裁剪的x坐标
+                     * sy   指定该元素从什么位置开始裁剪的y坐标
+                     * swidth  	规定所裁剪图像的长度（即裁剪从sx点开始，向右延伸swidth的长度裁剪）
+                     * sheight	规定所裁剪图像的高度（即裁剪从sy点开始，向下延伸sheight的长度裁剪）
+                     */
                     context.drawImage(this.image, 0, 0, sw, sh, dx, dy, dw, dh);
+                    
+                    
+                    
+                    /*
+                    context.beginPath();
+                    // context.arc(x,y,radius,starAngle,endAngle,anticlockwise);
+                    // 设置虚线4-2-4-2排列
+                    context.setLineDash([4,2]);
+                    context.arc(100, 100, 20, 0, Math.PI*2, true);
+                    context.stroke();
+                    context.closePath();
+                    //context.fillStyle = "rgba(255,0,0,0.25)";
+                    */
+                    
+                    
+                    
+                    
                     var imageData = canvas.toDataURL('image/png');
                     return imageData;
                 },
@@ -119,15 +150,27 @@
 
         obj.spinner.show();
         obj.image.onload = function() {
+        
+            
+        	
             obj.spinner.hide();
             setBackground();
+            
+        	cropper.imageBox.css('background-position', currentBgX +'px ' + currentBgY + 'px');
+            
+            
 
             el.bind('mousedown', imgMouseDown);
             el.bind('mousemove', imgMouseMove);
             $(window).bind('mouseup', imgMouseUp);
             el.bind('mousewheel DOMMouseScroll', zoomImage);
         };
+        
         obj.image.src = options.imgSrc;
+        
+        
+        
+        
 		
         el.on('remove', function(){$(window).unbind('mouseup', imgMouseUp)});
 
