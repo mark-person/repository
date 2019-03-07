@@ -80,8 +80,9 @@ function test() {
 
 var cropper;
 
-currentBgX = -630;
-currentBgY = -153;
+isNewImage = true;
+currentBgX = 0;
+currentBgY = 0;
 $(window).load(function() {
 	var options =
 	{
@@ -93,6 +94,7 @@ $(window).load(function() {
 	$('#upload-file').on('change', function(){
 		var reader = new FileReader();
 		reader.onload = function(e) {
+			isNewImage = true;
 			options.imgSrc = e.target.result;
 			cropper = $('.imageBox').cropbox(options);
 		}
@@ -124,8 +126,8 @@ $(window).load(function() {
         
         // 缩小时移动有bug，画图
        var bg = cropper.imageBox.css('background-position').split(' ');
-       var bgX = 630 + parseInt(bg[0]);
-       var bgY = 153 + parseInt(bg[1]);  
+       var bgX = -currentBgX + parseInt(bg[0]);
+       var bgY = -currentBgY + parseInt(bg[1]);  
       
        currentBgX = parseInt(bg[0]);
        currentBgY = parseInt(bg[1]);
@@ -136,7 +138,7 @@ $(window).load(function() {
         // context.arc(x,y,radius,starAngle,endAngle,anticlockwise);
         // 设置虚线4-2-4-2排列
         context.setLineDash([4,2]);
-        context.arc(cropper.image.width / 2 - bgX,  cropper.image.height / 2 - bgY, 100, 0, Math.PI*2, true);
+        context.arc(cropper.image.width / 2 - bgX/ cropper.ratio,  cropper.image.height / 2 - bgY/ cropper.ratio, 100 / cropper.ratio, 0, Math.PI*2, true);
         context.stroke();
         context.closePath();
         //context.fillStyle = "rgba(255,0,0,0.25)";

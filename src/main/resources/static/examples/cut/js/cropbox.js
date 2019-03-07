@@ -88,11 +88,20 @@
                 {
                     this.ratio*=1.1;
                     setBackground();
+                    
+                    var bg = cropper.imageBox.css('background-position').split(' '); 
+                    currentBgX = parseInt(bg[0]);
+                    currentBgY = parseInt(bg[1]);
+                    
                 },
                 zoomOut: function ()
                 {
                     this.ratio*=0.9;
                     setBackground();
+                    
+                    var bg = cropper.imageBox.css('background-position').split(' '); 
+                    currentBgX = parseInt(bg[0]);
+                    currentBgY = parseInt(bg[1]);
                 }
             },
             setBackground = function()
@@ -135,6 +144,8 @@
 
                     obj.state.mouseX = e.clientX;
                     obj.state.mouseY = e.clientY;
+                    
+                    
                 }
             },
             imgMouseUp = function(e)
@@ -146,18 +157,28 @@
             {
                 e.originalEvent.wheelDelta > 0 || e.originalEvent.detail < 0 ? obj.ratio*=1.1 : obj.ratio*=0.9;
                 setBackground();
+                
+                var bg = cropper.imageBox.css('background-position').split(' '); 
+                currentBgX = parseInt(bg[0]);
+                currentBgY = parseInt(bg[1]);
             }
 
         obj.spinner.show();
         obj.image.onload = function() {
-        
+        	
             
         	
             obj.spinner.hide();
             setBackground();
             
+            if (isNewImage) {
+        		var bg = cropper.imageBox.css('background-position').split(' ');
+        		currentBgX = parseInt(bg[0]);
+        		currentBgY = parseInt(bg[1]);
+        		isNewImage = false;
+        	}
         	cropper.imageBox.css('background-position', currentBgX +'px ' + currentBgY + 'px');
-            
+        	
             
 
             el.bind('mousedown', imgMouseDown);
