@@ -142,8 +142,11 @@ $(window).load(function() {
         context.stroke();
         context.closePath();
         //context.fillStyle = "rgba(255,0,0,0.25)";
-        cropper.image.src = canvas.toDataURL('image/png');
         
+        // canvas的toDataURL是只能压缩jpg的，当用户上传的图片是png的话，就需要转成jpg，也就是统一用canvas.toDataURL('image/jpeg', 0.1) ， 
+        // 类型统一设成jpeg，而压缩比就自己控制了
+        //cropper.image.src = canvas.toDataURL('image/png');
+        cropper.image.src = canvas.toDataURL('image/jpeg', 0.3);
 		
 		
 		
