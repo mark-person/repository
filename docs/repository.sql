@@ -78,6 +78,7 @@ create table repo_knowledge
   k_id			int not null auto_increment,
   k_title		varchar(32) not null,
   cat_id		int not null,
+  recommend 	tinyint not null default 3 comment '推荐星级1、2、3、4、5',
   created		timestamp not null default current_timestamp,
   created_by	
   modified		timestamp not null default current_timestamp,
