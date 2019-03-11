@@ -12,21 +12,10 @@
 >> 
 
 * 对手
-
 * 常识
+* 运营
+ 
 
-knowledge 
-
-k_id
-k_title
-cat_id
-created
-created_by
-modified
-modified_by
-
-k_id
-K_content
 
 
 
