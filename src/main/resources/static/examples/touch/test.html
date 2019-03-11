@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+ <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1,user-scalable=no">
+<script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js" type="text/javascript"></script>
+
+<script>
+
+// 禁止缩放
+// <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1,user-scalable=no">
+
+// 禁止滚动
+// 使用event.preventDefault()，来阻止屏幕的默认滚动
+
+function test(e) {
+	
+}
+
+$(function() {
+	// touchstart,touchmove,touchend的获取位置
+	$('#testDiv').on('touchstart',function(e) {
+		var touch = e.originalEvent.targetTouches[0]; 
+		var y = touch.pageY;
+	})
+	
+});
+</script>
+</head>
+<body>
+
+
+
+<div id="testDiv" style="border:1px solid gray;width:300px;height:300px">
+
+
+
+</div>
+</body>
+</html>
+
