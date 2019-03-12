@@ -9,3 +9,7 @@ INSERT INTO `repo_category` (`cat_id`,`parent_id`,`cat_name`,`cat_prio`,`cat_sta
 INSERT INTO `repo_category` (`cat_id`,`parent_id`,`cat_name`,`cat_prio`,`cat_status`) VALUES (3,0,'技术',2,1);
 INSERT INTO `repo_category` (`cat_id`,`parent_id`,`cat_name`,`cat_prio`,`cat_status`) VALUES (4,0,'经营',3,1);
 INSERT INTO `repo_category` (`cat_id`,`parent_id`,`cat_name`,`cat_prio`,`cat_status`) VALUES (5,0,'对手',4,1);
+
+
+select concat((select cat_name from repo_category where cat_id = c.parent_id), '-', cat_name) cat_name
+from repo_category c where c.parent_id != 0
