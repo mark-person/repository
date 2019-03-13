@@ -80,9 +80,9 @@ create table repo_knowledge
   cat_id		int not null,
   recommend 	tinyint not null default 3 comment '推荐星级1、2、3、4、5',
   created		timestamp not null default current_timestamp,
-  created_by	
+  created_by	int not null,
   modified		timestamp not null default current_timestamp,
-  modified_by   
+  modified_by   int not null,
   primary key (cat_id)
 ) comment='';
 
