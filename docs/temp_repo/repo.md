@@ -82,3 +82,14 @@ cd ngrok
 
 ./bin/ngrokd -domain="ppx123.xyz" -httpAddr=":80" -httpsAddr=":443" -tunnelAddr=":8083"
 
+
+ngrok -config=ngrok.cfg start http https ssh mstsc
+
+
+ngrok -config=ngrok.cfg start http
+
+
+./bin/ngrokd -tlsKey=device.key -tlsCrt=device.crt -domain=ppx123.xyz -httpAddr=:80 -httpsAddr=:443 -tunnelAddr=:8083
+
+
+
