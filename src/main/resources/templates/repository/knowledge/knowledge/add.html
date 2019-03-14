@@ -1,0 +1,237 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title></title>
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link th:replace="common/fragment::common"/>
+
+
+<script type="text/javascript" th:inline="javascript">
+var controllerPath = contextPath + "auto/knowledge/";
+
+$(function() {
+	
+	$(".fa-star").bind("click", function() {		
+		$("[name=recommend]").val($(this).prevAll().length + 1)
+	})
+	
+});
+
+
+
+
+// >>>>>>>>>>>>>>>>>>>>>>img
+var img = {};
+var IMG_SCALE_HEIGHT = 60;
+img.fileChange = function(obj) {
+	this.loadImg(obj.files, obj.files.length);
+	// 重新生成一个，防失效
+	$(obj).prop("outerHTML", $(obj).prop("outerHTML"));
+}
+img.loadImg = function(f, n) {
+	n--;
+	var reader = new FileReader();
+	reader.onload = function() {
+		var jObj = $($("#imgTemplate").html());
+		var imgObj = jObj.find(".upload-img");
+		imgObj.prop("src", this.result);
+		imgObj.data("file", f[n]);
+		$("#imgLi").after(jObj);
+		if (n > 0) img.loadImg(f, n);
+		else {
+			$(".to-top").show();
+			$(".to-top:eq(0)").hide();
+		}
+	}
+	reader.readAsDataURL(f[n]);
+}
+img.resize = function(img) {
+	var initWidth = img.width;
+	var initHeight = img.height;
+	$(img).data("data-init-width", initWidth);
+	$(img).data("data-init-height", initHeight);
+	$(img).data("data-init-boolean", true);
+	
+	if (initWidth < initHeight) {
+		$(img).css({width:IMG_SCALE_HEIGHT * initWidth / initHeight, height:IMG_SCALE_HEIGHT});
+	}
+	else {
+		$(img).css({width:IMG_SCALE_HEIGHT, height:IMG_SCALE_HEIGHT * initHeight / initWidth});
+	}	
+	$(".upload-img").show();
+}
+img.click = function(obj) {
+	var isInit = $(obj).data("data-init-boolean");
+	 $(obj).data("data-init-boolean", isInit ? false : true);
+	
+	var initWidth = new Number($(obj).data("data-init-width"));
+	var initHeight = new Number($(obj).data("data-init-height"));
+	
+	if (isInit) {
+		$(obj).css({position:"fixed", left:$(obj).offset().left, top:$(obj).offset().top});
+		
+		var w = $(obj).parents(".list-group-item").width();
+		if (w >= initWidth) {
+			$(obj).css({width:initWidth, height:initHeight});
+		}
+		else {
+			$(obj).css({width:w, height:w*initHeight/initWidth});
+		}
+	}
+	else {
+		if (initWidth < initHeight) {
+			$(obj).css({position:"", width:IMG_SCALE_HEIGHT * initWidth / initHeight, height:IMG_SCALE_HEIGHT});
+		}
+		else {
+			$(obj).css({position:"", width:IMG_SCALE_HEIGHT, height:IMG_SCALE_HEIGHT * initHeight / initWidth});
+		}
+	}
+}
+img.remove = function(obj) {
+	$(obj).parent().remove();
+	$(".to-top").show();
+	$(".to-top:eq(0)").hide();
+}
+img.top = function(obj) {
+	$("#imgLi").after($(obj).parent());
+	$(".to-top").show();
+	$(".to-top:eq(0)").hide();
+}
+
+
+function upload(files) {
+	var formData = new FormData();
+	formData.append("module", "idea");
+	 $(".upload-img").each(function() {
+		formData.append("file", $(this).data("file"));
+	});
+	
+	 showLoading();
+	$.ajax({url:[[@{/auto/uploadImg/uploadIdea}]], type:"POST", contentType:false, data:formData ,processData:false,
+		success:function(r) {
+			if (r.result == 1) {
+				saveProd(r.arrayList);
+			}
+			else if (r.result == -1) {
+				alertDanger(r.value);
+			}
+		}
+	})
+}
+
+function saveProd(srcList) {
+	if (!$("[name=prodTitle]").val()) {
+		 $("[name=prodTitle]").val($("[name=prodTitle]").prop("placeholder"));
+	}
+	
+	if (!$("[name=prodPrice]").val()) {
+		 $("[name=prodPrice]").val($("[name=prodPrice]").prop("placeholder"));
+	}
+	
+	var imgSrc = "&imgSrc=" + srcList.join(",");
+	
+	$.post(controllerPath + "insert", $("#addForm").serialize() + imgSrc, function(r) {
+		if (r.result == SUCCESS) {
+			alertSuccess();
+			hideLoading();
+		}
+	});
+}
+
+
+function ok() {
+	var imgLen = $(".upload-img").length;
+	if (imgLen == 0) {
+		alertWarning("图片不能为空");
+		return;
+	}
+	upload();
+}
+
+
+</script>
+
+<style type="text/css">
+.fa-star {color:orange;}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+
+<script id="imgTemplate" type="text/html">
+<li class="list-group-item d-flex align-items-center">
+	<div style="width:60px;height:60px"><img class="upload-img" style="display:none" onload="img.resize(this)" onclick="img.click(this)"></div>
+	<span class="badge badge-dark" style="margin-left:15px;padding:8px" onclick="$(this).parent().find('img').click()"><i class="fa fa-search-plus"></i>放大</span>
+	<span class="badge badge-dark" style="margin-left:15px;padding:8px" onclick="img.remove(this)"><i class="fa fa-close"></i>删除</span>
+	<span class="badge badge-dark to-top" style="margin-left:15px;padding:8px;display:none" onclick="img.top(this)"><i class="fa fa-caret-up"></i>置顶</span>
+</li>
+</script>
+
+<script>
+
+$(function() {
+	$("#recommend i").click(function() {
+		$("#recommend i").removeClass("fa-star-o");
+		$("#recommend i").addClass("fa-star");
+		
+		$(this).nextAll().removeClass("fa-star");
+		$(this).nextAll().addClass("fa-star-o");
+	});
+})
+
+</script>
+
+<div class="panel panel-default">
+<form id="addForm">
+<input type="hidden" name="recommend" value="5">
+<ul class="list-group" id="imgUL">
+    <li class="list-group-item">
+    	<div class="row">
+    		<label class="col-form-label col-3">标题</label>
+    		<input class="form-control col-7" type="text" name="prodTitle" placeholder="无">
+    	</div>
+    </li>
+    <li class="list-group-item">
+   		<div class="row">
+	    	<label class="col-form-label col-3">类目	</label>
+	    	<select class="form-control col-7" name="catId">
+	    		<option th:each="item:${catList}" th:text="${item.catName}" th:value="${item.catId}"></option>
+	    	</select>
+    	</div>
+    </li>
+    <li class="list-group-item">
+    	<div class="row">
+	    	<label class="col-form-label col-3">推荐</label>
+	    	<div id="recommend" class="col-form-label col-7" style="display:flex;justify-content:space-between">
+		    	<i class="fa fa-star fa-lg"></i>
+		    	<i class="fa fa-star fa-lg"></i>
+		    	<i class="fa fa-star fa-lg"></i>
+		    	<i class="fa fa-star fa-lg"></i>
+		    	<i class="fa fa-star fa-lg"></i>
+	    	</div>
+    	</div>
+    </li>
+	<li class="list-group-item" id="imgLi">
+		<input type="file" multiple="multiple" accept="image/*" onchange="img.fileChange(this)" style="display:none">
+		<a href="#" onclick="$(this).prev().click()">选择图片</a>
+	</li>
+	<li class="list-group-item">
+		<button type="button" class="btn btn-primary btn-sm" onclick="ok()">确认提交</button>
+	</li>
+</ul>
+</form>
+
+
+</div>
+
+</div>
+</body>
+</html>
+

@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ppx.cloud.common.contoller.ReturnMap;
+import com.ppx.cloud.common.exception.security.PermissionParamsException;
 import com.ppx.cloud.common.page.Page;
+import com.ppx.cloud.repository.category.CategoryService;
 
 @Controller
 public class KnowledgeController {
@@ -44,6 +46,17 @@ public class KnowledgeController {
     public Map<?, ?> delete(@RequestParam Integer id) {
         return impl.delete(id);
     }
+    
+    
+    // >>>>>>>>>>>>>>>>>>
+    
+    @Autowired
+    private CategoryService categoryService;
+    
+    public ModelAndView add(ModelAndView mv) {
+		mv.addObject("catList", categoryService.list());
+		return mv;
+	}
 
 	
 }
