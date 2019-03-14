@@ -38,6 +38,9 @@ git clone https://github.com/inconshreveable/ngrok.git
 
 cd ngrok
 
+// http://www.ppx123.xyz/auto/test/test
+// ppx123.xyz
+
 export NGROK_DOMAIN="qcloud.la"
 
 openssl genrsa -out rootCA.key 2048
