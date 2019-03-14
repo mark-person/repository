@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ppx.cloud.common.contoller.ReturnMap;
 import com.ppx.cloud.common.exception.security.PermissionParamsException;
 import com.ppx.cloud.common.page.Page;
-import com.ppx.cloud.repository.category.CategoryService;
+import com.ppx.cloud.repository.category.ProdCategoryService;
 
 @Controller
 public class KnowledgeController {
@@ -51,7 +51,7 @@ public class KnowledgeController {
     // >>>>>>>>>>>>>>>>>>
     
     @Autowired
-    private CategoryService categoryService;
+    private ProdCategoryService categoryService;
     
     public ModelAndView add(ModelAndView mv) {
 		mv.addObject("catList", categoryService.list());

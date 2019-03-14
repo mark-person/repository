@@ -10,7 +10,7 @@ import com.ppx.cloud.common.jdbc.annotation.Table;
  * @date 2019年3月14日
  */
 @Table("repo_category")
-public class Category {
+public class ProdCategory {
 	private Integer catId;
 	private Integer parentId;
 	private String catName;
