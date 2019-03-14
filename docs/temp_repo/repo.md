@@ -23,4 +23,58 @@ ngrok authtoken 7vSS4vDczrT2g8boL6KSZ_2TAZUmH7BiREJooxGUu1N
 
 
 
+# 搭建 
+yum install gcc -y
+yum install git -y
 
+安装go语言环境
+yum install -y mercurial git bzr subversion golang golang-pkg-windows-amd64 golang-pkg-windows-386
+
+检查环境安装 
+git --version //( >= 1.7 )
+go version
+
+git clone https://github.com/inconshreveable/ngrok.git
+
+cd ngrok
+
+export NGROK_DOMAIN="qcloud.la"
+
+openssl genrsa -out rootCA.key 2048
+
+openssl req -x509 -new -nodes -key rootCA.key -subj "/CN=$NGROK_DOMAIN" -days 5000 -out rootCA.pem
+
+openssl genrsa -out device.key 2048
+
+openssl req -new -key device.key -subj "/CN=$NGROK_DOMAIN" -out device.csr
+
+openssl x509 -req -in device.csr -CA rootCA.pem -CAkey rootCA.key -CAcreateserial -out device.crt -days 5000
+
+
+# 将新生成的证书替换
+cp rootCA.pem assets/client/tls/ngrokroot.crt
+
+cp device.crt assets/server/tls/snakeoil.crt
+
+cp device.key assets/server/tls/snakeoil.key
+
+
+# 编译生成ngrokd（服务端）
+GOOS=linux GOARCH=amd64 make release-server
+生成在~/ngrok/bin/目录中
+# 编译生成ngrok（客户端）
+GOOS=windows GOARCH=amd64 make release-client
+生成在~/ngrok/bin/windows_amd64/目录中
+
+
+
+cd ngrok
+
+	
+
+./bin/ngrokd -domain="134.175.231.104" -httpAddr=":80" -httpsAddr=":443" -tunnelAddr=":8083"
+./bin/ngrokd -domain="87284200.qcloud.la" -httpAddr=":80" -httpsAddr=":443" -tunnelAddr=":8083" 
+./bin/ngrokd -domain="17ee3.gz.1253864162.clb.myqcloud.com" -httpAddr=":80" -httpsAddr=":443" -tunnelAddr=":8083"
+
+
+./bin/ngrokd -domain="qcloud.la" -httpAddr=":80" -httpsAddr=":443" -tunnelAddr=":8083" 
