@@ -41,7 +41,7 @@ cd ngrok
 // http://www.ppx123.xyz/auto/test/test
 // ppx123.xyz
 
-export NGROK_DOMAIN="qcloud.la"
+export NGROK_DOMAIN="ppx123.xyz"
 
 openssl genrsa -out rootCA.key 2048
 
@@ -80,4 +80,5 @@ cd ngrok
 ./bin/ngrokd -domain="17ee3.gz.1253864162.clb.myqcloud.com" -httpAddr=":80" -httpsAddr=":443" -tunnelAddr=":8083"
 
 
-./bin/ngrokd -domain="qcloud.la" -httpAddr=":80" -httpsAddr=":443" -tunnelAddr=":8083" 
+./bin/ngrokd -domain="ppx123.xyz" -httpAddr=":80" -httpsAddr=":443" -tunnelAddr=":8083"
+
