@@ -39,7 +39,8 @@ git clone https://github.com/inconshreveable/ngrok.git
 cd ngrok
 
 // http://www.ppx123.xyz/auto/test/test
-// ppx123.xyz
+// ppx123.xyz  需要配置解析域名ppx123.xyz和www.ppx123.xyz
+windows ipconfig/flushdns清dns缓存
 
 export NGROK_DOMAIN="ppx123.xyz"
 
@@ -91,5 +92,7 @@ ngrok -config=ngrok.cfg start http
 
 ./bin/ngrokd -tlsKey=device.key -tlsCrt=device.crt -domain=ppx123.xyz -httpAddr=:80 -httpsAddr=:443 -tunnelAddr=:8083
 
+# 下载证书, 用apache的.key和crt
 
+./bin/ngrokd -tlsKey=1.key -tlsCrt=1.crt -domain="ppx123.xyz" -httpAddr=":80" -httpsAddr=":443" -tunnelAddr=":8083"
 
