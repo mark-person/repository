@@ -83,7 +83,7 @@ create table repo_knowledge
   created_by	int not null,
   modified		timestamp not null default current_timestamp,
   modified_by   int not null,
-  primary key (cat_id)
+  primary key (k_id)
 ) comment='';
 
 
