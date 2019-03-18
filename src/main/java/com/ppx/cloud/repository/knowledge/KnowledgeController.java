@@ -53,7 +53,7 @@ public class KnowledgeController {
     @Autowired
     private ProdCategoryService categoryService;
     
-    public ModelAndView add(ModelAndView mv) {
+    public ModelAndView mAddKnowledge(ModelAndView mv) {
 		mv.addObject("catList", categoryService.list());
 		return mv;
 	}
