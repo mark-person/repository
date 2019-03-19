@@ -54,6 +54,7 @@ public class KnowledgeController {
     private ProdCategoryService categoryService;
     
     public ModelAndView mAddKnowledge(ModelAndView mv) {
+    	
 		mv.addObject("catList", categoryService.list());
 		return mv;
 	}

@@ -1,5 +1,8 @@
 package com.ppx.cloud.repository.knowledge;
 
+import com.ppx.cloud.common.jdbc.annotation.Table;
+
+@Table("repo_knowledge_img")
 public class KnowledgeImg {
 
 	private Integer kImgId;

@@ -7,6 +7,7 @@ import org.apache.logging.log4j.util.Strings;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ppx.cloud.common.contoller.ReturnMap;
 import com.ppx.cloud.common.jdbc.MyDaoSupport;
 import com.ppx.cloud.common.page.Page;
@@ -44,8 +45,7 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 		}
 		return ReturnMap.of();
 	}
-  
-	
+
 	public Knowledge get(Integer id) {
 		Knowledge pojo = getJdbcTemplate().queryForObject("select * from repo_knowledge where k_id = ?",
                 BeanPropertyRowMapper.newInstance(Knowledge.class), id);    
