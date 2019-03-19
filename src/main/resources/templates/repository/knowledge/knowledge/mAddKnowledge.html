@@ -177,12 +177,12 @@ function ok() {
 <script>
 
 $(function() {
-	$("#recommend i").click(function() {
-		$("#recommend i").removeClass("fa-star-o");
-		$("#recommend i").addClass("fa-star");
+	$("#recommend span").click(function() {
+		$("#recommend i").removeClass("starHide");
+		$("#recommend i").addClass("starShow");
 		
-		$(this).nextAll().removeClass("fa-star");
-		$(this).nextAll().addClass("fa-star-o");
+		//$(this).parent().nextAll("i").removeClass("starShow");
+		//$(this).parent().nextAll("i").addClass("starHide");
 	});
 })
 
@@ -194,13 +194,13 @@ $(function() {
 <ul class="list-group" id="imgUL">
     <li class="list-group-item">
     	<div class="row">
-    		<label class="col-form-label col-3">标题</label>
+    		<label class="col-form-label col-3">title</label>
     		<input class="form-control col-7" type="text" name="prodTitle" placeholder="无">
     	</div>
     </li>
     <li class="list-group-item">
    		<div class="row">
-	    	<label class="col-form-label col-3">类目	</label>
+	    	<label class="col-form-label col-3">category</label>
 	    	<select class="form-control col-7" name="catId">
 	    		<option th:each="item:${catList}" th:text="${item.catName}" th:value="${item.catId}"></option>
 	    	</select>
@@ -208,20 +208,28 @@ $(function() {
     </li>
     <li class="list-group-item">
     	<div class="row">
-	    	<label class="col-form-label col-3">推荐</label>
+	    	<label class="col-form-label col-3">recommend</label>
 	    	<div id="recommend" class="col-form-label col-7" style="display:flex;justify-content:space-between;">
-		    	<span style="border:1px solid rgba(0,0,0,.125)"><span style="visibility: hidden;">⭐</span></span>
-		    	<i class="fa fa-star fa-lg">⭐</i>
-		    	<i class="fa fa-star fa-lg">⭐</i>
-		    	<i class="fa fa-star fa-lg">⭐</i>
-		    	<i class="fa fa-star fa-lg">⭐</i>
+	    		<style>
+	    		.star {
+	    			border:1px solid rgba(0,0,0,.125);
+	    			cursor: pointer;
+	    		}
+	    		.starShow {visibility:visible}
+	    		.starHide {visibility:hidden}
+	    		</style>
+		    	<span class="star"><i>⭐</i></span>
+		    	<span class="star"><i>⭐</i></span>
+		    	<span class="star"><i>⭐</i></span>
+		    	<span class="star"><i class="starHide">⭐</i></span>
+		    	<span class="star"><i class="starHide">⭐</i></span>
 		    	
 	    	</div>
     	</div>
     </li>
 	<li class="list-group-item" id="imgLi">
 		<input type="file" multiple="multiple" accept="image/*" onchange="img.fileChange(this)" style="display:none">
-		<a href="#" onclick="$(this).prev().click()">选择图片</a>
+		<a href="#" onclick="$(this).prev().click()">images</a>
 	</li>
 	<li class="list-group-item">
 		<button type="button" class="btn btn-primary btn-sm" onclick="ok()">确认提交</button>
