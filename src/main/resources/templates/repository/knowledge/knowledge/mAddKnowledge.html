@@ -13,17 +13,6 @@
 <script type="text/javascript" th:inline="javascript">
 var controllerPath = contextPath + "auto/knowledge/";
 
-$(function() {
-	
-	$(".fa-star").bind("click", function() {		
-		$("[name=recommend]").val($(this).prevAll().length + 1)
-	})
-	
-});
-
-
-
-
 // >>>>>>>>>>>>>>>>>>>>>>img
 var img = {};
 var IMG_SCALE_HEIGHT = 60;
@@ -110,7 +99,7 @@ function upload(files) {
 		formData.append("file", $(this).data("file"));
 	});
 	
-	 showLoading();
+	showLoading();
 	$.ajax({url:[[@{/auto/uploadImg/uploadIdea}]], type:"POST", contentType:false, data:formData ,processData:false,
 		success:function(r) {
 			if (r.result == 1) {
@@ -144,6 +133,8 @@ function saveProd(srcList) {
 
 
 function ok() {
+	$("[name=recommend]").val($("#recommend .starShow").length);
+	
 	var imgLen = $(".upload-img").length;
 	if (imgLen == 0) {
 		alertWarning("图片不能为空");
@@ -178,11 +169,12 @@ function ok() {
 
 $(function() {
 	$("#recommend span").click(function() {
-		$("#recommend i").removeClass("starHide");
-		$("#recommend i").addClass("starShow");
-		
-		//$(this).parent().nextAll("i").removeClass("starShow");
-		//$(this).parent().nextAll("i").addClass("starHide");
+		$("#recommend b").removeClass("starHide");
+		$("#recommend b").addClass("starShow");
+		$(this).nextAll().each(function(i, o) {
+			$(o).find("b").removeClass("starShow");
+			$(o).find("b").addClass("starHide");
+		})
 	});
 })
 
@@ -190,7 +182,7 @@ $(function() {
 
 <div class="panel panel-default">
 <form id="addForm">
-<input type="hidden" name="recommend" value="5">
+<input type="hidden" name="recommend">
 <ul class="list-group" id="imgUL">
     <li class="list-group-item">
     	<div class="row">
@@ -218,11 +210,11 @@ $(function() {
 	    		.starShow {visibility:visible}
 	    		.starHide {visibility:hidden}
 	    		</style>
-		    	<span class="star"><i>⭐</i></span>
-		    	<span class="star"><i>⭐</i></span>
-		    	<span class="star"><i>⭐</i></span>
-		    	<span class="star"><i class="starHide">⭐</i></span>
-		    	<span class="star"><i class="starHide">⭐</i></span>
+		    	<span class="star"><b>⭐</b></span>
+		    	<span class="star"><b>⭐</b></span>
+		    	<span class="star"><b>⭐</b></span>
+		    	<span class="star"><b class="starHide">⭐</b></span>
+		    	<span class="star"><b class="starHide">⭐</b></span>
 		    	
 	    	</div>
     	</div>
