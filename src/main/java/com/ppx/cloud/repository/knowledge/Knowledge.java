@@ -5,6 +5,7 @@ package com.ppx.cloud.repository.knowledge;
 
 import java.util.Date;
 
+import com.ppx.cloud.common.jdbc.annotation.Column;
 import com.ppx.cloud.common.jdbc.annotation.Table;
 
 
@@ -24,6 +25,28 @@ public class Knowledge {
 	private Integer createdBy;
 	private Date modified;
 	private Integer modifiedBy;
+	
+	@Column(readonly = true)
+	private String imgSrc;
+	
+	private String catName;
+	
+
+	public String getCatName() {
+		return catName;
+	}
+
+	public void setCatName(String catName) {
+		this.catName = catName;
+	}
+
+	public String getImgSrc() {
+		return imgSrc;
+	}
+
+	public void setImgSrc(String imgSrc) {
+		this.imgSrc = imgSrc;
+	}
 
 	public Integer getkId() {
 		return kId;

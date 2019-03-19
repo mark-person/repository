@@ -103,7 +103,7 @@ function upload(files) {
 	$.ajax({url:[[@{/auto/uploadImg/uploadIdea}]], type:"POST", contentType:false, data:formData ,processData:false,
 		success:function(r) {
 			if (r.result == 1) {
-				saveProd(r.arrayList);
+				saveKnowledge(r.arrayList);
 			}
 			else if (r.result == -1) {
 				alertDanger(r.value);
@@ -112,13 +112,9 @@ function upload(files) {
 	})
 }
 
-function saveProd(srcList) {
-	if (!$("[name=prodTitle]").val()) {
-		 $("[name=prodTitle]").val($("[name=prodTitle]").prop("placeholder"));
-	}
-	
-	if (!$("[name=prodPrice]").val()) {
-		 $("[name=prodPrice]").val($("[name=prodPrice]").prop("placeholder"));
+function saveKnowledge(srcList) {
+	if (!$("[name=kTitle]").val()) {
+		 $("[name=kTitle]").val($("[name=kTitle]").prop("placeholder"));
 	}
 	
 	var imgSrc = "&imgSrc=" + srcList.join(",");
@@ -187,7 +183,7 @@ $(function() {
     <li class="list-group-item">
     	<div class="row">
     		<label class="col-form-label col-3">title</label>
-    		<input class="form-control col-7" type="text" name="prodTitle" placeholder="无">
+    		<input class="form-control col-7" type="text" name="kTitle" placeholder="无">
     	</div>
     </li>
     <li class="list-group-item">
