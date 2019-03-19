@@ -25,12 +25,20 @@ public class Knowledge {
 	private Integer createdBy;
 	private Date modified;
 	private Integer modifiedBy;
+	private String mainImgSrc;
 	
 	@Column(readonly = true)
 	private String imgSrc;
 	
 	private String catName;
 	
+	public String getMainImgSrc() {
+		return mainImgSrc;
+	}
+
+	public void setMainImgSrc(String mainImgSrc) {
+		this.mainImgSrc = mainImgSrc;
+	}
 
 	public String getCatName() {
 		return catName;

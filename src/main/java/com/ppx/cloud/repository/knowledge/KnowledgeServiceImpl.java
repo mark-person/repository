@@ -3,12 +3,14 @@ package com.ppx.cloud.repository.knowledge;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Service;
 
 import com.ppx.cloud.common.contoller.ReturnMap;
 import com.ppx.cloud.common.jdbc.MyDaoSupport;
 import com.ppx.cloud.common.page.Page;
+import com.ppx.cloud.demo.product.ProductImg;
 
 @Service
 public class KnowledgeServiceImpl extends MyDaoSupport {
@@ -25,9 +27,24 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 	}
 	
 	public Map<String, Object> insert(Knowledge pojo) {
-		int r = insertEntity(pojo);
-        return ReturnMap.exists(r, "");
-    }
+	
+		if (Strings.isNotEmpty(pojo.getImgSrc())) {
+			String[] imgSrc = pojo.getImgSrc().split(",");
+			pojo.setMainImgSrc(imgSrc[0]);
+			insertEntity(pojo);
+			int kId = super.getLastInsertId();
+			
+			for (int i = 1; i < imgSrc.length; i++) {
+				KnowledgeImg img = new KnowledgeImg();
+				img.setkId(kId);
+				img.setkImgSrc(imgSrc[i]);
+				img.setkImgPrio(i);
+				insertEntity(img);
+			}
+		}
+		return ReturnMap.of();
+	}
+  
 	
 	public Knowledge get(Integer id) {
 		Knowledge pojo = getJdbcTemplate().queryForObject("select * from repo_knowledge where k_id = ?",
