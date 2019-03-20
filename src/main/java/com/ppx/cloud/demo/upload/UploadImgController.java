@@ -39,8 +39,6 @@ public class UploadImgController {
 	
 	public Map<?, ?> uploadKnowledge(@RequestParam("file") MultipartFile[] files) throws Exception {
 		
-	
-		
 		var returnList = new ArrayList<String>();
 		
 		// 不存就创建文件夹 >>>>>>>>>>>>>>>>>>>>>
