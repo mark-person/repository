@@ -15,7 +15,7 @@ public class ProdCategoryServiceImpl extends MyDaoSupport implements ProdCategor
  
 	public List<ProdCategory> list() {
 		
-		String sql = "select concat((select cat_name from repo_category where cat_id = c.parent_id), '-', cat_name) cat_name " + 
+		String sql = "select cat_id, concat((select cat_name from repo_category where cat_id = c.parent_id), '-', cat_name) cat_name " + 
 				"from repo_category c where c.parent_id != 0 order by c.parent_id, c.cat_prio";
 		
 		List<ProdCategory> list = getJdbcTemplate().query(sql, BeanPropertyRowMapper.newInstance(ProdCategory.class));

@@ -41,7 +41,7 @@ public class TestController {
 	public ModelAndView test(ModelAndView mv) {
 		
 		// logger.debug("99999999");
-		System.out.println("xxxxx111:" + MonitorSwitchConfig.IS_DEBUG);
+		// System.out.println("xxxxx111:" + MonitorSwitchConfig.IS_DEBUG);
 		
 		
 		

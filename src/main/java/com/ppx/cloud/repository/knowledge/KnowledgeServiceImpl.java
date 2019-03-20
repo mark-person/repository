@@ -6,8 +6,11 @@ import java.util.Map;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ppx.cloud.auth.common.AuthContext;
+import com.ppx.cloud.auth.config.AuthUtils;
 import com.ppx.cloud.common.contoller.ReturnMap;
 import com.ppx.cloud.common.jdbc.MyDaoSupport;
 import com.ppx.cloud.common.page.Page;
@@ -27,7 +30,12 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 		return list;
 	}
 	
+	@Transactional
 	public Map<String, Object> insert(Knowledge pojo) {
+		int userId = AuthContext.getLoginAccount().getUserId();
+		
+		pojo.setModifiedBy(userId);
+		pojo.setCreatedBy(userId);
 	
 		if (Strings.isNotEmpty(pojo.getImgSrc())) {
 			String[] imgSrc = pojo.getImgSrc().split(",");
@@ -42,6 +50,9 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 				img.setkImgPrio(i);
 				insertEntity(img);
 			}
+		}
+		else {
+			insertEntity(pojo);
 		}
 		return ReturnMap.of();
 	}

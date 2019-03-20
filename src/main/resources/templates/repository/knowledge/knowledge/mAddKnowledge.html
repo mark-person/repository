@@ -27,6 +27,11 @@ img.loadImg = function(f, n) {
 	reader.onload = function() {
 		var jObj = $($("#imgTemplate").html());
 		var imgObj = jObj.find(".upload-img");
+		
+		
+		
+		//alert(this.result)
+		
 		imgObj.prop("src", this.result);
 		imgObj.data("file", f[n]);
 		$("#imgLi").after(jObj);
@@ -39,6 +44,7 @@ img.loadImg = function(f, n) {
 	reader.readAsDataURL(f[n]);
 }
 img.resize = function(img) {
+	$(img).prop("onload", "");
 	var initWidth = img.width;
 	var initHeight = img.height;
 	$(img).data("data-init-width", initWidth);
@@ -50,9 +56,19 @@ img.resize = function(img) {
 	}
 	else {
 		$(img).css({width:IMG_SCALE_HEIGHT, height:IMG_SCALE_HEIGHT * initHeight / initWidth});
-	}	
+	}
 	$(".upload-img").show();
 }
+
+img.zip = function(thisImg) {
+	var canvas = document.createElement("canvas");
+    var context = canvas.getContext("2d");
+    context.drawImage(thisImg, 0, 0, thisImg.width, thisImg.height, 0, 0, thisImg.width, thisImg.height);
+	$(thisImg).prop("src", canvas.toDataURL('image/jpeg', 0.3));
+	$(thisImg).prop("onload", img.resize(thisImg));
+	
+}
+
 img.click = function(obj) {
 	var isInit = $(obj).data("data-init-boolean");
 	 $(obj).data("data-init-boolean", isInit ? false : true);
@@ -102,10 +118,10 @@ function upload(files) {
 	showLoading();
 	$.ajax({url:[[@{/auto/uploadImg/uploadKnowledge}]], type:"POST", contentType:false, data:formData ,processData:false,
 		success:function(r) {
-			if (r.result == 1) {
-				saveKnowledge(r.arrayList);
+			if (r.errcode === 0) {
+				saveKnowledge(r.list);
 			}
-			else if (r.result == -1) {
+			else {
 				alertDanger(r.value);
 			}
 		}
@@ -116,27 +132,25 @@ function saveKnowledge(srcList) {
 	if (!$("[name=kTitle]").val()) {
 		 $("[name=kTitle]").val($("[name=kTitle]").prop("placeholder"));
 	}
-	
+	$("[name=recommend]").val($("#recommend .starShow").length);
 	var imgSrc = "&imgSrc=" + srcList.join(",");
 	
 	$.post(controllerPath + "insert", $("#addForm").serialize() + imgSrc, function(r) {
-		if (r.result == SUCCESS) {
+		if (r.errcode === 0) {
 			alertSuccess();
 			hideLoading();
 		}
 	});
 }
 
-
 function ok() {
-	$("[name=recommend]").val($("#recommend .starShow").length);
-	
 	var imgLen = $(".upload-img").length;
-	if (imgLen == 0) {
-		alertWarning("图片不能为空");
-		return;
+	if (imgLen != 0) {
+		upload();
 	}
-	upload();
+	else {
+		saveKnowledge([]);
+	}
 }
 
 
@@ -154,7 +168,7 @@ function ok() {
 
 <script id="imgTemplate" type="text/html">
 <li class="list-group-item d-flex align-items-center">
-	<div style="width:60px;height:60px"><img class="upload-img" style="display:none" onload="img.resize(this)" onclick="img.click(this)"></div>
+	<div style="width:60px;height:60px"><img class="upload-img" style="display:none" onload="img.zip(this)" onclick="img.click(this)"></div>
 	<span class="badge badge-dark" style="margin-left:15px;padding:8px" onclick="$(this).parent().find('img').click()"><i class="fa fa-search-plus"></i>放大</span>
 	<span class="badge badge-dark" style="margin-left:15px;padding:8px" onclick="img.remove(this)"><i class="fa fa-close"></i>删除</span>
 	<span class="badge badge-dark to-top" style="margin-left:15px;padding:8px;display:none" onclick="img.top(this)"><i class="fa fa-caret-up"></i>置顶</span>
@@ -194,7 +208,7 @@ $(function() {
 	    	</select>
     	</div>
     </li>
-    <li class="list-group-item">
+    <li class="list-group-item" style="display: none">
     	<div class="row">
 	    	<label class="col-form-label col-3">recommend</label>
 	    	<div id="recommend" class="col-form-label col-7" style="display:flex;justify-content:space-between;">
