@@ -100,7 +100,7 @@ function upload(files) {
 	});
 	
 	showLoading();
-	$.ajax({url:[[@{/auto/uploadImg/uploadIdea}]], type:"POST", contentType:false, data:formData ,processData:false,
+	$.ajax({url:[[@{/auto/uploadImg/uploadKnowledge}]], type:"POST", contentType:false, data:formData ,processData:false,
 		success:function(r) {
 			if (r.result == 1) {
 				saveKnowledge(r.arrayList);
