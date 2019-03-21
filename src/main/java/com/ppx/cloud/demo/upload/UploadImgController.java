@@ -64,7 +64,11 @@ public class UploadImgController {
 			MultipartFile file = files[i];
 			
 			String fileName = file.getOriginalFilename();
-			String ext = fileName.substring(fileName.lastIndexOf("."));
+			String ext = ".jpg";
+			if (!"blob".equals(fileName)) {
+				ext = fileName.substring(fileName.lastIndexOf("."));
+			}
+			
 			String imgFileName = UUID.randomUUID().toString().replaceAll("-", "") + ext;
 			if (i == 0) {
 				// >>>>>>>>>>>>>>>>>主

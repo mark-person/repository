@@ -25,26 +25,43 @@ img.loadImg = function(f, n) {
 	n--;
 	var reader = new FileReader();
 	reader.onload = function() {
-		var jObj = $($("#imgTemplate").html());
-		var imgObj = jObj.find(".upload-img");
-		
-		
-		
 		//alert(this.result)
-		
-		imgObj.prop("src", this.result);
-		imgObj.data("file", f[n]);
-		$("#imgLi").after(jObj);
-		if (n > 0) img.loadImg(f, n);
-		else {
-			$(".to-top").show();
-			$(".to-top:eq(0)").hide();
+		var tmpImg = new Image();
+		tmpImg.onload = function() {
+			var canvas = document.createElement("canvas");
+			canvas.width = this.width;
+		    canvas.height = this.height;
+		    var context = canvas.getContext("2d");
+		    context.drawImage(this, 0, 0, this.width, this.height, 0, 0, this.width, this.height);
+		    var newSrc = canvas.toDataURL('image/jpeg', 0.3);
+		    
+		    var jObj = $($("#imgTemplate").html());
+			var imgObj = jObj.find(".upload-img");
+		    imgObj.prop("src", newSrc);
+			imgObj.data("file", dataURLtoFile(newSrc));
+			$("#imgLi").after(jObj);
+			if (n > 0) img.loadImg(f, n);
+			else {
+				$(".to-top").show();
+				$(".to-top:eq(0)").hide();
+			}
 		}
+		tmpImg.src = this.result;
 	}
 	reader.readAsDataURL(f[n]);
 }
+
+
+function dataURLtoFile(dataurl) {
+	var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+	bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+	while(n--){
+		u8arr[n] = bstr.charCodeAt(n);
+	}
+	return new Blob([u8arr], {type:mime});
+}
+
 img.resize = function(img) {
-	$(img).prop("onload", "");
 	var initWidth = img.width;
 	var initHeight = img.height;
 	$(img).data("data-init-width", initWidth);
@@ -59,16 +76,6 @@ img.resize = function(img) {
 	}
 	$(".upload-img").show();
 }
-
-img.zip = function(thisImg) {
-	var canvas = document.createElement("canvas");
-    var context = canvas.getContext("2d");
-    context.drawImage(thisImg, 0, 0, thisImg.width, thisImg.height, 0, 0, thisImg.width, thisImg.height);
-	$(thisImg).prop("src", canvas.toDataURL('image/jpeg', 0.3));
-	$(thisImg).prop("onload", img.resize(thisImg));
-	
-}
-
 img.click = function(obj) {
 	var isInit = $(obj).data("data-init-boolean");
 	 $(obj).data("data-init-boolean", isInit ? false : true);
@@ -168,7 +175,7 @@ function ok() {
 
 <script id="imgTemplate" type="text/html">
 <li class="list-group-item d-flex align-items-center">
-	<div style="width:60px;height:60px"><img class="upload-img" style="display:none" onload="img.zip(this)" onclick="img.click(this)"></div>
+	<div style="width:60px;height:60px"><img class="upload-img" style="display:none" onload="img.resize(this)" onclick="img.click(this)"></div>
 	<span class="badge badge-dark" style="margin-left:15px;padding:8px" onclick="$(this).parent().find('img').click()"><i class="fa fa-search-plus"></i>放大</span>
 	<span class="badge badge-dark" style="margin-left:15px;padding:8px" onclick="img.remove(this)"><i class="fa fa-close"></i>删除</span>
 	<span class="badge badge-dark to-top" style="margin-left:15px;padding:8px;display:none" onclick="img.top(this)"><i class="fa fa-caret-up"></i>置顶</span>
