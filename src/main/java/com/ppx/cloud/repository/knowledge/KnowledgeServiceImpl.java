@@ -33,26 +33,29 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 	@Transactional
 	public Map<String, Object> insert(Knowledge pojo) {
 		int userId = AuthContext.getLoginAccount().getUserId();
-		
 		pojo.setModifiedBy(userId);
 		pojo.setCreatedBy(userId);
 	
+		String[] imgSrc = new String[]{};
 		if (Strings.isNotEmpty(pojo.getImgSrc())) {
-			String[] imgSrc = pojo.getImgSrc().split(",");
+			imgSrc = pojo.getImgSrc().split(",");
 			pojo.setMainImgSrc(imgSrc[0]);
-			insertEntity(pojo);
-			int kId = super.getLastInsertId();
-			
-			for (int i = 1; i < imgSrc.length; i++) {
-				KnowledgeImg img = new KnowledgeImg();
-				img.setkId(kId);
-				img.setkImgSrc(imgSrc[i]);
-				img.setkImgPrio(i);
-				insertEntity(img);
-			}
 		}
-		else {
-			insertEntity(pojo);
+		
+		insertEntity(pojo);
+		int kId = super.getLastInsertId();
+		// 附加图(第二个开始)
+		for (int i = 1; i < imgSrc.length; i++) {
+			KnowledgeImg img = new KnowledgeImg();
+			img.setkId(kId);
+			img.setkImgSrc(imgSrc[i]);
+			img.setkImgPrio(i);
+			insertEntity(img);
+		}
+		// 内容
+		if (Strings.isNotEmpty(pojo.getkContent())) {
+			String insertContentsSql = "insert into repo_knowledge_content(k_id, k_content) values(?, ?)";
+			getJdbcTemplate().update(insertContentsSql, kId, pojo.getkContent());
 		}
 		return ReturnMap.of();
 	}

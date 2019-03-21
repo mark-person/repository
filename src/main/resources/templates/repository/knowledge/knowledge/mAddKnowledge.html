@@ -136,6 +136,12 @@ function saveKnowledge(srcList) {
 	}
 	$("[name=recommend]").val($("#recommend .starShow").length);
 	var imgSrc = "&imgSrc=" + srcList.join(",");
+	if (initkContent == $("#kContent").val()) {
+		$("#kContent").val("");
+	}
+	else {
+		$("[name=kContent]").val($("#kContent").val());
+	}
 	
 	$.post(controllerPath + "insert", $("#addForm").serialize() + imgSrc, function(r) {
 		if (r.errcode === 0) {
@@ -155,6 +161,19 @@ function ok() {
 	}
 }
 
+var initkContent;
+$(function() {
+	$("#recommend span").click(function() {
+		$("#recommend b").removeClass("starHide");
+		$("#recommend b").addClass("starShow");
+		$(this).nextAll().each(function(i, o) {
+			$(o).find("b").removeClass("starShow");
+			$(o).find("b").addClass("starHide");
+		})
+	});
+	initkContent = $("#kContent").val();
+})
+
 </script>
 
 <style type="text/css">
@@ -166,7 +185,6 @@ function ok() {
 
 <div class="container">
 
-
 <script id="imgTemplate" type="text/html">
 <li class="list-group-item d-flex align-items-center">
 	<div style="width:60px;height:60px"><img class="upload-img" style="display:none" onload="img.resize(this)" onclick="img.click(this)"></div>
@@ -176,35 +194,21 @@ function ok() {
 </li>
 </script>
 
-<script>
-
-$(function() {
-	$("#recommend span").click(function() {
-		$("#recommend b").removeClass("starHide");
-		$("#recommend b").addClass("starShow");
-		$(this).nextAll().each(function(i, o) {
-			$(o).find("b").removeClass("starShow");
-			$(o).find("b").addClass("starHide");
-		})
-	});
-})
-
-</script>
-
 <div class="panel panel-default">
 <form id="addForm">
 <input type="hidden" name="recommend">
+<input type="hidden" name="kContent">
 <ul class="list-group" id="imgUL">
     <li class="list-group-item">
     	<div class="row">
     		<label class="col-form-label col-3">title</label>
-    		<input class="form-control col-7" type="text" name="kTitle" placeholder="无">
+    		<input class="form-control col-9" type="text" name="kTitle" placeholder="无">
     	</div>
     </li>
     <li class="list-group-item">
    		<div class="row">
 	    	<label class="col-form-label col-3">category</label>
-	    	<select class="form-control col-7" name="catId">
+	    	<select class="form-control col-9" name="catId">
 	    		<option th:each="item:${catList}" th:text="${item.catName}" th:value="${item.catId}"></option>
 	    	</select>
     	</div>
@@ -212,7 +216,7 @@ $(function() {
     <li class="list-group-item" style="display: none">
     	<div class="row">
 	    	<label class="col-form-label col-3">recommend</label>
-	    	<div id="recommend" class="col-form-label col-7" style="display:flex;justify-content:space-between;">
+	    	<div id="recommend" class="col-form-label col-9" style="display:flex;justify-content:space-between;">
 	    		<style>
 	    		.star {
 	    			border:1px solid rgba(0,0,0,.125);
@@ -226,14 +230,25 @@ $(function() {
 		    	<span class="star"><b>⭐</b></span>
 		    	<span class="star"><b class="starHide">⭐</b></span>
 		    	<span class="star"><b class="starHide">⭐</b></span>
-		    	
 	    	</div>
     	</div>
+    </li>
+    <li class="list-group-item">
+    	<div class="row">
+	    	<label class="col-form-label col-3">content</label>
+<textarea id="kContent" rows="3" class="form-control col-9">
+# 
+* 
+* 
+</textarea>
+    	</div>
+    	
     </li>
 	<li class="list-group-item" id="imgLi">
 		<input type="file" multiple="multiple" accept="image/*" onchange="img.fileChange(this)" style="display:none">
 		<a href="#" onclick="$(this).prev().click()">images</a>
 	</li>
+	
 	<li class="list-group-item">
 		<button type="button" class="btn btn-primary btn-sm" onclick="ok()">确认提交</button>
 	</li>

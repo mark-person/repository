@@ -26,7 +26,8 @@ public class Knowledge {
 	private Date modified;
 	private Integer modifiedBy;
 	private String mainImgSrc;
-	
+	@Column(readonly = true)
+	private String kContent;
 	@Column(readonly = true)
 	private String imgSrc;
 	
@@ -119,5 +120,15 @@ public class Knowledge {
 	public void setModifiedBy(Integer modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
+
+	public String getkContent() {
+		return kContent;
+	}
+
+	public void setkContent(String kContent) {
+		this.kContent = kContent;
+	}
+	
+	
 
 }
