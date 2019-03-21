@@ -9,7 +9,7 @@ import java.util.List;
  * @author mark
  * @date 2019年3月14日
  */
-public interface ProdCategoryService {
+public interface KnowledgeCategoryService {
 	
-	List<ProdCategory> list();
+	List<KnowledgeCategory> list();
 }

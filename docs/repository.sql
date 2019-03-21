@@ -62,7 +62,7 @@ create table product_img
 
 /** 仓库 repository(repo) >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
 
-create table repo_category
+create table repo_knowledge_category
 (
   cat_id			int not null auto_increment,
   parent_id			int not null default 0 comment '0:一级目录',

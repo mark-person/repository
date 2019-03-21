@@ -36,10 +36,9 @@ var getCallback = function(r) {
 		<thead class="thead-light">
 		<tr>
 			<th class="w-id">ID</th>
-			<th class="w-title">测试名称</th>
-			<th class="w-date">测试日期</th>
-			<th class="w-id">测试值</th>
-			<th class="w-id">测试类型</th>
+			<th class="w-title">title</th>
+			<th class="w-date">cat</th>
+			<th class="w-id">recommend</th>
 			<th class="w-time">创建时间</th>
 			<th class="w-action">操作</th>
 		</tr>
@@ -49,10 +48,9 @@ var getCallback = function(r) {
 	<table>
 		<tr th:fragment="template">
 			<td>{{v.kId}}</td>
-			<td>{{v.knowledgeName}}</td>
-			<td>{{v.knowledgeDate}}</td>
-			<td>{{v.knowledgeValue}}</td>
-			<td>{{getType(v.knowledgeType)}}</td>
+			<td>{{v.kTitle}}</td>
+			<td>{{v.catName}}</td>
+			<td>{{v.recommend}}</td>
 			<td>{{v.created}}</td>
 			<td>
 				<a href="#this" onclick="remove('{{v.kId}}')">[删除]</a>
@@ -62,54 +60,7 @@ var getCallback = function(r) {
 	</table>
 </div>
 
-<div th:fragment="add" th:replace="common/fragment::modal('add', '新增', '')">
-	<div class="form-group form-inline">
-		<label class="col-4"><i class="required">*</i>测试名称：</label>
-		<div class="col-8"><input type="text" name="knowledgeName" class="form-control" required maxlength="16"></div>
-	</div>
-	<div class="form-group form-inline">
-		<label class="col-4"><i class="required">*</i>测试值：</label>
-		<div class="col-8"><input type="text" name="knowledgeValue" class="form-control" required number=true maxlength="7"></div>
-	</div>
-	<div class="form-group form-inline">
-		<label class="col-4"><i class="required">*</i>测试类型：</label>
-		<div class="col-8">
-			<select class="form-control input-sm" name="knowledgeType" required>
-			<option value="">请选择</option>
-			<option th:each="item:${listType}" th:value="${item.typeId}" th:text="${item.typeName}"></option>
-			</select>
-		</div>
-	</div>
-	<div class="form-group form-inline">
-		<label class="col-4"><i class="required">*</i>测试日期：</label>
-		<div class="col-8"><input type="text" name="knowledgeDate" class="form-control" required onclick="WdatePicker()"></div>
-	</div>
-</div>
 
-<div th:fragment="edit" th:replace="common/fragment::modalTemplate('edit', '修改', '')">
-	<input type="hidden" name="kId" value="{{pojo.kId}}">
-	<div class="form-group form-inline">
-		<label class="col-4"><i class="required">*</i>测试名称：</label>
-		<div class="col-8"><input type="text" name="knowledgeName" class="form-control" required maxlength="16" value="{{pojo.knowledgeName}}"></div>
-	</div>
-	<div class="form-group form-inline">
-		<label class="col-4"><i class="required">*</i>测试值：</label>
-		<div class="col-8"><input type="text" name="knowledgeValue" class="form-control" required number=true maxlength="7" value="{{pojo.knowledgeValue}}"></div>
-	</div>
-	<div class="form-group form-inline">
-		<label class="col-4"><i class="required">*</i>测试类型：</label>
-		<div class="col-8">
-			<select id="editknowledgeType" class="form-control input-sm" name="knowledgeType" required>
-			<option value="">请选择</option>
-			<option th:each="item:${listType}" th:value="${item.typeId}" th:text="${item.typeName}"></option>
-			</select>
-		</div>
-	</div>
-	<div class="form-group form-inline">
-		<label class="col-4"><i class="required">*</i>测试日期：</label>
-		<div class="col-8"><input type="text" name="knowledgeDate" class="form-control" onclick="WdatePicker()" value="{{pojo.knowledgeDate}}"></div>
-	</div>
-</div>
 
 </div>
 </body>
