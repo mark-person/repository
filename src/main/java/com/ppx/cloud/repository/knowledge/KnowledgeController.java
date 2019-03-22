@@ -2,6 +2,7 @@ package com.ppx.cloud.repository.knowledge;
 
 import java.util.Map;
 
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,8 +31,13 @@ public class KnowledgeController {
 		return ReturnMap.of(page, impl.list(page, pojo));
 	}
 	 
-    public Map<?, ?> insert(Knowledge pojo) {
-        return impl.insert(pojo);
+    public Map<?, ?> insertOrUpdate(Knowledge pojo) {
+    	if (pojo.getkId() == null) {
+    		return impl.insert(pojo);
+    	}
+    	else {
+    		return impl.update(pojo);
+    	}
     }
     
     
@@ -39,9 +45,6 @@ public class KnowledgeController {
         return ReturnMap.of("pojo", impl.get(id));
     }
     
-    public Map<?, ?> update(Knowledge pojo) {
-        return impl.update(pojo);
-    }
     
     public Map<?, ?> delete(@RequestParam Integer id) {
         return impl.delete(id);

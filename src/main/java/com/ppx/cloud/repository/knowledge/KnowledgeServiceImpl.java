@@ -67,9 +67,40 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
         return pojo;
     }
     
-    public Map<String, Object> update(Knowledge bean) {
-        int r = updateEntity(bean);
-        return ReturnMap.exists(r, "");
+	@Transactional
+    public Map<String, Object> update(Knowledge pojo) {
+    	int userId = AuthContext.getLoginAccount().getUserId();
+		pojo.setModifiedBy(userId);
+	
+		String[] imgSrc = new String[]{};
+		if (Strings.isNotEmpty(pojo.getImgSrc())) {
+			imgSrc = pojo.getImgSrc().split(",");
+			pojo.setMainImgSrc(imgSrc[0]);
+		}
+		
+		updateEntity(pojo);
+		int kId = pojo.getkId();
+		// delete附加图
+		String deleteImgSql = "delete from repo_knowledge_img where kId = ?";
+		getJdbcTemplate().update(deleteImgSql, kId);
+		// 附加图(第二个开始)
+		for (int i = 1; i < imgSrc.length; i++) {
+			KnowledgeImg img = new KnowledgeImg();
+			img.setkId(kId);
+			img.setkImgSrc(imgSrc[i]);
+			img.setkImgPrio(i);
+			insertEntity(img);
+		}
+		
+		// delete内容
+		String deleteContentSql = "delete from repo_knowledge_content where kId = ?";
+		getJdbcTemplate().update(deleteContentSql, kId);
+		// 内容
+		if (Strings.isNotEmpty(pojo.getkContent())) {
+			String insertContentsSql = "insert into repo_knowledge_content(k_id, k_content) values(?, ?)";
+			getJdbcTemplate().update(insertContentsSql, kId, pojo.getkContent());
+		}
+		return ReturnMap.of();
     }
     
     public Map<String, Object> delete(Integer id) {
