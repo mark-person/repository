@@ -125,9 +125,9 @@ function upload(files) {
 			if (r.errcode === 0) {
 				var imgIndex = 0;
 				$(".upload-img").each(function(i, o) {
-					var dataUrl = $(this).data("data-url");
+					var dataUrl = $(this).prop("data-url");
 					if (!dataUrl) {
-						$(this).data("data-url", r.list[imgIndex++]);
+						$(this).prop("data-url", r.list[imgIndex++]);
 					}
 				})
 				insertOrUpdateKnowledge();
@@ -147,7 +147,7 @@ function insertOrUpdateKnowledge() {
 	
 	var srcList = [];
 	$(".upload-img").each(function(i, o) {
-		srcList.push($(this).data("data-url"));
+		srcList.push($(this).prop("data-url"));
 	})
 	var imgSrc = "&imgSrc=" + srcList.join(",");
 	
@@ -172,8 +172,9 @@ function insertOrUpdateKnowledge() {
 function ok() {
 	var imgLen = 0;
 	$(".upload-img").each(function() {
-		imgLen = $(this).data("data-url") ? imgLen : ++imgLen;
+		imgLen = $(this).prop("data-url") ? imgLen : ++imgLen;
 	})
+	alert(imgLen);
 	
 	if (imgLen != 0) {
 		upload();
@@ -214,6 +215,7 @@ function resetForm() {
 }
 .starShow {visibility:visible}
 .starHide {visibility:hidden}
+.to-top {margin-left:15px;padding:8px;}
 </style>
 
 </head>
@@ -233,7 +235,7 @@ function resetForm() {
 
 <div class="panel panel-default">
 <form id="addForm">
-<input type="hidden" name="kId">
+<input type="hidden" name="kId" th:value="${pojo.kId}">
 <input type="hidden" name="recommend">
 <input type="hidden" name="kContent">
 <ul class="list-group" id="imgUL">
@@ -266,11 +268,7 @@ function resetForm() {
     <li class="list-group-item">
     	<div class="row">
 	    	<label class="col-form-label col-3">content</label>
-<textarea id="kContent" rows="3" class="form-control col-9" th:text="${pojo.kContent}">
-# 
-* 
-* 
-</textarea>
+			<textarea id="kContent" rows="3" class="form-control col-9" th:text="${pojo.kContent}"></textarea>
     	</div>
     	
     </li>
@@ -279,8 +277,15 @@ function resetForm() {
 		<a href="#" onclick="$(this).prev().click()">images</a>
 	</li>
 	
+	<li th:each="item,iterStat:${imgList}" class="list-group-item d-flex align-items-center">
+		<div style="width:60px;height:60px"><img th:src="'/img/' + ${item}" th:attr="data-url=${item}" class="upload-img" style="display:none" onload="img.resize(this)" onclick="img.click(this)"></div>
+		<span class="badge badge-dark" style="margin-left:15px;padding:8px" onclick="$(this).parent().find('img').click()"><i class="fa fa-search-plus"></i>放大</span>
+		<span class="badge badge-dark" style="margin-left:15px;padding:8px" onclick="img.remove(this)"><i class="fa fa-close"></i>删除</span>
+		<span class="badge badge-dark to-top" th:style="'display:' + @{(${iterStat.index == 0} ? 'none' : '')} + ''" onclick="img.top(this)"><i class="fa fa-caret-up"></i>置顶</span>
+	</li>
+	
 	<li class="list-group-item">
-		<button type="button" class="btn btn-primary btn-sm" onclick="ok()">确认<span id="actionHint">新增</span></button>
+		<button type="button" class="btn btn-primary btn-sm" onclick="ok()">确认<span id="actionHint" th:text="${pojo.kId == null} ? '新增' : '修改'"></span></button>
 		
 		&nbsp;&nbsp;&nbsp;&nbsp;
 		<a href="#this" onclick="resetForm()">清除</a>

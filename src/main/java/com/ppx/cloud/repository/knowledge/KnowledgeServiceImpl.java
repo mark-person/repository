@@ -8,13 +8,10 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ppx.cloud.auth.common.AuthContext;
-import com.ppx.cloud.auth.config.AuthUtils;
 import com.ppx.cloud.common.contoller.ReturnMap;
 import com.ppx.cloud.common.jdbc.MyDaoSupport;
 import com.ppx.cloud.common.page.Page;
-import com.ppx.cloud.demo.product.ProductImg;
 
 @Service
 public class KnowledgeServiceImpl extends MyDaoSupport {
@@ -63,7 +60,16 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 
 	public Knowledge get(Integer id) {
 		Knowledge pojo = getJdbcTemplate().queryForObject("select * from repo_knowledge where k_id = ?",
-                BeanPropertyRowMapper.newInstance(Knowledge.class), id);    
+                BeanPropertyRowMapper.newInstance(Knowledge.class), id);
+		
+		String contentSql = "select (select k_content from repo_knowledge_content where k_id = ?) k_content from dual";
+		String content = getJdbcTemplate().queryForObject(contentSql, String.class, id);
+		pojo.setkContent(content);
+		
+		String imgSql = "select k_img_src from repo_knowledge_img where k_id = ? order by k_img_prio";
+		List<String> imgList = getJdbcTemplate().queryForList(imgSql, String.class, id);
+		pojo.setImgSrc(String.join(",", imgList));
+		
         return pojo;
     }
     

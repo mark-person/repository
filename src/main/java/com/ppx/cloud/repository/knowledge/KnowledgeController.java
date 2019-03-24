@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ppx.cloud.common.contoller.ReturnMap;
-import com.ppx.cloud.common.exception.security.PermissionParamsException;
 import com.ppx.cloud.common.page.Page;
 import com.ppx.cloud.repository.category.KnowledgeCategoryService;
 
@@ -38,10 +37,21 @@ public class KnowledgeController {
     	}
     }
     
+    private final static String INIT_CONTENT = "# \n* \n* ";
+    
     public ModelAndView edit(ModelAndView mv, @RequestParam Integer id) {
     	mv.setViewName("repository/knowledge/knowledge/mAddKnowledge");
-		mv.addObject("pojo", impl.get(id));
+    	Knowledge pojo = impl.get(id);
+    	if (Strings.isEmpty(pojo.getkContent())) {
+    		pojo.setkContent(INIT_CONTENT);
+    	}
+		mv.addObject("pojo", pojo);
 		mv.addObject("catList", categoryService.list());
+		
+		if (Strings.isNotEmpty(pojo.getImgSrc())) {
+			mv.addObject("imgList", pojo.getImgSrc().split(","));
+    	}
+		
 		return mv;
 	} 
     
@@ -63,7 +73,7 @@ public class KnowledgeController {
     
     public ModelAndView mAddKnowledge(ModelAndView mv) {
     	Knowledge pojo = new Knowledge();
-    	pojo.setkContent("# \n* \n* \n");
+    	pojo.setkContent(INIT_CONTENT);
     	mv.addObject("pojo", pojo);
 		mv.addObject("catList", categoryService.list());
 		return mv;
