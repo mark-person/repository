@@ -6,6 +6,7 @@ package com.ppx.cloud.repository.knowledge;
 import java.util.Date;
 
 import com.ppx.cloud.common.jdbc.annotation.Column;
+import com.ppx.cloud.common.jdbc.annotation.Id;
 import com.ppx.cloud.common.jdbc.annotation.Table;
 
 
@@ -17,6 +18,7 @@ import com.ppx.cloud.common.jdbc.annotation.Table;
 @Table("repo_knowledge")
 public class Knowledge {
 	
+	@Id
 	private Integer kId;
 	private String kTitle;
 	private Integer catId;

@@ -126,15 +126,14 @@ function upload(files) {
 				var imgIndex = 0;
 				$(".upload-img").each(function(i, o) {
 					var dataUrl = $(this).data("data-url");
-					if (dataUrl) {
-						imgIndex++;
-						$(this).data("data-url", r.list[imgIndex]);
+					if (!dataUrl) {
+						$(this).data("data-url", r.list[imgIndex++]);
 					}
 				})
 				insertOrUpdateKnowledge();
 			}
 			else {
-				alertDanger(r.value);
+				alertDanger(r.errmsg);
 			}
 		}
 	})
@@ -149,11 +148,11 @@ function insertOrUpdateKnowledge() {
 	var srcList = [];
 	$(".upload-img").each(function(i, o) {
 		srcList.push($(this).data("data-url"));
-	}
+	})
 	var imgSrc = "&imgSrc=" + srcList.join(",");
 	
 	if (initkContent == $("#kContent").val()) {
-		$("#kContent").val("");
+		$("[name=kContent]").val("");
 	}
 	else {
 		$("[name=kContent]").val($("#kContent").val());
@@ -163,12 +162,19 @@ function insertOrUpdateKnowledge() {
 		if (r.errcode === 0) {
 			alertSuccess();
 			hideLoading();
+			
+			$("[name=kId]").val(r.kId);
+			$("#actionHint").html("修改");
 		}
 	});
 }
 
 function ok() {
-	var imgLen = $(".upload-img[data-url]").length;
+	var imgLen = 0;
+	$(".upload-img").each(function() {
+		imgLen = $(this).data("data-url") ? imgLen : ++imgLen;
+	})
+	
 	if (imgLen != 0) {
 		upload();
 	}
@@ -193,8 +199,14 @@ $(function() {
 </script>
 
 <style type="text/css">
-.fa-star {color:orange;}
+.star {
+	border:1px solid rgba(0,0,0,.125);
+	cursor: pointer;
+}
+.starShow {visibility:visible}
+.starHide {visibility:hidden}
 </style>
+
 </head>
 
 <body>
@@ -234,14 +246,6 @@ $(function() {
     	<div class="row">
 	    	<label class="col-form-label col-3">recommend</label>
 	    	<div id="recommend" class="col-form-label col-9" style="display:flex;justify-content:space-between;">
-	    		<style>
-	    		.star {
-	    			border:1px solid rgba(0,0,0,.125);
-	    			cursor: pointer;
-	    		}
-	    		.starShow {visibility:visible}
-	    		.starHide {visibility:hidden}
-	    		</style>
 		    	<span class="star"><b>⭐</b></span>
 		    	<span class="star"><b>⭐</b></span>
 		    	<span class="star"><b>⭐</b></span>
@@ -267,7 +271,7 @@ $(function() {
 	</li>
 	
 	<li class="list-group-item">
-		<button type="button" class="btn btn-primary btn-sm" onclick="ok()">确认提交</button>
+		<button type="button" class="btn btn-primary btn-sm" onclick="ok()">确认<span id="actionHint">新增</span></button>
 	</li>
 </ul>
 </form>

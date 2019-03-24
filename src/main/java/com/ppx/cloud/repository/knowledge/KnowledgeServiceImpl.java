@@ -58,7 +58,7 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 			String insertContentsSql = "insert into repo_knowledge_content(k_id, k_content) values(?, ?)";
 			getJdbcTemplate().update(insertContentsSql, kId, pojo.getkContent());
 		}
-		return ReturnMap.of();
+		return ReturnMap.of("kId", kId);
 	}
 
 	public Knowledge get(Integer id) {
@@ -81,7 +81,7 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 		updateEntity(pojo);
 		int kId = pojo.getkId();
 		// delete附加图
-		String deleteImgSql = "delete from repo_knowledge_img where kId = ?";
+		String deleteImgSql = "delete from repo_knowledge_img where k_id = ?";
 		getJdbcTemplate().update(deleteImgSql, kId);
 		// 附加图(第二个开始)
 		for (int i = 1; i < imgSrc.length; i++) {
@@ -93,14 +93,14 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 		}
 		
 		// delete内容
-		String deleteContentSql = "delete from repo_knowledge_content where kId = ?";
+		String deleteContentSql = "delete from repo_knowledge_content where k_id = ?";
 		getJdbcTemplate().update(deleteContentSql, kId);
 		// 内容
 		if (Strings.isNotEmpty(pojo.getkContent())) {
 			String insertContentsSql = "insert into repo_knowledge_content(k_id, k_content) values(?, ?)";
 			getJdbcTemplate().update(insertContentsSql, kId, pojo.getkContent());
 		}
-		return ReturnMap.of();
+		return ReturnMap.of("kId", kId);
     }
     
     public Map<String, Object> delete(Integer id) {
