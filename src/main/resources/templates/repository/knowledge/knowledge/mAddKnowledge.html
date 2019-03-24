@@ -196,6 +196,15 @@ $(function() {
 	initkContent = $("#kContent").val();
 })
 
+
+function resetForm() {
+	$("[name=kTitle]").val("");
+	$("#kContent").val(initkContent);
+	$(".upload-img").parent().parent().remove();
+	
+	$("[name=kId]").val("");
+	$("#actionHint").html("新增");
+}
 </script>
 
 <style type="text/css">
@@ -231,14 +240,14 @@ $(function() {
     <li class="list-group-item">
     	<div class="row">
     		<label class="col-form-label col-3">title</label>
-    		<input class="form-control col-9" type="text" name="kTitle" placeholder="无">
+    		<input class="form-control col-9" type="text" name="kTitle" placeholder="无" th:value="${pojo.kTitle}">
     	</div>
     </li>
     <li class="list-group-item">
    		<div class="row">
 	    	<label class="col-form-label col-3">category</label>
 	    	<select class="form-control col-9" name="catId">
-	    		<option th:each="item:${catList}" th:text="${item.catName}" th:value="${item.catId}"></option>
+	    		<option th:each="item:${catList}" th:text="${item.catName}" th:value="${item.catId}" th:selected="${item.catId == pojo.catId}"></option>
 	    	</select>
     	</div>
     </li>
@@ -257,7 +266,7 @@ $(function() {
     <li class="list-group-item">
     	<div class="row">
 	    	<label class="col-form-label col-3">content</label>
-<textarea id="kContent" rows="3" class="form-control col-9">
+<textarea id="kContent" rows="3" class="form-control col-9" th:text="${pojo.kContent}">
 # 
 * 
 * 
@@ -272,6 +281,9 @@ $(function() {
 	
 	<li class="list-group-item">
 		<button type="button" class="btn btn-primary btn-sm" onclick="ok()">确认<span id="actionHint">新增</span></button>
+		
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="#this" onclick="resetForm()">清除</a>
 	</li>
 </ul>
 </form>

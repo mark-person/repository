@@ -18,6 +18,10 @@ template.helper('getType', function(v) {
 var getCallback = function(r) {
 	$("#editknowledgeType").find("option[value='" + r.pojo.knowledgeType + "']").attr("selected",true);
 }
+
+function edit(id) {
+	open(controllerPath + "edit?id=" + id);
+}
 </script>
 </head>
 
@@ -54,7 +58,7 @@ var getCallback = function(r) {
 			<td>{{v.created}}</td>
 			<td>
 				<a href="#this" onclick="remove('{{v.kId}}')">[删除]</a>
-				<a href="#this" onclick="edit('{{v.kId}}', getCallback)">[修改]</a>
+				<a href="#this" onclick="edit('{{v.kId}}')">[修改]</a>
 			</td>
 		</tr>
 	</table>

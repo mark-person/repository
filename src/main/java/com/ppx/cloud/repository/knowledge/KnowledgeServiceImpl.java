@@ -25,7 +25,7 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 		
 		var cSql = new StringBuilder("select count(*) from repo_knowledge k").append(c);
 		var qSql = new StringBuilder("select k.*, concat((select cat_name from repo_knowledge_category where cat_id = c.parent_id), '-', cat_name) cat_name"
-				+ " from repo_knowledge k left join repo_knowledge_category c on k.cat_id = c.cat_id").append(c);
+				+ " from repo_knowledge k left join repo_knowledge_category c on k.cat_id = c.cat_id order by created desc").append(c);
 		
 		List<Knowledge> list = queryPage(Knowledge.class, page, cSql, qSql, c.getParaList());
 		return list;

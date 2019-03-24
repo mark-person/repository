@@ -21,9 +21,7 @@ public class KnowledgeController {
 	
 
 	public ModelAndView knowledge(ModelAndView mv) {
-		
 		mv.addObject("list", list(new Page(), new Knowledge()));
-		
 		return mv;
 	}
 	
@@ -39,6 +37,13 @@ public class KnowledgeController {
     		return impl.update(pojo);
     	}
     }
+    
+    public ModelAndView edit(ModelAndView mv, @RequestParam Integer id) {
+    	mv.setViewName("repository/knowledge/knowledge/mAddKnowledge");
+		mv.addObject("pojo", impl.get(id));
+		mv.addObject("catList", categoryService.list());
+		return mv;
+	} 
     
     
     public Map<?, ?> get(@RequestParam Integer id) {
@@ -57,7 +62,9 @@ public class KnowledgeController {
     private KnowledgeCategoryService categoryService;
     
     public ModelAndView mAddKnowledge(ModelAndView mv) {
-    	
+    	Knowledge pojo = new Knowledge();
+    	pojo.setkContent("# \n* \n* \n");
+    	mv.addObject("pojo", pojo);
 		mv.addObject("catList", categoryService.list());
 		return mv;
 	}
