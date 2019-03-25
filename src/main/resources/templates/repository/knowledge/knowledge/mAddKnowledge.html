@@ -154,7 +154,7 @@ function insertOrUpdateKnowledge() {
 	if (!$("[name=kTitle]").val()) {
 		 $("[name=kTitle]").val($("[name=kTitle]").prop("placeholder"));
 	}
-	$("[name=recommend]").val($("#recommend .starShow").length);
+	$("[name=recommend]").val($("#recommend .star-show").length);
 	
 	var srcList = [];
 	$(".upload-img").each(function(i, o) {
@@ -197,11 +197,11 @@ function ok() {
 
 function refreshRecommend() {
 	$("#recommend span").click(function() {
-		$("#recommend b").removeClass("star-show");
-		$("#recommend b").addClass("starShow");
+		$("#recommend b").removeClass("star-hide");
+		$("#recommend b").addClass("star-show");
 		$(this).nextAll().each(function(i, o) {
-			$(o).find("b").removeClass("starShow");
-			$(o).find("b").addClass("star-show");
+			$(o).find("b").removeClass("star-show");
+			$(o).find("b").addClass("star-hide");
 		})
 	});
 }
@@ -218,7 +218,7 @@ function resetForm() {
 	$(".upload-img").parent().parent().remove();
 	
 	$("#recommend").html('<span class="star"><b>⭐</b></span><span class="star"><b>⭐</b></span><span class="star"><b>⭐</b></span>' +
-			'<span class="star"><b class="star-show">⭐</b></span><span class="star"><b class="star-show">⭐</b></span>');
+			'<span class="star"><b class="star-hide">⭐</b></span><span class="star"><b class="star-hide">⭐</b></span>');
 	refreshRecommend();
 	
 	$("[name=kId]").val("");
@@ -230,8 +230,8 @@ function resetForm() {
 	border:1px solid rgba(0,0,0,.125);
 	cursor: pointer;
 }
-.starShow {visibility:visible}
-.star-show {visibility:hidden}
+.star-show {visibility:visible}
+.star-hide {visibility:hidden}
 .to-top {margin-left:15px;padding:8px;}
 </style>
 </head>
@@ -269,7 +269,7 @@ function resetForm() {
     	<div class="row">
 	    	<div id="recommend" class="col-form-label col-12" style="display:flex;justify-content:space-between;">
 		    	<span class="star" th:each="item:${starList}"><b>⭐</b></span>
-		    	<span class="star" th:each="item:${noStarList}"><b class="star-show">⭐</b></span>
+		    	<span class="star" th:each="item:${noStarList}"><b class="star-hide">⭐</b></span>
 	    	</div>
     	</div>
     </li>
