@@ -1,5 +1,7 @@
 package com.ppx.cloud.repository.knowledge;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.util.Strings;
@@ -51,6 +53,18 @@ public class KnowledgeController {
 		if (Strings.isNotEmpty(pojo.getImgSrc())) {
 			mv.addObject("imgList", pojo.getImgSrc().split(","));
     	}
+		
+		// init_recommend
+		List<String> starList = new ArrayList<String>();
+		for (int i = 0; i < pojo.getRecommend(); i++) {
+			starList.add("");
+		}
+		mv.addObject("starList", starList);
+		List<String> noStarList = new ArrayList<String>();
+		for (int i = 0; i < 5 - pojo.getRecommend(); i++) {
+			noStarList.add("");
+		}
+		mv.addObject("noStarList", noStarList);
 		return mv;
 	} 
     
@@ -75,6 +89,14 @@ public class KnowledgeController {
     	pojo.setkContent(INIT_CONTENT);
     	mv.addObject("pojo", pojo);
 		mv.addObject("catList", categoryService.list());
+		
+		// init_recommend
+		List<String> starList = List.of("", "", "");
+		mv.addObject("starList", starList);
+		List<String> noStarList = List.of("", "");
+		mv.addObject("noStarList", noStarList);
+		
+		
 		return mv;
 	}
 
