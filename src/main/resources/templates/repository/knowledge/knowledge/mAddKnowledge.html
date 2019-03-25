@@ -268,7 +268,7 @@ function resetForm() {
     <li class="list-group-item">
     	<div class="row">
 	    	<div id="recommend" class="col-form-label col-12" style="display:flex;justify-content:space-between;">
-		    	<span class="star" th:each="item:${starList}"><b>⭐</b></span>
+		    	<span class="star" th:each="item:${starList}"><b class="star-show">⭐</b></span>
 		    	<span class="star" th:each="item:${noStarList}"><b class="star-hide">⭐</b></span>
 	    	</div>
     	</div>
@@ -285,8 +285,8 @@ function resetForm() {
 	
 	<li th:each="item,iterStat:${imgList}" class="list-group-item d-flex align-items-center">
 		<div style="width:60px;height:60px"><img th:src="'/img/' + ${item}" th:attr="data-url=${item}" class="upload-img" style="display:none" onload="img.resize(this)" onclick="img.click(this)"></div>
-		<span class="badge badge-dark btn" style="margin-left:15px;padding:8px" onclick="$(this).parent().find('img').click()"><i class="fa fa-search-plus"></i>放大</span>
-		<span class="badge badge-dark btn" style="margin-left:15px;padding:8px" onclick="img.remove(this)"><i class="fa fa-close"></i>删除</span>
+		<span class="badge badge-dark btn" style="margin-left:20px;padding:8px" onclick="$(this).parent().find('img').click()"><i class="fa fa-search-plus"></i>放大</span>
+		<span class="badge badge-dark btn" style="margin-left:20px;padding:8px" onclick="img.remove(this)"><i class="fa fa-close"></i>删除</span>
 		<!--
 		<span class="badge badge-dark btn to-top" th:style="'display:' + @{(${iterStat.index == 0} ? 'none' : '')} + ''" onclick="img.top(this)">🔝置顶</span>
 		-->
