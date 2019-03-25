@@ -125,9 +125,9 @@ function upload(files) {
 			if (r.errcode === 0) {
 				var imgIndex = 0;
 				$(".upload-img").each(function(i, o) {
-					var dataUrl = $(this).prop("data-url");
+					var dataUrl = $(this).attr("data-url");
 					if (!dataUrl) {
-						$(this).prop("data-url", r.list[imgIndex++]);
+						$(this).attr("data-url", r.list[imgIndex++]);
 					}
 				})
 				insertOrUpdateKnowledge();
@@ -147,7 +147,7 @@ function insertOrUpdateKnowledge() {
 	
 	var srcList = [];
 	$(".upload-img").each(function(i, o) {
-		srcList.push($(this).prop("data-url"));
+		srcList.push($(this).attr("data-url"));
 	})
 	var imgSrc = "&imgSrc=" + srcList.join(",");
 	
@@ -170,13 +170,13 @@ function insertOrUpdateKnowledge() {
 }
 
 function ok() {
-	var imgLen = 0;
+	var imgUploadLen = 0;
+	// 根据官方的建议：具有 true 和 false 两个属性的属性，如 checked, selected 或者 disabled 使用prop()，其他的使用 attr()
 	$(".upload-img").each(function() {
-		imgLen = $(this).prop("data-url") ? imgLen : ++imgLen;
+		imgUploadLen = $(this).attr("data-url") ? imgUploadLen : ++imgUploadLen;
 	})
-	alert(imgLen);
 	
-	if (imgLen != 0) {
+	if (imgUploadLen != 0) {
 		upload();
 	}
 	else {
@@ -229,7 +229,7 @@ function resetForm() {
 	<div style="width:60px;height:60px"><img class="upload-img" style="display:none" onload="img.resize(this)" onclick="img.click(this)"></div>
 	<span class="badge badge-dark" style="margin-left:15px;padding:8px" onclick="$(this).parent().find('img').click()"><i class="fa fa-search-plus"></i>放大</span>
 	<span class="badge badge-dark" style="margin-left:15px;padding:8px" onclick="img.remove(this)"><i class="fa fa-close"></i>删除</span>
-	<span class="badge badge-dark to-top" style="margin-left:15px;padding:8px;display:none" onclick="img.top(this)"><i class="fa fa-caret-up"></i>置顶</span>
+	<span class="badge badge-dark to-top" style="margin-left:15px;padding:8px;display:none" onclick="img.top(this)">🔝置顶</span>
 </li>
 </script>
 
@@ -279,9 +279,9 @@ function resetForm() {
 	
 	<li th:each="item,iterStat:${imgList}" class="list-group-item d-flex align-items-center">
 		<div style="width:60px;height:60px"><img th:src="'/img/' + ${item}" th:attr="data-url=${item}" class="upload-img" style="display:none" onload="img.resize(this)" onclick="img.click(this)"></div>
-		<span class="badge badge-dark" style="margin-left:15px;padding:8px" onclick="$(this).parent().find('img').click()"><i class="fa fa-search-plus"></i>放大</span>
-		<span class="badge badge-dark" style="margin-left:15px;padding:8px" onclick="img.remove(this)"><i class="fa fa-close"></i>删除</span>
-		<span class="badge badge-dark to-top" th:style="'display:' + @{(${iterStat.index == 0} ? 'none' : '')} + ''" onclick="img.top(this)"><i class="fa fa-caret-up"></i>置顶</span>
+		<span class="badge badge-dark btn" style="margin-left:15px;padding:8px" onclick="$(this).parent().find('img').click()"><i class="fa fa-search-plus"></i>放大</span>
+		<span class="badge badge-dark btn" style="margin-left:15px;padding:8px" onclick="img.remove(this)"><i class="fa fa-close"></i>删除</span>
+		<span class="badge badge-dark btn to-top" th:style="'display:' + @{(${iterStat.index == 0} ? 'none' : '')} + ''" onclick="img.top(this)">🔝置顶</span>
 	</li>
 	
 	<li class="list-group-item">

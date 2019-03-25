@@ -66,9 +66,17 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 		String content = getJdbcTemplate().queryForObject(contentSql, String.class, id);
 		pojo.setkContent(content);
 		
-		String imgSql = "select k_img_src from repo_knowledge_img where k_id = ? order by k_img_prio";
-		List<String> imgList = getJdbcTemplate().queryForList(imgSql, String.class, id);
-		pojo.setImgSrc(String.join(",", imgList));
+		if (Strings.isNotEmpty(pojo.getMainImgSrc())) {
+			String imgSql = "select k_img_src from repo_knowledge_img where k_id = ? order by k_img_prio";
+			List<String> imgList = getJdbcTemplate().queryForList(imgSql, String.class, id);
+			if (imgList.isEmpty()) {
+				pojo.setImgSrc(pojo.getMainImgSrc());
+			}
+			else {
+				pojo.setImgSrc(pojo.getMainImgSrc() + "," + String.join(",", imgList));
+			}
+		}
+		
 		
         return pojo;
     }
