@@ -7,8 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <link th:replace="common/fragment::mobile"/>
-
-<script th:replace="repository/knowledge/knowledge/js::js"/></script>
+<script th:replace="repository/knowledge/knowledge/js::js"/>
 
 <script type="text/javascript" th:inline="javascript">
 var controllerPath = contextPath + "auto/knowledge/";
@@ -199,11 +198,11 @@ function ok() {
 var initkContent;
 $(function() {
 	$("#recommend span").click(function() {
-		$("#recommend b").removeClass("starHide");
+		$("#recommend b").removeClass("star-show");
 		$("#recommend b").addClass("starShow");
 		$(this).nextAll().each(function(i, o) {
 			$(o).find("b").removeClass("starShow");
-			$(o).find("b").addClass("starHide");
+			$(o).find("b").addClass("star-show");
 		})
 	});
 	initkContent = $("#kContent").val();
@@ -216,29 +215,25 @@ function resetForm() {
 	$(".upload-img").parent().parent().remove();
 	
 	$("#recommend").html('<span class="star"><b>⭐</b></span><span class="star"><b>⭐</b></span><span class="star"><b>⭐</b></span>' +
-			'<span class="star"><b class="starHide">⭐</b></span><span class="star"><b class="starHide">⭐</b></span>');
+			'<span class="star"><b class="star-show">⭐</b></span><span class="star"><b class="star-show">⭐</b></span>');
 	
 	$("[name=kId]").val("");
 	$("#actionHint").html("新增");
 }
 </script>
-
 <style type="text/css">
 .star {
 	border:1px solid rgba(0,0,0,.125);
 	cursor: pointer;
 }
 .starShow {visibility:visible}
-.starHide {visibility:hidden}
+.star-show {visibility:hidden}
 .to-top {margin-left:15px;padding:8px;}
 </style>
-
 </head>
-
 <body>
 
 <div class="container">
-
 <script id="imgTemplate" type="text/html">
 <li class="list-group-item d-flex align-items-center">
 	<div style="width:60px;height:60px"><img class="upload-img" style="display:none" onload="img.resize(this)" onclick="img.click(this)"></div>
@@ -273,11 +268,10 @@ function resetForm() {
 	    	<label class="col-form-label col-3">recommend</label>
 	    	<div id="recommend" class="col-form-label col-9" style="display:flex;justify-content:space-between;">
 		    	<span class="star" th:each="item:${starList}"><b>⭐</b></span>
-		    	<span class="star" th:each="item:${noStarList}"><b class="starHide">⭐</b></span>
+		    	<span class="star" th:each="item:${noStarList}"><b class="star-show">⭐</b></span>
 	    	</div>
     	</div>
     </li>
-    <!--
     <li class="list-group-item">
     	<div class="row">
 	    	<label class="col-form-label col-3">content</label>
@@ -288,7 +282,6 @@ function resetForm() {
 		<input type="file" multiple="multiple" accept="image/*" onchange="img.fileChange(this)" style="display:none">
 		<a href="#" onclick="$(this).prev().click()">images</a>
 	</li>
-	-->
 	
 	<li th:each="item,iterStat:${imgList}" class="list-group-item d-flex align-items-center">
 		<div style="width:60px;height:60px"><img th:src="'/img/' + ${item}" th:attr="data-url=${item}" class="upload-img" style="display:none" onload="img.resize(this)" onclick="img.click(this)"></div>
@@ -301,14 +294,11 @@ function resetForm() {
 	
 	<li class="list-group-item" id="imgEndLi">
 		<button type="button" class="btn btn-primary btn-sm" onclick="ok()">确认<span id="actionHint" th:text="${pojo.kId == null} ? '新增' : '修改'"></span></button>
-		
 		&nbsp;&nbsp;&nbsp;&nbsp;
 		<a href="#this" onclick="resetForm()">清除</a>
 	</li>
 </ul>
 </form>
-
-
 </div>
 
 </div>
