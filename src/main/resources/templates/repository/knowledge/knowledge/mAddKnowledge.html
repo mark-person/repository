@@ -215,6 +215,9 @@ function resetForm() {
 	$("#kContent").val(initkContent);
 	$(".upload-img").parent().parent().remove();
 	
+	$("#recommend").html('<span class="star"><b>⭐</b></span><span class="star"><b>⭐</b></span><span class="star"><b>⭐</b></span>' +
+			'<span class="star"><b class="starHide">⭐</b></span><span class="star"><b class="starHide">⭐</b></span>');
+	
 	$("[name=kId]").val("");
 	$("#actionHint").html("新增");
 }
