@@ -37,7 +37,7 @@ public class UploadImgController {
 	private final static String KNOWLEDGE_ADDITIONAL = "additional/";
 	
 	
-	public Map<?, ?> uploadKnowledge(@RequestParam("file") MultipartFile[] files) throws Exception {
+	public Map<?, ?> uploadKnowledge(MultipartFile[] mFile, Integer isMain[]) throws Exception {
 		
 		var returnList = new ArrayList<String>();
 		
@@ -60,8 +60,8 @@ public class UploadImgController {
 			additionalPathFile.mkdirs();
 		}
 		
-		for (int i = 0; i < files.length; i++) {
-			MultipartFile file = files[i];
+		for (int i = 0; i < mFile.length; i++) {
+			MultipartFile file = mFile[i];
 			
 			String fileName = file.getOriginalFilename();
 			String ext = ".jpg";
@@ -70,7 +70,7 @@ public class UploadImgController {
 			}
 			
 			String imgFileName = UUID.randomUUID().toString().replaceAll("-", "") + ext;
-			if (i == 0) {
+			if (isMain[i] == 1) {
 				// >>>>>>>>>>>>>>>>>主
 				file.transferTo(new File(mainPath + imgFileName));
 				

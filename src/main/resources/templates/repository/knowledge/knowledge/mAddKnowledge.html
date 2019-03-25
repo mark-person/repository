@@ -37,10 +37,12 @@ img.loadImg = function(f, n) {
 		    
 		    var jObj = $($("#imgTemplate").html());
 			var imgObj = jObj.find(".upload-img");
-		    imgObj.prop("src", newSrc);
-			imgObj.data("file", dataURLtoFile(newSrc));
+		    imgObj.attr("src", newSrc);
+			imgObj.data("mFile", dataURLtoFile(newSrc));
 			$("#imgLi").after(jObj);
-			if (n > 0) img.loadImg(f, n);
+			if (n > 0) {
+				img.loadImg(f, n);
+			}
 			else {
 				$(".to-top").show();
 				$(".to-top:eq(0)").hide();
@@ -114,10 +116,18 @@ img.top = function(obj) {
 
 function upload(files) {
 	var formData = new FormData();
-	formData.append("module", "idea");
 	 $(".upload-img").each(function() {
-		formData.append("file", $(this).data("file"));
+		if (!$(this).attr("data-url")) {
+			formData.append("mFile", $(this).data("mFile"));
+			if ($(this).parent().parent().find(".to-top").css("display") == "none") {
+				formData.append("isMain", 1);
+			}
+			else {
+				formData.append("isMain", 0);
+			}
+		}
 	});
+	return;
 	
 	showLoading();
 	$.ajax({url:[[@{/auto/uploadImg/uploadKnowledge}]], type:"POST", contentType:false, data:formData ,processData:false,

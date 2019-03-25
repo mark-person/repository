@@ -51,7 +51,6 @@ public class KnowledgeController {
 		if (Strings.isNotEmpty(pojo.getImgSrc())) {
 			mv.addObject("imgList", pojo.getImgSrc().split(","));
     	}
-		
 		return mv;
 	} 
     

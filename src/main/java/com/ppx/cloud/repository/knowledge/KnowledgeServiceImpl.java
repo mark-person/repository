@@ -117,8 +117,11 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 		return ReturnMap.of("kId", kId);
     }
     
+	@Transactional
     public Map<String, Object> delete(Integer id) {
         getJdbcTemplate().update("delete from repo_knowledge where k_id = ?", id);
+        getJdbcTemplate().update("delete from repo_knowledge_content where k_id = ?", id);
+        getJdbcTemplate().update("delete from repo_knowledge_img where k_id = ?", id);
         return ReturnMap.of();
     }
 
