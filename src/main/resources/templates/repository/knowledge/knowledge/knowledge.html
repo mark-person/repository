@@ -89,8 +89,8 @@ function changeCat(id) {
 	<table>
 		<tr th:fragment="template">
 			<td>{{v.kId}}</td>
-			<td id="title{{v.kTitle}}">{{v.kTitle}}</td>
-			<td id="img{{v.kTitle}}">{{if v.mainImgSrc != null}}<img src="/img/{{v.mainImgSrc}}_100.jpg">{{/if}}</td>
+			<td id="title{{v.kId}}">{{v.kTitle}}</td>
+			<td id="img{{v.kId}}">{{if v.mainImgSrc != null}}<img src="/img/{{v.mainImgSrc}}_100.jpg">{{/if}}</td>
 			<td>{{v.catName}}</td>
 			<td>{{v.recommend}}</td>
 			<td>{{v.modified}}</td>
@@ -103,18 +103,18 @@ function changeCat(id) {
 	</table>
 </div>
 
-<div th:fragment="add" th:replace="common/fragment::modal('changeCat', '修改分类', '')">
+<div th:fragment="changeCat" th:replace="common/fragment::modal('changeCat', '修改分类', '')">
 	<div class="form-group form-inline">
-		<label class="col-4"><i class="required">title</label>
+		<label class="col-4">title</label>
 		<div class="col-8" id="changeCatTitle"></div>
 	</div>
 	<div class="form-group form-inline">
-		<label class="col-4"><i class="required">img</label>
+		<label class="col-4">img</label>
 		<div class="col-8" id="changeCatImg"></div>
 	</div>
 	<div class="form-group form-inline">
 		<label class="col-4">cat：</label>
-		<div class="col-8">
+		<div class="col-8" class="form-control">
 			<select id="changeCatId">
 				<option th:each="item:${catList}" th:text="${item.catName}" th:value="${item.catId}"></option>
 			</select>
