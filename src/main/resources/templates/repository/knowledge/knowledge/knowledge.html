@@ -22,6 +22,28 @@ var getCallback = function(r) {
 function edit(id) {
 	open(controllerPath + "edit?id=" + id);
 }
+
+
+function changeCat(id) {
+	$("#changeCatTitle").html($("#title" + id).html());
+	$("#changeCatImg").html($("#img" + id).html());
+	$('#changeCat').modal('show');
+	action = function() {
+		showLoading();
+		var catId = $("#changeCatId").val();
+		$.post(controllerPath + "changeCat", {id:id, catId:catId}, function(r) {
+			if (r.errcode === 0) {
+				$("#pageDiv").query();
+				$('#changeCat').modal('hide');
+				alertSuccess();
+			}
+			else {
+				alertWarning(r.errmsg);
+				hideLoading();
+			}
+		});
+	}
+}
 </script>
 </head>
 
@@ -32,8 +54,13 @@ function edit(id) {
 	<div th:fragment="query">
 	
 		<button type="button" class="btn btn-success btn-sm" onclick="add()">新增</button>
-		<label>名称：</label>
-		<input type="text" class="form-control" name="knowledgeName">
+		<label>title：</label>
+		<input type="text" class="form-control" name="kTitle">
+		<label>cat：</label>
+		<select name="catId">
+	    	<option th:each="item:${catList}" th:text="${item.catName}" th:value="${item.catId}"></option>
+	    </select>
+		
 		<button type="button" class="btn btn-default btn-sm"><i class="fa fa-search"></i>搜索</button>
 	</div>
 	<table th:fragment="list">
@@ -44,7 +71,7 @@ function edit(id) {
 			<th class="w-title">img</th>
 			<th class="w-date">cat</th>
 			<th class="w-id">recommend</th>
-			<th class="w-time">创建时间</th>
+			<th class="w-time">修改时间</th>
 			<th class="w-action">操作</th>
 		</tr>
 		</thead>
@@ -53,20 +80,38 @@ function edit(id) {
 	<table>
 		<tr th:fragment="template">
 			<td>{{v.kId}}</td>
-			<td>{{v.kTitle}}</td>
-			<td>{{if v.mainImgSrc != null}}<img src="/img/{{v.mainImgSrc}}_100.jpg">{{/if}}</td>
+			<td id="title{{v.kTitle}}">{{v.kTitle}}</td>
+			<td id="img{{v.kTitle}}">{{if v.mainImgSrc != null}}<img src="/img/{{v.mainImgSrc}}_100.jpg">{{/if}}</td>
 			<td>{{v.catName}}</td>
 			<td>{{v.recommend}}</td>
-			<td>{{v.created}}</td>
+			<td>{{v.modified}}</td>
 			<td>
-				<a href="#this" onclick="remove('{{v.kId}}')">[删除]</a>
+				<a href="#this" onclick="changeCat('{{v.kId}}')">[更换类目]</a>
 				<a href="#this" onclick="edit('{{v.kId}}')">[修改]</a>
+				<a href="#this" onclick="remove('{{v.kId}}')">[删除]</a>
 			</td>
 		</tr>
 	</table>
 </div>
 
-
+<div th:fragment="add" th:replace="common/fragment::modal('changeCat', '修改分类', '')">
+	<div class="form-group form-inline">
+		<label class="col-4"><i class="required">title</label>
+		<div class="col-8" id="changeCatTitle"></div>
+	</div>
+	<div class="form-group form-inline">
+		<label class="col-4"><i class="required">img</label>
+		<div class="col-8" id="changeCatImg"></div>
+	</div>
+	<div class="form-group form-inline">
+		<label class="col-4">cat：</label>
+		<div class="col-8">
+			<select id="changeCatId">
+				<option th:each="item:${catList}" th:text="${item.catName}" th:value="${item.catId}"></option>
+			</select>
+		</div>
+	</div>
+</div>
 
 </div>
 </body>

@@ -7,6 +7,7 @@ import org.apache.logging.log4j.util.Strings;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ppx.cloud.auth.common.AuthContext;
 import com.ppx.cloud.common.contoller.ReturnMap;
@@ -18,11 +19,13 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
  
 	public List<Knowledge> list(Page page, Knowledge pojo) {
 		
-		var c = createCriteria("where").addAnd("k.k_title like ?", "%", pojo.getkTitle(), "%");
+		var c = createCriteria("where")
+				.addAnd("k.k_title like ?", "%", pojo.getkTitle(), "%")
+				.addAnd("k.cat_id = ?", pojo.getCatId());
 		
 		var cSql = new StringBuilder("select count(*) from repo_knowledge k").append(c);
 		var qSql = new StringBuilder("select k.*, concat((select cat_name from repo_knowledge_category where cat_id = c.parent_id), '-', cat_name) cat_name"
-				+ " from repo_knowledge k left join repo_knowledge_category c on k.cat_id = c.cat_id order by created desc").append(c);
+				+ " from repo_knowledge k left join repo_knowledge_category c on k.cat_id = c.cat_id order by modified desc").append(c);
 		
 		List<Knowledge> list = queryPage(Knowledge.class, page, cSql, qSql, c.getParaList());
 		return list;
@@ -117,6 +120,12 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 		return ReturnMap.of("kId", kId);
     }
     
+	public Map<String, Object> changeCat(@RequestParam Integer id, @RequestParam Integer catId) {
+		String updateSql = "update repo_knowledge set catId = ? where k_id = ?";
+		getJdbcTemplate().update(updateSql, catId, id);
+		return ReturnMap.of();
+	}
+	
 	@Transactional
     public Map<String, Object> delete(Integer id) {
         getJdbcTemplate().update("delete from repo_knowledge where k_id = ?", id);

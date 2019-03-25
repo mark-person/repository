@@ -23,6 +23,7 @@ public class KnowledgeController {
 
 	public ModelAndView knowledge(ModelAndView mv) {
 		mv.addObject("list", list(new Page(), new Knowledge()));
+		mv.addObject("catList", categoryService.list());
 		return mv;
 	}
 	
@@ -37,6 +38,10 @@ public class KnowledgeController {
     	else {
     		return impl.update(pojo);
     	}
+    }
+    
+    public Map<?, ?> changeCat(@RequestParam Integer id, @RequestParam Integer catId) {
+    	return impl.changeCat(id, catId);
     }
     
     private final static String INIT_CONTENT = "# \n* \n* ";
