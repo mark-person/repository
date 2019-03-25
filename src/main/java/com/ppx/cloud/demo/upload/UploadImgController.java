@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
@@ -76,7 +78,7 @@ public class UploadImgController {
 				
 				// 缩放
 				// convert -resize 200x100 src.jpg dest.jpg 200×100(等比缩放)
-				String miniPath = mainPath + imgFileName + "_100.png";
+				String miniPath = mainPath + imgFileName + "_100.jpg";
 				String command = "convert -resize 100x100 " + mainPath + imgFileName + " " + miniPath;
 				Process process = Runtime.getRuntime().exec(command);
 				try (InputStream inputStream = process.getErrorStream();) {
