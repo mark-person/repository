@@ -114,8 +114,8 @@ function changeCat(id) {
 	</div>
 	<div class="form-group form-inline">
 		<label class="col-4">cat：</label>
-		<div class="col-8" class="form-control">
-			<select id="changeCatId">
+		<div class="col-8 form-control">
+			<select id="changeCatId" class="form-control">
 				<option th:each="item:${catList}" th:text="${item.catName}" th:value="${item.catId}"></option>
 			</select>
 		</div>

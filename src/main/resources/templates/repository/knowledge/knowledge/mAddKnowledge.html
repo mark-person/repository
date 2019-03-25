@@ -195,8 +195,7 @@ function ok() {
 	}
 }
 
-var initkContent;
-$(function() {
+function refreshRecommend() {
 	$("#recommend span").click(function() {
 		$("#recommend b").removeClass("star-show");
 		$("#recommend b").addClass("starShow");
@@ -205,9 +204,13 @@ $(function() {
 			$(o).find("b").addClass("star-show");
 		})
 	});
+}
+
+var initkContent;
+$(function() {
+	refreshRecommend();
 	initkContent = $("#kContent").val();
 })
-
 
 function resetForm() {
 	$("[name=kTitle]").val("");
@@ -216,6 +219,7 @@ function resetForm() {
 	
 	$("#recommend").html('<span class="star"><b>⭐</b></span><span class="star"><b>⭐</b></span><span class="star"><b>⭐</b></span>' +
 			'<span class="star"><b class="star-show">⭐</b></span><span class="star"><b class="star-show">⭐</b></span>');
+	refreshRecommend();
 	
 	$("[name=kId]").val("");
 	$("#actionHint").html("新增");
@@ -295,7 +299,7 @@ function resetForm() {
 	<li class="list-group-item" id="imgEndLi">
 		<button type="button" class="btn btn-primary btn-sm" onclick="ok()">确认<span id="actionHint" th:text="${pojo.kId == null} ? '新增' : '修改'"></span></button>
 		&nbsp;&nbsp;&nbsp;&nbsp;
-		<a href="#this" onclick="resetForm()">清除</a>
+		<a href="javascript:resetForm()">清除</a>
 	</li>
 </ul>
 </form>
