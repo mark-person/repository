@@ -57,10 +57,19 @@ function changeCat(id) {
 		<label>title：</label>
 		<input type="text" class="form-control" name="kTitle">
 		<label>cat：</label>
-		<select name="catId">
+		<select name="catId" class="form-control">
+			<option value="">全部 </option>
 	    	<option th:each="item:${catList}" th:text="${item.catName}" th:value="${item.catId}"></option>
 	    </select>
-		
+	    <label>recommend：</label>
+		<select name="recommend" class="form-control">
+			<option value="">全部 </option>
+	    	<option value="5">5</option>
+	    	<option value="4">4及以上</option>
+	    	<option value="3">3及以上</option>
+	    	<option value="-2">2及以上</option>
+	    	<option value="-1">1</option>
+	    </select>
 		<button type="button" class="btn btn-default btn-sm"><i class="fa fa-search"></i>搜索</button>
 	</div>
 	<table th:fragment="list">

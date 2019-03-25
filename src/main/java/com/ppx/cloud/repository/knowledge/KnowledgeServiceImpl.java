@@ -23,9 +23,16 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 				.addAnd("k.k_title like ?", "%", pojo.getkTitle(), "%")
 				.addAnd("k.cat_id = ?", pojo.getCatId());
 		
+		if (pojo.getRecommend() != null && pojo.getRecommend() >= 3) {
+			c.addAnd("k.recommend >= ?", pojo.getRecommend());
+		}
+		else if (pojo.getRecommend() != null && pojo.getRecommend() <= -1) {
+			c.addAnd("k.recommend <= ?", -pojo.getRecommend());
+		}
+		
 		var cSql = new StringBuilder("select count(*) from repo_knowledge k").append(c);
 		var qSql = new StringBuilder("select k.*, concat((select cat_name from repo_knowledge_category where cat_id = c.parent_id), '-', cat_name) cat_name"
-				+ " from repo_knowledge k left join repo_knowledge_category c on k.cat_id = c.cat_id order by modified desc").append(c);
+				+ " from repo_knowledge k left join repo_knowledge_category c on k.cat_id = c.cat_id").append(c).append("order by modified desc");
 		
 		List<Knowledge> list = queryPage(Knowledge.class, page, cSql, qSql, c.getParaList());
 		return list;
