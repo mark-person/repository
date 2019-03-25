@@ -41,6 +41,7 @@ function edit(id) {
 		<tr>
 			<th class="w-id">ID</th>
 			<th class="w-title">title</th>
+			<th class="w-title">img</th>
 			<th class="w-date">cat</th>
 			<th class="w-id">recommend</th>
 			<th class="w-time">创建时间</th>
@@ -53,6 +54,10 @@ function edit(id) {
 		<tr th:fragment="template">
 			<td>{{v.kId}}</td>
 			<td>{{v.kTitle}}</td>
+			<td>{{if v.mainImgSrc != null}}
+				<img src="/img/{{v.mainImgSrc}}_100.png">
+				{{/if}}
+			</td>
 			<td>{{v.catName}}</td>
 			<td>{{v.recommend}}</td>
 			<td>{{v.created}}</td>
