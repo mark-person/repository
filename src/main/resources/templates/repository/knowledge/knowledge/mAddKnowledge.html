@@ -232,7 +232,7 @@ function resetForm() {
 }
 .star-show {visibility:visible}
 .star-hide {visibility:hidden}
-.to-top {margin-left:15px;padding:8px;}
+.to-top {margin-left:2.375rem;padding:8px;}
 </style>
 </head>
 <body>
@@ -241,9 +241,9 @@ function resetForm() {
 <script id="imgTemplate" type="text/html">
 <li class="list-group-item d-flex align-items-center">
 	<div style="width:60px;height:60px"><img class="upload-img" style="display:none" onload="img.resize(this)" onclick="img.click(this)"></div>
-	<span class="badge badge-dark btn" style="margin-left:15px;padding:8px" onclick="$(this).parent().find('img').click()"><i class="fa fa-search-plus"></i>放大</span>
-	<span class="badge badge-dark btn" style="margin-left:15px;padding:8px" onclick="img.remove(this)"><i class="fa fa-close"></i>删除</span>
-	<span class="badge badge-dark btn to-top" style="margin-left:15px;padding:8px;display:none;color:white" onclick="img.top(this)">🔝置顶</span>
+	<span class="badge badge-dark btn" style="margin-left:2.375rem;padding:8px" onclick="$(this).parent().find('img').click()">🔍放大</span>
+	<span class="badge badge-dark btn" style="margin-left:2.375rem;padding:8px" onclick="img.remove(this)">✖删除</span>
+	<span class="badge badge-dark btn to-top" style="display:none;color:white" onclick="img.top(this)">🔝置顶</span>
 </li>
 </script>
 
@@ -278,25 +278,28 @@ function resetForm() {
 			<textarea id="kContent" rows="3" class="form-control" th:text="${pojo.kContent}"></textarea>
     	</div>
     </li>
-	<li class="list-group-item" id="imgLi">
+	<li class="list-group-item" id="imgLi" style="display:flex;justify-content:space-between;">
 		<input type="file" multiple="multiple" accept="image/*" onchange="img.fileChange(this)" style="display:none">
-		<a href="#" onclick="$(this).prev().click()">选择图片</a>
+		<a href="javascript:void()" onclick="$(this).prev().click()">选择图片</a>
+		
+		<a href="javascript:resetForm()">重新新增</a>
+		
+		<button type="button" class="btn btn-primary btn-sm" onclick="ok()">确认<span id="actionHint" th:text="${pojo.kId == null} ? '新增' : '修改'"></span></button>
+		
+		
+		
 	</li>
 	
 	<li th:each="item,iterStat:${imgList}" class="list-group-item d-flex align-items-center">
 		<div style="width:60px;height:60px"><img th:src="'/img/' + ${item}" th:attr="data-url=${item}" class="upload-img" style="display:none" onload="img.resize(this)" onclick="img.click(this)"></div>
-		<span class="badge badge-dark btn" style="margin-left:20px;padding:8px" onclick="$(this).parent().find('img').click()"><i class="fa fa-search-plus"></i>放大</span>
-		<span class="badge badge-dark btn" style="margin-left:20px;padding:8px" onclick="img.remove(this)"><i class="fa fa-close"></i>删除</span>
+		<span class="badge badge-dark btn" style="margin-left:2.375rem;padding:8px;" onclick="$(this).parent().find('img').click()">🔍放大</span>
+		<span class="badge badge-dark btn" style="margin-left:2.375rem;padding:8px;" onclick="img.remove(this)">✖删除</span>
 		<!--
 		<span class="badge badge-dark btn to-top" th:style="'display:' + @{(${iterStat.index == 0} ? 'none' : '')} + ''" onclick="img.top(this)">🔝置顶</span>
 		-->
 	</li>
 	
-	<li class="list-group-item" id="imgEndLi">
-		<button type="button" class="btn btn-primary btn-sm" onclick="ok()">确认<span id="actionHint" th:text="${pojo.kId == null} ? '新增' : '修改'"></span></button>
-		&nbsp;&nbsp;&nbsp;&nbsp;
-		<a href="javascript:resetForm()">清除</a>
-	</li>
+	<li class="list-group-item" id="imgEndLi"></li>
 </ul>
 </form>
 </div>
