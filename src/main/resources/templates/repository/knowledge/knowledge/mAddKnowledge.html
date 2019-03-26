@@ -232,20 +232,12 @@ function resetForm() {
 }
 .star-show {visibility:visible}
 .star-hide {visibility:hidden}
-.to-top {margin-left:2.375rem;padding:8px;}
+.badge-dark {margin-left:2rem;padding:0.5rem;}
 </style>
 </head>
 <body>
 
 <div class="container">
-<script id="imgTemplate" type="text/html">
-<li class="list-group-item d-flex align-items-center">
-	<div style="width:60px;height:60px"><img class="upload-img" style="display:none" onload="img.resize(this)" onclick="img.click(this)"></div>
-	<span class="badge badge-dark btn" style="margin-left:2.375rem;padding:8px" onclick="$(this).parent().find('img').click()">🔍放大</span>
-	<span class="badge badge-dark btn" style="margin-left:2.375rem;padding:8px" onclick="img.remove(this)">✖删除</span>
-	<span class="badge badge-dark btn to-top" style="display:none;color:white" onclick="img.top(this)">🔝置顶</span>
-</li>
-</script>
 
 <div class="panel panel-default">
 <form id="addForm">
@@ -281,19 +273,22 @@ function resetForm() {
 	<li class="list-group-item" id="imgLi" style="display:flex;justify-content:space-between;">
 		<input type="file" multiple="multiple" accept="image/*" onchange="img.fileChange(this)" style="display:none">
 		<a href="javascript:void()" onclick="$(this).prev().click()">选择图片</a>
-		
 		<a href="javascript:resetForm()">重新新增</a>
-		
 		<button type="button" class="btn btn-primary btn-sm" onclick="ok()">确认<span id="actionHint" th:text="${pojo.kId == null} ? '新增' : '修改'"></span></button>
-		
-		
-		
 	</li>
 	
+	<script id="imgTemplate" type="text/html">
+	<li class="list-group-item d-flex align-items-center">
+		<div style="width:3.75rem;height:3.75rem"><img class="upload-img" style="display:none" onload="img.resize(this)" onclick="img.click(this)"></div>
+		<span class="badge badge-dark btn" onclick="$(this).parent().find('img').click()">🔍放大</span>
+		<span class="badge badge-dark btn" onclick="img.remove(this)">✖删除</span>
+		<span class="badge badge-dark btn to-top" style="display:none;" onclick="img.top(this)">🔝置顶</span>
+	</li>
+	</script>
 	<li th:each="item,iterStat:${imgList}" class="list-group-item d-flex align-items-center">
-		<div style="width:60px;height:60px"><img th:src="'/img/' + ${item}" th:attr="data-url=${item}" class="upload-img" style="display:none" onload="img.resize(this)" onclick="img.click(this)"></div>
-		<span class="badge badge-dark btn" style="margin-left:2.375rem;padding:8px;" onclick="$(this).parent().find('img').click()">🔍放大</span>
-		<span class="badge badge-dark btn" style="margin-left:2.375rem;padding:8px;" onclick="img.remove(this)">✖删除</span>
+		<div style="width:3.75rem;height:3.75rem"><img th:src="'/img/' + ${item}" th:attr="data-url=${item}" class="upload-img" style="display:none" onload="img.resize(this)" onclick="img.click(this)"></div>
+		<span class="badge badge-dark btn" onclick="$(this).parent().find('img').click()">🔍放大</span>
+		<span class="badge badge-dark btn" onclick="img.remove(this)">✖删除</span>
 		<!--
 		<span class="badge badge-dark btn to-top" th:style="'display:' + @{(${iterStat.index == 0} ? 'none' : '')} + ''" onclick="img.top(this)">🔝置顶</span>
 		-->
