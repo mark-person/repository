@@ -97,6 +97,7 @@ $(function() {
 <script>
 
 var hasMore = true;
+var currentPageNumber = 1;
 $(window).scroll(function() {
     var scrollTop = $(this).scrollTop();    // 滚动条距离顶部的高度
     var scrollHeight = $(document).height();   // 当前页面的总高度
@@ -106,6 +107,7 @@ $(window).scroll(function() {
     	// 加载数据
     	//alert(scrollTop + clientHeight - scrollHeight);
     	if (hasMore) {
+    		currentPageNumber++;
     		hasMore = false;
     		more();
     	}
@@ -116,7 +118,7 @@ $(window).scroll(function() {
 function more() {
 	$(".page-bottom").hide();
 	$("#bottomLoading").show();
-	$.post(controllerPath + "/mList", {pageNumber:2}, function(r) {
+	$.post(controllerPath + "/mList", {pageNumber:currentPageNumber}, function(r) {
 		$("#knowDiv").append(template("itemTemplate", r));
 		if (r.pageSize * r.pageNumber < r.totalRows) {
 			hasMore = true;
