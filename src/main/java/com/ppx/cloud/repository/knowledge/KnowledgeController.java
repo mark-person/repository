@@ -101,9 +101,13 @@ public class KnowledgeController {
 		List<String> noStarList = List.of("", "");
 		mv.addObject("noStarList", noStarList);
 		
-		
 		return mv;
 	}
 
+    
+    public ModelAndView mListKnowledge(ModelAndView mv) {
+		mv.addObject("list", list(new Page(), new Knowledge()));
+		return mv;
+	}
 	
 }

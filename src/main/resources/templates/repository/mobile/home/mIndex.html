@@ -20,6 +20,7 @@
 	border:1px solid #ddd;
 	height:100%;
 	overflow-x: hidden;
+	overflow-y:scroll;
 	background-color:white;
 }
 
@@ -38,8 +39,8 @@ html,body{
 <body style="margin:0px;padding:0px;">
 
 
-<div id="iframeDiv">
-	<iframe id="content" src="/auto/knowledge/mAddKnowledge" onload="iframeLoad()"></iframe>
+<div id="iframeDiv" style="-webkit-overflow-scrolling:touch;overflow:auto;">
+	<iframe id="content" src="/auto/knowledge/mListKnowledge" onload="iframeLoad()"></iframe>
 </div>
 
 <div style="position:fixed;bottom: 0;width:100%; background-color:#f0f0f0;">
