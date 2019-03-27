@@ -31,7 +31,7 @@ img.loadImg = function(f, n) {
 		    canvas.height = this.height;
 		    var context = canvas.getContext("2d");
 		    context.drawImage(this, 0, 0, this.width, this.height, 0, 0, this.width, this.height);
-		    var newSrc = canvas.toDataURL('image/jpeg', 0.2);
+		    var newSrc = canvas.toDataURL('image/jpeg', 0.25);
 		    
 		    var jObj = $($("#imgTemplate").html());
 			var imgObj = jObj.find(".upload-img");
@@ -276,15 +276,6 @@ function resetForm() {
 		<a href="javascript:resetForm()">重新新增</a>
 		<button type="button" class="btn btn-primary btn-sm" onclick="ok()">确认<span id="actionHint" th:text="${pojo.kId == null} ? '新增' : '修改'"></span></button>
 	</li>
-	
-	<script id="imgTemplate" type="text/html">
-	<li class="list-group-item d-flex align-items-center">
-		<div style="width:3.75rem;height:3.75rem"><img class="upload-img" style="display:none" onload="img.resize(this)" onclick="img.click(this)"></div>
-		<span class="badge badge-dark btn" onclick="$(this).parent().find('img').click()">🔍放大</span>
-		<span class="badge badge-dark btn" onclick="img.remove(this)">✖删除</span>
-		<span class="badge badge-dark btn to-top" style="display:none;" onclick="img.top(this)">🔝置顶</span>
-	</li>
-	</script>
 	<li th:each="item,iterStat:${imgList}" class="list-group-item d-flex align-items-center">
 		<div style="width:3.75rem;height:3.75rem"><img th:src="'/img/' + ${item}" th:attr="data-url=${item}" class="upload-img" style="display:none" onload="img.resize(this)" onclick="img.click(this)"></div>
 		<span class="badge badge-dark btn" onclick="$(this).parent().find('img').click()">🔍放大</span>
@@ -293,10 +284,17 @@ function resetForm() {
 		<span class="badge badge-dark btn to-top" th:style="'display:' + @{(${iterStat.index == 0} ? 'none' : '')} + ''" onclick="img.top(this)">🔝置顶</span>
 		-->
 	</li>
-	
 	<li class="list-group-item" id="imgEndLi"></li>
 </ul>
 </form>
+<script id="imgTemplate" type="text/html">
+	<li class="list-group-item d-flex align-items-center">
+		<div style="width:3.75rem;height:3.75rem"><img class="upload-img" style="display:none" onload="img.resize(this)" onclick="img.click(this)"></div>
+		<span class="badge badge-dark btn" onclick="$(this).parent().find('img').click()">🔍放大</span>
+		<span class="badge badge-dark btn" onclick="img.remove(this)">✖删除</span>
+		<span class="badge badge-dark btn to-top" style="display:none;" onclick="img.top(this)">🔝置顶</span>
+	</li>
+	</script>
 </div>
 
 </div>
