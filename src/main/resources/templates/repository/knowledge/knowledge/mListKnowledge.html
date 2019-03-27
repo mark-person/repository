@@ -120,7 +120,7 @@ function more() {
 	$("#bottomLoading").show();
 	$.post(controllerPath + "/mList", {pageNumber:currentPageNumber}, function(r) {
 		$("#knowDiv").append(template("itemTemplate", r));
-		if (r.pageSize * r.pageNumber < r.totalRows) {
+		if (r.page.pageSize * r.page.pageNumber < r.page.totalRows) {
 			hasMore = true;
 			$(".page-bottom").hide();
 			$("#pageMore").show();
