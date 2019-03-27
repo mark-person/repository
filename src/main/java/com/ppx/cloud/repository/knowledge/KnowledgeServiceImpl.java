@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.ppx.cloud.auth.common.AuthContext;
 import com.ppx.cloud.common.contoller.ReturnMap;
 import com.ppx.cloud.common.jdbc.MyDaoSupport;
+import com.ppx.cloud.common.page.MPage;
 import com.ppx.cloud.common.page.Page;
 
 @Service
@@ -140,5 +141,31 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
         getJdbcTemplate().update("delete from repo_knowledge_img where k_id = ?", id);
         return ReturnMap.of();
     }
+	
+	
+	
+	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	public List<Knowledge> mList(MPage page, Knowledge pojo) {
+		
+		var c = createCriteria("where")
+				.addAnd("k.k_title like ?", "%", pojo.getkTitle(), "%")
+				.addAnd("k.cat_id = ?", pojo.getCatId());
+		
+		if (pojo.getRecommend() != null && pojo.getRecommend() >= 3) {
+			c.addAnd("k.recommend >= ?", pojo.getRecommend());
+		}
+		else if (pojo.getRecommend() != null && pojo.getRecommend() <= -1) {
+			c.addAnd("k.recommend <= ?", -pojo.getRecommend());
+		}
+		
+		var cSql = new StringBuilder("select count(*) from repo_knowledge k").append(c);
+		var qSql = new StringBuilder("select k.*, concat((select cat_name from repo_knowledge_category where cat_id = c.parent_id), '-', cat_name) cat_name"
+				+ " from repo_knowledge k left join repo_knowledge_category c on k.cat_id = c.cat_id").append(c).append("order by modified desc");
+		
+		List<Knowledge> list = queryMPage(Knowledge.class, page, cSql, qSql, c.getParaList());
+		return list;
+	}
+	
+	
 
 }

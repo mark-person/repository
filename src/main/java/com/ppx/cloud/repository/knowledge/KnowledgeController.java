@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ppx.cloud.common.contoller.ReturnMap;
+import com.ppx.cloud.common.page.MPage;
 import com.ppx.cloud.common.page.Page;
 import com.ppx.cloud.repository.category.KnowledgeCategoryService;
 
@@ -84,7 +85,7 @@ public class KnowledgeController {
     }
     
     
-    // >>>>>>>>>>>>>>>>>>
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     
     @Autowired
     private KnowledgeCategoryService categoryService;
@@ -106,8 +107,11 @@ public class KnowledgeController {
 
     
     public ModelAndView mListKnowledge(ModelAndView mv) {
-		mv.addObject("list", list(new Page(), new Knowledge()));
+		mv.addObject("list", mList(new MPage(), new Knowledge()));
 		return mv;
 	}
 	
+    public Map<?, ?> mList(MPage page, Knowledge pojo) {
+		return ReturnMap.of(page, impl.mList(page, pojo));
+	}
 }

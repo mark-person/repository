@@ -3,7 +3,7 @@
 <head>
 <title></title>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
 <script type="text/javascript">
 document.getElementsByTagName('html')[0].style.fontSize=window.screen.width/(7.5*3.45)+'px';
 
@@ -13,72 +13,141 @@ document.getElementsByTagName('html')[0].style.fontSize=window.screen.width/(7.5
 </script>
 
 <link th:replace="common/fragment::mobile"/>
+<script th:src="@{/static/cdn/template-3.0.0.js}"  type="text/javascript" ></script>
+
 
 <script type="text/javascript" th:inline="javascript">
+
 var controllerPath = contextPath + "auto/knowledge/";
 
-$(function() {
 
+
+$(function() {
+	var list = [[${list}]];
+	$("#knowDiv").append(template("itemTemplate", list));
 });
 
 
 </script>
+
+<style type="text/css">
+#knowDiv {
+	border:1px solid red;display:flex;justify-content:space-between;flex-wrap:wrap;
+}
+.know-item-div {
+	border:1px solid green;
+	display:flex;flex-direction:column;background-color:white;margin:0.2rem 0rem;
+}
+.know-img {
+	border:1px solid gray;width:12rem;height:12rem;
+}
+.know-title {
+	width:12rem;display:-webkit-box !important; overflow:hidden;-webkit-line-clamp:1;-webkit-box-orient:vertical;
+}
+</style>
+
 </head>
 
 <body>
-<div style="border:1px solid red;display:flex;justify-content:space-between;flex-wrap:wrap;" >
-	
-	<div style="border:1px solid green;width:12.4rem;">
-		<img src="" style="border:1px solid gray;width:12rem;height:12rem">
-		<div>test</div>
-	</div>
-	<div style="border:1px solid green;width:12.4rem;">
-		<img src="" style="border:1px solid gray;width:12rem;height:12rem">
-		<div>test</div>
-	</div>
-	<div style="border:1px solid green;width:12.4rem;">
-		<img src="" style="border:1px solid gray;width:12rem;height:12rem">
-		<div>test</div>
-	</div>
-	
-	<div style="border:1px solid green;width:12.4rem;">
-		<img src="" style="border:1px solid gray;width:12rem;height:12rem">
-		<div>test</div>
-	</div>
-	<div style="border:1px solid green;width:12.4rem;">
-		<img src="" style="border:1px solid gray;width:12rem;height:12rem">
-		<div>test</div>
-	</div>
-	<div style="border:1px solid green;width:12.4rem;">
-		<img src="" style="border:1px solid gray;width:12rem;height:12rem">
-		<div>test</div>
-	</div>
-	<div style="border:1px solid green;width:12.4rem;">
-		<img src="" style="border:1px solid gray;width:12rem;height:12rem">
-		<div>test</div>
-	</div>
-	<div style="border:1px solid green;width:12.4rem;">
-		<img src="" style="border:1px solid gray;width:12rem;height:12rem">
-		<div>test</div>
-	</div>
-	
-	<div style="border:1px solid green;width:12.4rem;">
-		<img src="" style="border:1px solid gray;width:12rem;height:12rem">
-		<div>test</div>
-	</div>
-	<div style="border:1px solid green;width:12.4rem;">
-		<img src="" style="border:1px solid gray;width:12rem;height:12rem">
-		<div>test</div>
-	</div>
-	<div style="border:1px solid green;width:12.4rem;">
-		<img src="" style="border:1px solid gray;width:12rem;height:12rem">
-		<div>end</div>
-	</div>
-	<div style="border:1px solid green;width:12.4rem;">
-		<img src="" style="border:1px solid gray;width:12rem;height:12rem">
-		<div>end</div>
-	</div>
+
+<script id="itemTemplate" type="text/html">
+{{each list as v i}}
+<div class="know-item-div">
+		<img src="" class="know-img">
+		<div class="know-title">{{v.kTitle}}</div>
 </div>
+{{/each}}
+</script>
+<div id="knowDiv">
+	
+</div>
+
+
+<div>
+	<div class="page-bottom" id="pageMore" style="display: none">
+        <p style="text-align: center;">-- 上拉加载更多 --</p>
+    </div>
+    <div class="page-bottom" id="bottomLoading" style="display: none">
+        <p style="text-align: center;">-- loading --</p>
+    </div>
+    <div class="page-bottom" id="pageEnd" style="display: none">
+        <p style="text-align: center;">-- 我是有底线的 --</p>
+    </div>
+</div> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+
+var hasMore = true;
+$(window).scroll(function() {
+    var scrollTop = $(this).scrollTop();    // 滚动条距离顶部的高度
+    var scrollHeight = $(document).height();   // 当前页面的总高度
+    var clientHeight = $(this).height();    // 当前可视的页面高度
+  	// 距离顶部+当前高度 >=文档总高度 即代表滑动到底部 注：-50 上拉加载更灵敏
+    if (scrollTop + clientHeight >= scrollHeight - 50) {   
+    	// 加载数据
+    	//alert(scrollTop + clientHeight - scrollHeight);
+    	if (hasMore) {
+    		hasMore = false;
+    		more();
+    	}
+    }
+});
+
+// "page":{"pageSize":8,"pageNumber":1,"totalRows":25,"
+function more() {
+	$(".page-bottom").hide();
+	$("#bottomLoading").show();
+	$.post(controllerPath + "/mList", {pageNumber:2}, function(r) {
+		$("#knowDiv").append(template("itemTemplate", r));
+		if (r.pageSize * r.pageNumber < r.totalRows) {
+			hasMore = true;
+			$(".page-bottom").hide();
+			$("#pageMore").show();
+		}
+		else {
+			$(".page-bottom").hide();
+			$("#pageEnd").show();
+		}
+	});
+}
+
+
+</script>
+
+
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
