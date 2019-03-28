@@ -224,6 +224,11 @@ function resetForm() {
 	$("[name=kId]").val("");
 	$("#actionHint").html("新增");
 }
+
+function gotoView() {
+	var kId = [[${pojo.kId}]];
+	location.href = [[@{/auto/knowledge/mViewKnowledge}]] + "?id=" + kId;
+}
 </script>
 <style type="text/css">
 .star {
@@ -274,6 +279,7 @@ function resetForm() {
 		<input type="file" multiple="multiple" accept="image/*" onchange="img.fileChange(this)" style="display:none">
 		<a href="javascript:void()" onclick="$(this).prev().click()">选择图片</a>
 		<a href="javascript:resetForm()">重新新增</a>
+		<a href="javascript:gotoView()">查看</a>
 		<button type="button" class="btn btn-primary btn-sm" onclick="ok()">确认<span id="actionHint" th:text="${pojo.kId == null} ? '新增' : '修改'"></span></button>
 	</li>
 	<li th:each="item,iterStat:${imgList}" class="list-group-item d-flex align-items-center">
