@@ -272,7 +272,7 @@ function gotoView() {
     </li>
     <li class="list-group-item">
     	<div class="row">
-			<textarea id="kContent" rows="3" class="form-control" th:text="${pojo.kContent}"></textarea>
+			<textarea id="kContent" rows="4" class="form-control" th:text="${pojo.kContent}"></textarea>
     	</div>
     </li>
 	<li class="list-group-item" id="imgLi" style="display:flex;justify-content:space-between;">
@@ -286,9 +286,6 @@ function gotoView() {
 		<div style="width:3.75rem;height:3.75rem"><img th:src="'/img/' + ${item}" th:attr="data-url=${item}" class="upload-img" style="display:none" onload="img.resize(this)" onclick="img.click(this)"></div>
 		<span class="badge badge-dark btn" onclick="$(this).parent().find('img').click()">🔍放大</span>
 		<span class="badge badge-dark btn" onclick="img.remove(this)">✖删除</span>
-		<!--
-		<span class="badge badge-dark btn to-top" th:style="'display:' + @{(${iterStat.index == 0} ? 'none' : '')} + ''" onclick="img.top(this)">🔝置顶</span>
-		-->
 	</li>
 	<li class="list-group-item" id="imgEndLi"></li>
 </ul>
