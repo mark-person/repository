@@ -46,6 +46,8 @@ function gotoSale() {
 
 function gotoAdd() {
 	document.getElementById("content").src = "/auto/knowledge/mAddKnowledge";
+	
+	document.querySelectorAll(".bottom-item")[2].style.color = "red";
 }
 
 </script>
@@ -53,7 +55,7 @@ function gotoAdd() {
 <body style="margin:0px;padding:0px;">
 
 <div id="iframeDiv" style="-webkit-overflow-scrolling:touch;overflow:auto;">
-	<iframe id="content" src="/auto/knowledge/mListKnowledge" onload="iframeLoad()"></iframe>
+	<iframe id="content" src="/auto/knowledge/mListKnowledge" onload=""></iframe>
 </div>
 
 <div style="position:fixed;bottom: 0;width:100%; background-color:#f0f0f0;">
@@ -64,12 +66,12 @@ function gotoAdd() {
 <div>首页</div>
 </div>
 
-<div class="bottom-item" onclick="gotoSale();">
+<div class="bottom-item" onclick="gotoSale();" style="color:gray;">
 <div>🎁</div>
 <div>卖什么</div>
 </div>
 
-<div class="bottom-item" onclick="gotoAdd()">
+<div class="bottom-item" onclick="gotoAdd()" style="color:gray;">
 <div>📝</div>
 <div>新增</div>
 </div>
