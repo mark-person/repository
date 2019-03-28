@@ -34,31 +34,44 @@ html,body{
 </style>
 
 
-</head>
+<script type="text/javascript">
 
+function gotoHome() {
+	document.getElementById("content").src = "/auto/knowledge/mListKnowledge";
+}
+
+function gotoSale() {
+	document.getElementById("content").src = "/auto/knowledge/mListKnowledge";
+}
+
+function gotoAdd() {
+	document.getElementById("content").src = "/auto/knowledge/mAddKnowledge";
+}
+
+</script>
+</head>
 <body style="margin:0px;padding:0px;">
 
-
 <div id="iframeDiv" style="-webkit-overflow-scrolling:touch;overflow:auto;">
-	<iframe id="content" src="/auto/knowledge/mAddKnowledge" onload="iframeLoad()"></iframe>
+	<iframe id="content" src="/auto/knowledge/mListKnowledge" onload="iframeLoad()"></iframe>
 </div>
 
 <div style="position:fixed;bottom: 0;width:100%; background-color:#f0f0f0;">
-<div style="display:flex;justify-content:space-between;">
+<div style="display:flex;justify-content:space-between; padding-left:0.5rem;padding-right:0.5rem;font-size: 0.825rem">
 
-<div class="bottom-item">
+<div class="bottom-item" onclick="gotoHome();" style="color:orange;">
 <div>🏠</div>
-<div>home</div>
+<div>首页</div>
 </div>
 
-<div class="bottom-item">
-<div>📚</div>
-<div>know</div>
+<div class="bottom-item" onclick="gotoSale();">
+<div>🎁</div>
+<div>卖什么</div>
 </div>
 
-<div class="bottom-item">
-<div>🍉</div>
-<div>todo</div>
+<div class="bottom-item" onclick="gotoAdd()">
+<div>📝</div>
+<div>新增</div>
 </div>
 
 </div>
