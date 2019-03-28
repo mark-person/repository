@@ -94,18 +94,18 @@ function view(kId) {
 
 
 
-<script>
+<script type="text/javascript">
 
 var hasMore = true;
 var currentPageNumber = 1;
+
 $(window).scroll(function() {
-    var scrollTop = $(this).scrollTop();    // 滚动条距离顶部的高度
-    var scrollHeight = $(document).height();   // 当前页面的总高度
-    var clientHeight = $(this).height();    // 当前可视的页面高度
+    var scrollTop = $(this).scrollTop();
+    var scrollHeight = $(document).height();
+    var clientHeight = $(this).height();
   	// 距离顶部+当前高度 >=文档总高度 即代表滑动到底部 注：-50 上拉加载更灵敏
     if (scrollTop + clientHeight >= scrollHeight - 50) {   
     	// 加载数据
-    	//alert(scrollTop + clientHeight - scrollHeight);
     	if (hasMore) {
     		currentPageNumber++;
     		hasMore = false;
@@ -114,25 +114,21 @@ $(window).scroll(function() {
     }
 });
 
-// "page":{"pageSize":8,"pageNumber":1,"totalRows":25,"
 function more() {
 	$(".page-bottom").hide();
 	$("#bottomLoading").show();
 	$.post(controllerPath + "/mList", {pageNumber:currentPageNumber}, function(r) {
 		$("#knowDiv").append(template("itemTemplate", r));
+		$(".page-bottom").hide();
 		if (r.page.pageSize * r.page.pageNumber < r.page.totalRows) {
 			hasMore = true;
-			$(".page-bottom").hide();
 			$("#pageMore").show();
 		}
 		else {
-			$(".page-bottom").hide();
 			$("#pageEnd").show();
 		}
 	});
 }
-
-
 </script>
 
 
