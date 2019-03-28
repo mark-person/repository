@@ -31,7 +31,7 @@ img.loadImg = function(f, n) {
 		    canvas.height = this.height;
 		    var context = canvas.getContext("2d");
 		    context.drawImage(this, 0, 0, this.width, this.height, 0, 0, this.width, this.height);
-		    var newSrc = canvas.toDataURL('image/jpeg', 0.25);
+		    var newSrc = canvas.toDataURL('image/jpeg', 0.2);
 		    
 		    var jObj = $($("#imgTemplate").html());
 			var imgObj = jObj.find(".upload-img");
