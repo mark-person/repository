@@ -47,33 +47,6 @@ public class KnowledgeController {
     
     private final static String INIT_CONTENT = "# \n* \n* ";
     
-    public ModelAndView edit(ModelAndView mv, @RequestParam Integer id) {
-    	mv.setViewName("repository/knowledge/knowledge/mAddKnowledge");
-    	Knowledge pojo = impl.get(id);
-    	if (Strings.isEmpty(pojo.getkContent())) {
-    		pojo.setkContent(INIT_CONTENT);
-    	}
-		mv.addObject("pojo", pojo);
-		mv.addObject("catList", categoryService.list());
-		
-		if (Strings.isNotEmpty(pojo.getImgSrc())) {
-			mv.addObject("imgList", pojo.getImgSrc().split(","));
-    	}
-		
-		// init_recommend
-		List<String> starList = new ArrayList<String>();
-		for (int i = 0; i < pojo.getRecommend(); i++) {
-			starList.add("");
-		}
-		mv.addObject("starList", starList);
-		List<String> noStarList = new ArrayList<String>();
-		for (int i = 0; i < 5 - pojo.getRecommend(); i++) {
-			noStarList.add("");
-		}
-		mv.addObject("noStarList", noStarList);
-		return mv;
-	} 
-    
     
     public Map<?, ?> get(@RequestParam Integer id) {
         return ReturnMap.of("pojo", impl.get(id));
@@ -104,7 +77,6 @@ public class KnowledgeController {
 		
 		return mv;
 	}
-
     
     public ModelAndView mListKnowledge(ModelAndView mv) {
 		mv.addObject("list", mList(new MPage(), new Knowledge()));
@@ -113,5 +85,49 @@ public class KnowledgeController {
 	
     public Map<?, ?> mList(MPage page, Knowledge pojo) {
 		return ReturnMap.of(page, impl.mList(page, pojo));
+	}
+    
+    public ModelAndView edit(ModelAndView mv, @RequestParam Integer id) {
+    	mv.setViewName("repository/knowledge/knowledge/mAddKnowledge");
+    	Knowledge pojo = impl.get(id);
+    	if (Strings.isEmpty(pojo.getkContent())) {
+    		pojo.setkContent(INIT_CONTENT);
+    	}
+		mv.addObject("pojo", pojo);
+		mv.addObject("catList", categoryService.list());
+		
+		if (Strings.isNotEmpty(pojo.getImgSrc())) {
+			mv.addObject("imgList", pojo.getImgSrc().split(","));
+    	}
+		
+		// init_recommend
+		List<String> starList = new ArrayList<String>();
+		for (int i = 0; i < pojo.getRecommend(); i++) {
+			starList.add("");
+		}
+		mv.addObject("starList", starList);
+		List<String> noStarList = new ArrayList<String>();
+		for (int i = 0; i < 5 - pojo.getRecommend(); i++) {
+			noStarList.add("");
+		}
+		mv.addObject("noStarList", noStarList);
+		return mv;
+	}
+    
+    public ModelAndView mViewKnowledge(ModelAndView mv, @RequestParam Integer id) {
+    	Knowledge pojo = impl.get(id);
+		mv.addObject("pojo", pojo);
+		
+		if (Strings.isNotEmpty(pojo.getImgSrc())) {
+			mv.addObject("imgList", pojo.getImgSrc().split(","));
+    	}
+		
+		// init_recommend
+		List<String> starList = new ArrayList<String>();
+		for (int i = 0; i < pojo.getRecommend(); i++) {
+			starList.add("");
+		}
+		mv.addObject("starList", starList);
+		return mv;
 	}
 }

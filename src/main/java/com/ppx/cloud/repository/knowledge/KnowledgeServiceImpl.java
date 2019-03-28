@@ -70,12 +70,12 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 	}
 
 	public Knowledge get(Integer id) {
-		Knowledge pojo = getJdbcTemplate().queryForObject("select * from repo_knowledge where k_id = ?",
+		Knowledge pojo = getJdbcTemplate().queryForObject("select k.*,"
+				+ " (select k_content from repo_knowledge_content where k_id = k.k_id) k_content,"
+				+ " concat((select cat_name from repo_knowledge_category where cat_id = c.parent_id), '-', cat_name) cat_name"
+				+ " from repo_knowledge k left join repo_knowledge_category c on k.cat_id = c.cat_id"
+				+ " where k_id = ?",
                 BeanPropertyRowMapper.newInstance(Knowledge.class), id);
-		
-		String contentSql = "select (select k_content from repo_knowledge_content where k_id = ?) k_content from dual";
-		String content = getJdbcTemplate().queryForObject(contentSql, String.class, id);
-		pojo.setkContent(content);
 		
 		if (Strings.isNotEmpty(pojo.getMainImgSrc())) {
 			String imgSql = "select k_img_src from repo_knowledge_img where k_id = ? order by k_img_prio";
@@ -87,8 +87,6 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 				pojo.setImgSrc(pojo.getMainImgSrc() + "," + String.join(",", imgList));
 			}
 		}
-		
-		
         return pojo;
     }
     
