@@ -79,7 +79,7 @@ public class UploadImgController {
 				// 缩放
 				// convert -resize 200x100 src.jpg dest.jpg 200×100(等比缩放)
 				String miniPath = mainPath + imgFileName + "_100.jpg";
-				String command = "convert -resize 380 " + mainPath + imgFileName + " " + miniPath;
+				String command = "convert -resize 360x360> " + mainPath + imgFileName + " " + miniPath;
 				Process process = Runtime.getRuntime().exec(command);
 				try (InputStream inputStream = process.getErrorStream();) {
 					String cmdResult = new BufferedReader(new InputStreamReader(inputStream, "UTF-8")).lines()
