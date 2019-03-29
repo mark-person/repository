@@ -49,7 +49,7 @@ function view(kId) {
 </style>
 </head>
 
-<body style="margin-bottom: 3rem;">
+<body style="margin-top: 3rem;margin-bottom: 3rem;">
 <script id="itemTemplate" type="text/html">
 {{each list as v i}}
 <div class="know-item-div" onclick="view({{v.kId}})">
@@ -58,9 +58,44 @@ function view(kId) {
 </div>
 {{/each}}
 </script>
+
+
+
+<div style="position:fixed;top: 0;width:100%; background-color:#f0f0f0;">
+<div style="display:flex;justify-content:space-between; padding-left:0.5rem;padding-right:0.5rem;font-size: 0.825rem">
+	<div>
+		<form action="" id="form">
+		<input type="search" name="title" class="form-control">
+		</form>
+	</div>
+</div>
+</div>
+
+<script>
+$('#form').submit(function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    alert(1);
+ })
+</script>
+
+
 <div id="knowDiv">
 	
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <div>
