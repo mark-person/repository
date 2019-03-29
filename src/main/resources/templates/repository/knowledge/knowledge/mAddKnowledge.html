@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1,user-scalable=no">
 
 <link th:replace="common/fragment::mobile"/>
-<script th:replace="repository/knowledge/knowledge/js::js"/>
+<script th:replace="repository/knowledge/knowledge/js::js"></script>
 
 <script type="text/javascript" th:inline="javascript">
 var controllerPath = contextPath + "auto/knowledge/";
@@ -252,7 +252,7 @@ function gotoView() {
 <ul class="list-group" id="imgUL">
     <li class="list-group-item">
     	<div class="row">
-    		<input class="form-control" type="text" name="kTitle" placeholder="无" th:value="${pojo.kTitle}" maxlength="12">
+    		<input class="form-control" type="text" name="kTitle" placeholder="无" th:value="${pojo.kTitle}" maxlength="32">
     	</div>
     </li>
     <li class="list-group-item">
@@ -277,7 +277,7 @@ function gotoView() {
     </li>
 	<li class="list-group-item" id="imgLi" style="display:flex;justify-content:space-between;">
 		<input type="file" multiple="multiple" accept="image/*" onchange="img.fileChange(this)" style="display:none">
-		<a href="javascript:void()" onclick="$(this).prev().click()">选择图片</a>
+		<a href="#" onclick="$(this).prev().click()">选择图片</a>
 		<a href="javascript:resetForm()">重新新增</a>
 		<a href="javascript:gotoView()">查看</a>
 		<button type="button" class="btn btn-primary btn-sm" onclick="ok()">确认<span id="actionHint" th:text="${pojo.kId == null} ? '新增' : '修改'"></span></button>
@@ -303,7 +303,7 @@ function gotoView() {
 </div>
 
 
-<link th:replace="repository/knowledge/knowledge/menu::nav('insertMenu')"/>
+<div th:replace="repository/knowledge/knowledge/menu::nav('insertMenu')"></div>
 
 
 </body>

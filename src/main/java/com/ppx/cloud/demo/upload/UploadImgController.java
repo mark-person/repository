@@ -1,20 +1,20 @@
 package com.ppx.cloud.demo.upload;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import javax.imageio.ImageIO;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ppx.cloud.common.contoller.ReturnMap;
@@ -40,6 +40,9 @@ public class UploadImgController {
 	
 	
 	public Map<?, ?> uploadKnowledge(MultipartFile[] mFile, Integer isMain[]) throws Exception {
+		
+		
+		
 		
 		var returnList = new ArrayList<String>();
 		
@@ -102,4 +105,27 @@ public class UploadImgController {
 		return ReturnMap.of("list", returnList);
 	}
 
+	
+
+/**
+     * 判断文件是否是图片
+     * @param file
+     * @return
+     */
+    private boolean isImage(File file) {
+        if (!file.exists()) {
+            return false;
+        }
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(file);
+            if (image == null || image.getWidth() <= 0 || image.getHeight() <= 0) {
+                return false;
+            }
+             return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
