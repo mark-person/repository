@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.auth0.jwt.JWT;
@@ -18,7 +19,10 @@ import com.ppx.cloud.common.util.CookieUtils;
 public class HomeController {
 	
 	
+	@GetMapping("/index")
 	public ModelAndView mIndex(ModelAndView mv, HttpServletResponse response) {
+		
+		mv.setViewName("repository/mobile/home/mIndex");
 		
 		LoginAccount account = AuthContext.getLoginAccount();
 		if (account == null) {
