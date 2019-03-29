@@ -31,14 +31,15 @@ $(function() {
 	});
 	
 	var kContent = [[${pojo.kContent}]];
-	var html = marked(kContent);
-	
-	$('#kContent').contents().find('body').html(html);
+	if (kContent) {
+		var html = marked(kContent);
+		$('#kContent').contents().find('body').html(html);
+	}
 	
 });
 
 function back() {
-	location.href = [[@{/auto/knowledge/mListKnowledge}]];
+	location.href = [[@{/index}]];
 }
 
 function edit() {
@@ -111,7 +112,8 @@ function edit() {
 			style="padding: 0; margin-bottom: 2rem; height: 100%"><iframe
 				id="kContent" style="border: 0; width: 100%; height: 100%">
 				<body></body>
-			</iframe></li>
+			</iframe>
+		</li>
 	</ul>
 </div>
 
