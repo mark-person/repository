@@ -36,6 +36,51 @@ html,body{
 
 <script type="text/javascript">
 
+
+/*
+
+//如果iframe的src不是网址，而是本地的html，则需要给HTML的DOM添加监听事件，让html的body可以监听到touch事件，让嵌套的html也可以滚动。
+    var toScrollFrame = function(iFrame, mask) {  
+               if (!navigator.userAgent.match(/iPad|iPhone/i))  
+                   return false;  
+               //如果没有iOS，什么也不做
+               var mouseY = 0;  
+               var mouseX = 0;  
+               jQuery(iFrame).ready(function() {//等待iFrame加载  
+                   //记忆初始拖曳运动 
+                   jQuery(iFrame).contents()[0].body.addEventListener('touchstart', function(e) {  
+                       mouseY = e.targetTouches[0].pageY;  
+                       mouseX = e.targetTouches[0].pageX;  
+                   });  
+
+
+                   //基于初始拖动位置更新滚动位置 
+                   jQuery(iFrame).contents()[0].body.addEventListener('touchmove', function(e) {  
+                       e.preventDefault();  
+                       //防止整页拖动  
+
+
+                       var box = jQuery(mask);  
+                       box.scrollLeft(box.scrollLeft() + mouseX - e.targetTouches[0].pageX);  
+                       box.scrollTop(box.scrollTop() + mouseY - e.targetTouches[0].pageY);  
+                       //MUSEX和MouSe不需要定期更新，因为当前位置  
+                       //因为鼠标相对于Tr.IFRAMY的当前位置随着掩码滚动而改变。.  
+                   });  
+               });  
+               return true;  
+           };  
+           toScrollFrame('.myFrame', '.myMask');  
+
+ 
+ 
+ 
+ 
+ 
+ */
+
+
+
+
 function gotoHome() {
 	document.getElementById("content").src = "/auto/knowledge/mListKnowledge";
 }
@@ -54,7 +99,7 @@ function gotoAdd() {
 </head>
 <body style="margin:0px;padding:0px;">
 
-<div id="iframeDiv" style="-webkit-overflow-scrolling:touch;overflow:auto;">
+<div id="iframeDiv" style="-webkit-overflow-scrolling:touch;overflow:auto;z-index:1;">
 	<iframe id="content" src="/auto/knowledge/mListKnowledge" onload=""></iframe>
 </div>
 
