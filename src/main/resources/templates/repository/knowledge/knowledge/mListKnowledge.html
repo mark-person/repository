@@ -76,15 +76,10 @@ function view(kId) {
 </div> 
 
 
-
-
-
-
 <script type="text/javascript">
 
 var hasMore = true;
 var currentPageNumber = 1;
-
 
 $(window).scroll(function() {
     var scrollTop = $(this).scrollTop();
@@ -119,6 +114,14 @@ function more() {
 }
 </script>
 
+
+
+
+
+
+
+
+<link th:replace="repository/knowledge/knowledge/menu::nav('homeMenu')"/>
 
 </body>
 </html>

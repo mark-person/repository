@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.auth0.jwt.JWT;
@@ -40,16 +41,18 @@ public class HomeController {
 		//}
 			//response.setHeader("Refresh", "0;URL=mIndex");
 			response.setHeader("Content-Type", "text/html; charset=utf-8");
-		request.getRequestDispatcher("mIndex").include(request, response);
+		request.getRequestDispatcher("auto/knowledge/mListKnowledge").include(request, response);
 		//	response.sendRedirect("mIndex");
 		return null;
 	}
+	
 	@GetMapping("/mIndex")
 	public ModelAndView mIndex(ModelAndView mv) throws ServletException, IOException {
 		mv.setViewName("repository/mobile/home/mIndex");
 		System.out.println("----");
 		return mv;
 	}
+	
 	
 
 	

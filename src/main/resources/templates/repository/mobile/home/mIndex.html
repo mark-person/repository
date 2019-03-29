@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1,user-scalable=no">
 
-
+<link th:replace="common/fragment::mobile"/>
 
 <style type="text/css">
 
@@ -79,6 +79,40 @@ html,body{
  */
 
 
+var toScrollFrame = function(iFrame, mask) { 
+     if (!navigator.userAgent.match(/iPad|iPhone/i))  
+         return false;  
+     //如果没有iOS，什么也不做
+     alert(1)
+     var mouseY = 0;  
+     var mouseX = 0;  
+     jQuery(iFrame).ready(function() {//等待iFrame加载  
+    	 alert(2)
+         //记忆初始拖曳运动 
+         jQuery(iFrame).contents()[0].body.addEventListener('touchstart', function(e) {
+        	 alert(3)
+             mouseY = e.targetTouches[0].pageY;  
+             mouseX = e.targetTouches[0].pageX; 
+             
+         });  
+
+
+         //基于初始拖动位置更新滚动位置 
+         jQuery(iFrame).contents()[0].body.addEventListener('touchmove', function(e) {  
+             e.preventDefault();  
+             //防止整页拖动  
+
+
+            // var box = jQuery(mask);  
+            // box.scrollLeft(box.scrollLeft() + mouseX - e.targetTouches[0].pageX);  
+            // box.scrollTop(box.scrollTop() + mouseY - e.targetTouches[0].pageY);  
+             //MUSEX和MouSe不需要定期更新，因为当前位置  
+             //因为鼠标相对于Tr.IFRAMY的当前位置随着掩码滚动而改变。.  
+         });  
+     });  
+     return true;  
+};  
+
 
 
 function gotoHome() {
@@ -100,29 +134,34 @@ function gotoAdd() {
 <body style="margin:0px;padding:0px;">
 
 <div id="iframeDiv" style="-webkit-overflow-scrolling:touch;overflow:auto;z-index:1;">
-	<iframe id="content" src="/auto/knowledge/mListKnowledge" onload=""></iframe>
+	<iframe class="myFrame" id="content" src="/auto/knowledge/mListKnowledge" onload=""></iframe>
 </div>
+
+
+
 
 <div style="position:fixed;bottom: 0;width:100%; background-color:#f0f0f0;">
 <div style="display:flex;justify-content:space-between; padding-left:0.5rem;padding-right:0.5rem;font-size: 0.825rem">
+	<div class="bottom-item" onclick="gotoHome();" style="color:orange;">
+	<div>🏠</div>
+	<div>首页</div>
+	</div>
+	
+	<div class="bottom-item" onclick="gotoSale();" style="color:gray;">
+	<div>🎁</div>
+	<div>卖什么</div>
+	</div>
+	
+	<div class="bottom-item" onclick="gotoAdd()" style="color:gray;">
+	<div>📝</div>
+	<div>新增</div>
+	</div>
+</div>
+</div>
 
-<div class="bottom-item" onclick="gotoHome();" style="color:orange;">
-<div>🏠</div>
-<div>首页</div>
-</div>
-
-<div class="bottom-item" onclick="gotoSale();" style="color:gray;">
-<div>🎁</div>
-<div>卖什么</div>
-</div>
-
-<div class="bottom-item" onclick="gotoAdd()" style="color:gray;">
-<div>📝</div>
-<div>新增</div>
-</div>
-
-</div>
-</div>
+<script>
+toScrollFrame('.myFrame', '.myMask');  
+</script>
 
 </body>
 </html>
