@@ -5,8 +5,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
 <script type="text/javascript">
-//rvar sUserAgent = navigator.userAgent.toLowerCase();
-//alert(sUserAgent);
+// var sUserAgent = navigator.userAgent.toLowerCase();
+// alert(sUserAgent);
 
 document.getElementsByTagName('html')[0].style.fontSize=window.screen.width/(7.5*3.45)+'px';
 // 宽：25.875rem  25.875/2=12.9375
@@ -128,7 +128,7 @@ $(window).scroll(function() {
 function more() {
 	$(".page-bottom").hide();
 	$("#bottomLoading").show();
-	$.post(controllerPath + "/mList", {pageNumber:currentPageNumber}, function(r) {
+	$.post(controllerPath + "mList", {pageNumber:currentPageNumber}, function(r) {
 		$("#knowDiv").append(template("itemTemplate", r));
 		$(".page-bottom").hide();
 		if (r.page.pageSize * r.page.pageNumber < r.page.totalRows) {
