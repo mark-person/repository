@@ -24,7 +24,7 @@ public class HomeController {
 	
 	@GetMapping("/m")
 	public ModelAndView mIndex(ModelAndView mv, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		// /需要转码，不能用来做文件名
 //		try {
 //			String b = Base64.getEncoder().encodeToString(",a我是中国人b".getBytes());
 //			System.out.println("sssssss1:" + b);
