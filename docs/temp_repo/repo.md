@@ -107,6 +107,7 @@ nohup ./bin/ngrokd -domain="ppx123.xyz" -httpAddr=":80" -httpsAddr=":443" -tunne
 ipconfig /flushdns
 
 
-
+客户端
+ngrok.bat ngrok -config=ngrok.cfg start http
 
 
