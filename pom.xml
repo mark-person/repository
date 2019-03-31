@@ -19,18 +19,21 @@
 			<groupId>com.ppx.cloud</groupId>
 			<artifactId>base-common</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+			<scope>provided</scope>
 		</dependency>
 		
 		<dependency>
 			<groupId>com.ppx.cloud</groupId>
 			<artifactId>base-monitor</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+			<scope>provided</scope>
 		</dependency>
 	
 		<dependency>
 			<groupId>com.ppx.cloud</groupId>
 			<artifactId>base-auth</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+			<scope>provided</scope>
 		</dependency>
 	
 		 
@@ -50,6 +53,23 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				
+				<configuration>
+                  <excludes>
+                    <exclude>
+                      <groupId>com.ppx.cloud</groupId>
+					  <artifactId>base-common</artifactId>
+                    </exclude>
+                    <exclude>
+                      <groupId>com.ppx.cloud</groupId>
+					  <artifactId>base-monitor</artifactId>
+                    </exclude>
+                    <exclude>
+                      <groupId>com.ppx.cloud</groupId>
+					  <artifactId>base-auth</artifactId>
+                    </exclude>
+                  </excludes>
+                </configuration>
 			</plugin>
 
 			<plugin>
@@ -74,6 +94,13 @@
 								<artifactItem>
 									<groupId>com.ppx.cloud</groupId>
 									<artifactId>base-monitor</artifactId>
+									<type>jar</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${project.build.directory}/classes</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>com.ppx.cloud</groupId>
+									<artifactId>base-auth</artifactId>
 									<type>jar</type>
 									<overWrite>true</overWrite>
 									<outputDirectory>${project.build.directory}/classes</outputDirectory>
