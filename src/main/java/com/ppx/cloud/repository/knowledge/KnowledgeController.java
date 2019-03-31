@@ -86,6 +86,9 @@ public class KnowledgeController {
 	}
 	
     public Map<?, ?> mList(MPage page, Knowledge pojo) {
+    	
+    	
+    	
 		return ReturnMap.of(page, impl.mList(page, pojo));
 	}
     

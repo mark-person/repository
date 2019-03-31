@@ -5,10 +5,10 @@
 <div th:fragment="nav(menuId)">
 <style type="text/css">
 .main-menu {
-	position:fixed;bottom: 0;width:100%; background-color:#f0f0f0;
+	position:fixed;bottom: 0; background-color:#f0f0f0;width:25.875rem;
 }
 .main-div {
-	display:flex;justify-content:space-between; padding:0.5rem 0.8rem 0.2rem 0.8rem;font-size: 0.825rem
+	display:flex;justify-content:space-between; padding:0.5rem 0.8rem 0.2rem 0.8rem;
 }
 .main-item {
 	text-align: center;color:gray;
@@ -17,7 +17,7 @@
 	color:orange;
 }
 </style>
-<div class="main-menu body-width">
+<div class="main-menu">
 <div class="main-div">
 	<div class="main-item" id="homeMenu" onclick="gotoPage(this);">
 		<div>🏠</div><div>home</div>

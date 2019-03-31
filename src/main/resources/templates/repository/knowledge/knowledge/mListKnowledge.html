@@ -5,35 +5,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
 <link th:replace="common/fragment::mobile"/>
-<script type="text/javascript">
-
-
-
-// var sUserAgent = navigator.userAgent.toLowerCase();
-// alert(sUserAgent);
-
-// document.getElementsByTagName('html')[0].style.fontSize=window.screen.width/(25.875)+'px';
-// 宽：25.875rem  25.875/2=12.9375
-</script>
-
-
-<script th:src="@{/static/cdn/template-3.0.0.js}"  type="text/javascript" ></script>
-
-
+<script th:src="@{/static/cdn/template-3.0.0.js}" type="text/javascript" ></script>
 <script type="text/javascript" th:inline="javascript">
+if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+	$("html").css("font-size", window.screen.width/(25.875)+'px');
+}
+else {
+	$("html").css("font-size", '16px');
+}
 
 var controllerPath = contextPath + "auto/knowledge/";
-
 $(function() {
-	if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-		document.getElementsByTagName('html')[0].style.fontSize=window.screen.width/(25.875)+'px';
-	}
-	else {
-		document.getElementsByTagName('html')[0].style.fontSize='16px';
-		$(".body-width").css("width", "25.875rem");
-	}
-	
-	
 	var list = [[${list}]];
 	$("#knowDiv").append(template("itemTemplate", list));
 });
@@ -42,35 +24,61 @@ function view(kId) {
 	top.location.href = controllerPath + "mViewKnowledge?id=" + kId;
 }
 
+var pageHasMore = true;
+var currentPageNumber = 1;
+$(window).scroll(function() {
+  	// 距离顶部+当前高度 >=文档总高度 即代表滑动到底部 注：-50 上拉加载更灵敏
+    if ($(this).scrollTop() + $(document).height() >= $(this).height() - 50) {   
+    	// 加载数据
+    	if (hasMore) {
+    		pageHasMore = false;
+    		currentPageNumber++;
+    		moreData();
+    	}
+    }
+});
+function moreData() {
+	$("#pageInfo div").hide();
+	$("#bottomLoading").show();
+	$.post(controllerPath + "mList", {pageNumber:currentPageNumber}, function(r) {
+		$("#knowDiv").append(template("itemTemplate", r));
+		$("#pageInfo div").hide();
+		if (r.page.pageSize * r.page.pageNumber < r.page.totalRows) {
+			pageHasMore = true;
+			$("#pageMore").show();
+		}
+		else {
+			$("#pageEnd").show();
+		}
+	});
+}
+
+$('#form').submit(function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    alert(1);
+ })
 </script>
 
 <style type="text/css">
+body {font-size:0.825rem;margin:2.75rem auto 3rem auto;width:25.875rem;}
+.top-div {position:fixed;top:0;background-color:#f0f0f0;padding:.2rem 0;width:25.875rem;}
+.top-div>div {display:flex;justify-content:space-between; padding-left:0.5rem;padding-right:0.5rem;}
 
-#knowDiv {
-	display:flex;justify-content:space-between;flex-wrap:wrap;margin-left:0.3rem;margin-right:0.3rem;
-}
-.know-item-div {
-	border:1px solid #DCDCDC;background-color:white;margin:0.2rem 0.2rem;border-radius:0.5rem;
-}
-.know-img {
-	max-width:100%;max-height:100%;
-}
-.know-img-div {
-	width:12rem;height:12rem;border-bottom:1px solid #DCDCDC;display:table-cell;vertical-align:middle;text-align:center;
-}
-.know-title {
-	width:12rem;display:-webkit-box !important; overflow:hidden;-webkit-line-clamp:1;-webkit-box-orient:vertical;font-size: 0.825rem;
-	padding:0.2rem;
-}
+input::-webkit-input-placeholder {padding-top:0.175rem;}
 
-input::-webkit-input-placeholder {
-	padding-top:0.175rem;
-    font-size: 0.825rem;
- }
+#knowDiv {display:flex;justify-content:space-between;flex-wrap:wrap;margin-left:0.3rem;margin-right:0.3rem;}
+.know-item-div {border:1px solid #DCDCDC;background-color:white;margin:0.2rem 0.2rem;border-radius:0.5rem;}
+.know-img {max-width:100%;max-height:100%;}
+.know-img-div {width:12rem;height:12rem;border-bottom:1px solid #DCDCDC;display:table-cell;vertical-align:middle;text-align:center;}
+.know-title {width:12rem;display:-webkit-box !important; overflow:hidden;-webkit-line-clamp:1;-webkit-box-orient:vertical;font-size: 0.825rem;padding:0.2rem;}
+
+#pageInfo div {display: none;}
+#pageInfo p {text-align: center;}
 </style>
 </head>
 
-<body style="margin-top: 2.75rem;margin-bottom: 3rem;margin-left:auto;margin-right:auto" class="body-width">
+<body class="body-width">
 <script id="itemTemplate" type="text/html">
 {{each list as v i}}
 <div class="know-item-div" onclick="view({{v.kId}})">
@@ -79,91 +87,28 @@ input::-webkit-input-placeholder {
 </div>
 {{/each}}
 </script>
-
-
-<div style="position:fixed;top: 0;width:100%; background-color:#f0f0f0;padding:.2rem 0" class="body-width">
-<div style="display:flex;justify-content:space-between; padding-left:0.5rem;padding-right:0.5rem;font-size: 0.825rem;">
+<div class="top-div">
+<div>
 	<select class="form-control" name="catId" style="width:12.1rem">
     	<option th:each="item:${catList}" th:text="${item.catName}" th:value="${item.catId}"></option>
     </select>
 	<div>
 		<form id="form"style="width:12.1rem" >
-		<input type="search" name="title" class="form-control" style="width:100%;"  placeholder="🔍">
+			<input type="search" name="title" class="form-control" style="width:100%;"  placeholder="🔍">
 		</form>
 	</div>
 </div>
 </div>
-
-<script>
-$('#form').submit(function (e) {
-    e.preventDefault();
-    e.stopPropagation();
-    alert(1);
- })
-</script>
-
-
 <div id="knowDiv"></div>
-
-
-<div style="font-size: 0.825rem;">
-	<div class="page-bottom" id="pageMore" style="display: none;">
-        <p style="text-align: center;">-- 上拉加载更多 --</p>
-    </div>
-    <div class="page-bottom" id="bottomLoading" style="display: none">
-        <p style="text-align: center;">-- loading --</p>
-    </div>
-    <div class="page-bottom" id="pageEnd" style="display: none">
-        <p style="text-align: center;">-- 我是有底线的 --</p>
-    </div>
-</div> 
-
-
-<script type="text/javascript">
-
-var hasMore = true;
-var currentPageNumber = 1;
-
-$(window).scroll(function() {
-    var scrollTop = $(this).scrollTop();
-    var scrollHeight = $(document).height();
-    var clientHeight = $(this).height();
-  	// 距离顶部+当前高度 >=文档总高度 即代表滑动到底部 注：-50 上拉加载更灵敏
-  	
-    if (scrollTop + clientHeight >= scrollHeight - 50) {   
-    	// 加载数据
-    	if (hasMore) {
-    		currentPageNumber++;
-    		hasMore = false;
-    		more();
-    	}
-    }
-});
-
-function more() {
-	$(".page-bottom").hide();
-	$("#bottomLoading").show();
-	$.post(controllerPath + "mList", {pageNumber:currentPageNumber}, function(r) {
-		$("#knowDiv").append(template("itemTemplate", r));
-		$(".page-bottom").hide();
-		if (r.page.pageSize * r.page.pageNumber < r.page.totalRows) {
-			hasMore = true;
-			$("#pageMore").show();
-		}
-		else {
-			$("#pageEnd").show();
-		}
-	});
-}
-</script>
-
+<div id="pageInfo">
+	<div id="pageMore"><p>-- 上拉加载更多 --</p></div>
+    <div id="bottomLoading"><p>-- 加载中... --</p></div>
+    <div id="pageEnd"><p>-- 我是有底线的 --</p></div>
+</div>
 <div th:replace="repository/knowledge/knowledge/menu::nav('homeMenu')"></div>
 
 </body>
 </html>
-
-
-
 
 
 
