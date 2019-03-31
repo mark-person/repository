@@ -14,6 +14,15 @@ ALTER TABLE test ADD INDEX idx_test_name (test_name ASC) VISIBLE;
 
 /** 仓库 repository(repo) >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
 
+create table repo_usp
+(
+	usp_id		int not null auto_increment,
+	usp_name 	varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci not null,
+	usp_prio	smallint not null comment '显示优先级',
+	usp_status	tinyint not null default 1 comment '1:正常,0:作废',
+	primary key (usp_id)
+) comment='独特销售主张,好奇、速度';
+
 create table repo_knowledge_category
 (
   cat_id			int not null auto_increment,
