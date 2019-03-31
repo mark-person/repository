@@ -1,6 +1,7 @@
 package com.ppx.cloud.repository.mobile;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.Date;
 
 import javax.servlet.ServletException;
@@ -24,8 +25,19 @@ public class HomeController {
 	@GetMapping("/m")
 	public ModelAndView mIndex(ModelAndView mv, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+//		try {
+//			String b = Base64.getEncoder().encodeToString(",a我是中国人b".getBytes());
+//			System.out.println("sssssss1:" + b);
+//			byte[] bb = Base64.getDecoder().decode("LGHmiJHmmK/kuK3lm73kurpi");
+//			System.out.println("sssssss2:" + new String(bb));
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 		
-		mv.setViewName("repository/mobile/home/mIndex");
+		
+		
+		
+		//mv.setViewName("repository/mobile/home/mIndex");
 		
 		//LoginAccount account = AuthContext.getLoginAccount();
 		//if (account == null) {
