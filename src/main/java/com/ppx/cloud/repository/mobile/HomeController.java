@@ -21,7 +21,7 @@ import com.ppx.cloud.common.util.CookieUtils;
 public class HomeController {
 	
 	
-	@GetMapping("/index")
+	@GetMapping("/m")
 	public ModelAndView mIndex(ModelAndView mv, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		
@@ -44,13 +44,6 @@ public class HomeController {
 		request.getRequestDispatcher("auto/knowledge/mListKnowledge").include(request, response);
 		//	response.sendRedirect("mIndex");
 		return null;
-	}
-	
-	@GetMapping("/mIndex")
-	public ModelAndView mIndex(ModelAndView mv) throws ServletException, IOException {
-		mv.setViewName("repository/mobile/home/mIndex");
-		System.out.println("----");
-		return mv;
 	}
 	
 	
