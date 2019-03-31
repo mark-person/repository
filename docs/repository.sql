@@ -18,7 +18,7 @@ create table repo_knowledge_category
 (
   cat_id			int not null auto_increment,
   parent_id			int not null default 0 comment '0:一级目录',
-  cat_name	 		varchar(32) not null,
+  cat_name	 		varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci not null,
   cat_prio			smallint not null comment '显示优先级',
   cat_status		tinyint not null default 1 comment '1:正常,0:作废',
   primary key (cat_id)
@@ -28,7 +28,7 @@ create table repo_knowledge_category
 create table repo_knowledge
 (
   k_id			int not null auto_increment,
-  k_title		varchar(32) not null,
+  k_title		varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci not null,
   cat_id		int not null,
   recommend 	tinyint not null default 3 comment '推荐星级1、2、3、4、5',
   created		timestamp not null default current_timestamp,
@@ -43,7 +43,7 @@ create table repo_knowledge
 create table repo_knowledge_content
 (
   k_id		int not null auto_increment,
-  k_content	varchar(4000),
+  k_content	varchar(4000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   primary key (k_id)
 ) comment='';
 
