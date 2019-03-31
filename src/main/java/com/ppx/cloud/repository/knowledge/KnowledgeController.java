@@ -80,6 +80,8 @@ public class KnowledgeController {
     
     public ModelAndView mListKnowledge(ModelAndView mv) {
 		mv.addObject("list", mList(new MPage(), new Knowledge()));
+		
+		mv.addObject("catList", categoryService.list());
 		return mv;
 	}
 	
