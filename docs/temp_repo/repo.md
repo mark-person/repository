@@ -96,3 +96,17 @@ ngrok -config=ngrok.cfg start http
 
 ./bin/ngrokd -tlsKey=1.key -tlsCrt=1.crt -domain="ppx123.xyz" -httpAddr=":80" -httpsAddr=":443" -tunnelAddr=":8083"
 
+后台运行：
+nohup ./bin/ngrokd -domain="ppx123.xyz" -httpAddr=":80" -httpsAddr=":443" -tunnelAddr=":8083" > out.txt 2>&1 &
+
+
+客户端trust_host_root_certs: true
+
+证书通用域名申请时有问题	通用名称www.ppx123.xyz，应该用ppx123.xyz
+
+ipconfig /flushdns
+
+
+
+
+
