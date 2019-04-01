@@ -250,11 +250,60 @@ function gotoView() {
 <input type="hidden" name="recommend">
 <input type="hidden" name="kContent">
 <ul class="list-group" id="imgUL">
+
+<script>
+(function ($, undefined) {
+    $.fn.getCursorPosition = function () {
+        var el = $(this).get(0);
+        var pos = 0;
+        if ('selectionStart' in el) {
+            pos = el.selectionStart;
+        } else if ('selection' in document) {
+            el.focus();
+            var Sel = document.selection.createRange();
+            var SelLength = document.selection.createRange().text.length;
+            Sel.moveStart('character', -el.value.length);
+            pos = Sel.text.length - SelLength;
+        }
+        return pos;
+    }
+})(jQuery);
+
+
+
+   
+
+
+
+	function onTitleUp(obj) {
+		// 51 #
+		if (event.keyCode == 51 && event.shiftKey==1) {
+			alert(event.clientY )
+		}
+		
+	}
+	</script>
+	
+	<div class="dropdown">
+	  <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: none">
+	    Dropdown trigger
+	  </button>
+	  
+	  	<ul class="dropdown-menu">
+      <button        button class="dropdown-item" type="button">Action</button>
+    <button class="dropdown-item" type="button">Another action</button>
+    <button class="dropdown-item" type="button">Something else here</button>
+         </ul>
+	  </div>
+	</div>
+	
     <li class="list-group-item">
     	<div class="row">
-    		<input class="form-control" type="text" name="kTitle" placeholder="无" th:value="${pojo.kTitle}" maxlength="32">
+    		<input class="form-control" type="text" id="kTitle" name="kTitle" placeholder="无" th:value="${pojo.kTitle}" maxlength="32" onkeyup="onTitleUp(this)">
     	</div>
     </li>
+    
+    <!--
     <li class="list-group-item">
    		<div class="row">
 	    	<select class="form-control" name="catId">
@@ -288,6 +337,7 @@ function gotoView() {
 		<span class="badge badge-dark btn" onclick="img.remove(this)">✖删除</span>
 	</li>
 	<li class="list-group-item" id="imgEndLi"></li>
+	-->
 </ul>
 </form>
 <script id="imgTemplate" type="text/html">
@@ -302,9 +352,9 @@ function gotoView() {
 
 </div>
 
-
+<!--  
 <div th:replace="repository/knowledge/knowledge/menu::nav('insertMenu')"></div>
-
+-->
 
 </body>
 </html>
