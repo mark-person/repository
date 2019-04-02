@@ -203,6 +203,8 @@ function insertOrUpdateKnowledge() {
 		$("[name=kContent]").val($("#kContent").val());
 	}
 	
+	$("[name=uspIds]").val(getUspIdArray().join(","));
+	
 	$.post(controllerPath + "insertOrUpdate", $("#addForm").serialize() + imgSrc, function(r) {
 		if (r.errcode === 0) {
 			alertSuccess();
@@ -241,9 +243,22 @@ function refreshRecommend() {
 }
 
 var initkContent;
+var uspList = [[${uspList}]];
 $(function() {
 	refreshRecommend();
 	initkContent = $("#kContent").val();
+	
+	
+	
+	var tribute = new Tribute({
+	 values: uspList,
+	 selectTemplate: function(item) {
+	   if (typeof item === "undefined") return null;
+	   if (this.range.isContentEditable(this.current.element)) {return "html";}
+	   return "@" + item.original.value;
+	 }
+	});
+	tribute.attach(document.getElementById("kTitle"));
 })
 
 function resetForm() {
@@ -262,6 +277,18 @@ function resetForm() {
 function gotoView() {
 	var kId = [[${pojo.kId}]];
 	location.href = [[@{/auto/knowledge/mViewKnowledge}]] + "?id=" + kId;
+}
+
+
+function getUspIdArray() {
+	var title = $("#kTitle").val();
+	var uspArray = [];
+	for (i in uspList) {
+		if (title.indexOf(uspList[i].key) >= 0 && uspArray.indexOf(uspList[i].uspId) == -1) {
+			uspArray.push(uspList[i].uspId);
+		}
+	}
+	return uspArray;
 }
 </script>
 <style type="text/css">
@@ -283,61 +310,16 @@ function gotoView() {
 <input type="hidden" name="kId" th:value="${pojo.kId}">
 <input type="hidden" name="recommend">
 <input type="hidden" name="kContent">
+<input type="hidden" name="uspIds">
 <ul class="list-group" id="imgUL">
 
-<script>
-(function ($, undefined) {
-    $.fn.getCursorPosition = function () {
-        var el = $(this).get(0);
-        var pos = 0;
-        if ('selectionStart' in el) {
-            pos = el.selectionStart;
-        } else if ('selection' in document) {
-            el.focus();
-            var Sel = document.selection.createRange();
-            var SelLength = document.selection.createRange().text.length;
-            Sel.moveStart('character', -el.value.length);
-            pos = Sel.text.length - SelLength;
-        }
-        return pos;
-    }
-})(jQuery);
-
-
-
-   
-
-
-
-	function onTitleUp(obj) {
-		// 51 #
-		if (event.keyCode == 51 && event.shiftKey==1) {
-			
-		}
-		
-	}
-	</script>
-	
-	<div class="dropdown">
-	  <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: none">
-	    Dropdown trigger
-	  </button>
-	  
-	  	<ul class="dropdown-menu">
-      <button        button class="dropdown-item" type="button">Action</button>
-    <button class="dropdown-item" type="button">Another action</button>
-    <button class="dropdown-item" type="button">Something else here</button>
-         </ul>
-	  </div>
-	</div>
-	
     <li class="list-group-item">
     	<div class="row">
-    		<input   class="form-control" type="text" id="kTitle" name="kTitle" placeholder="无" th:value="${pojo.kTitle}" maxlength="32" onkeyup="onTitleUp(this)">
+    		<input   class="form-control" type="text" id="kTitle" name="kTitle" placeholder="无" th:value="${pojo.kTitle}" maxlength="32">
     	</div>
     </li>
     
-    <!--
+    
     <li class="list-group-item">
    		<div class="row">
 	    	<select class="form-control" name="catId">
@@ -371,7 +353,7 @@ function gotoView() {
 		<span class="badge badge-dark btn" onclick="img.remove(this)">✖删除</span>
 	</li>
 	<li class="list-group-item" id="imgEndLi"></li>
-	-->
+	
 </ul>
 </form>
 <script id="imgTemplate" type="text/html">
@@ -390,36 +372,7 @@ function gotoView() {
 <div th:replace="repository/knowledge/knowledge/menu::nav('insertMenu')"></div>
 -->
 
-<script type="text/javascript" th:inline="javascript">
 
-var uspList = [[${uspList}]];
-// example of alternative callback
-var tribute = new Tribute({
-    values: uspList,
-    selectTemplate: function(item) {
-      if (typeof item === "undefined") return null;
-      if (this.range.isContentEditable(this.current.element)) {
-        return "html";
-      }
-      return "@" + item.original.value;
-    }
-});
-tribute.attach(document.getElementById("kTitle"));
-
-function getUspIdArray() {
-	var title = $("#kTitle").val();
-	var uspArray = [];
-	for (i in uspList) {
-		if (title.indexOf(uspList[i].key) >= 0 && uspArray.indexOf(uspList[i].uspId) == -1) {
-			uspArray.push(uspList[i].uspId);
-		}
-	}
-	alert(uspArray);
-}
-
-</script>
-
-<button onclick="getUspIdArray()">test</button>
 
 
 </body>

@@ -32,9 +32,21 @@ public class Knowledge {
 	private String kContent;
 	@Column(readonly = true)
 	private String imgSrc;
+	@Column(readonly = true)
+	private String uspIds;
 	
 	private String catName;
 	
+	
+	
+	public String getUspIds() {
+		return uspIds;
+	}
+
+	public void setUspIds(String uspIds) {
+		this.uspIds = uspIds;
+	}
+
 	public String getMainImgSrc() {
 		return mainImgSrc;
 	}

@@ -66,6 +66,16 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 			String insertContentsSql = "insert into repo_knowledge_content(k_id, k_content) values(?, ?)";
 			getJdbcTemplate().update(insertContentsSql, kId, pojo.getkContent());
 		}
+		
+		// USP
+		if (pojo.getUspIds() != null) {
+			String[] uspId = pojo.getUspIds().split(",");
+			String insertUspSql = "insert into repo_knowledge_map_usp(usp_id, k_id) values(?, ?)";
+			for (String id : uspId) {
+				getJdbcTemplate().update(insertUspSql, id, kId);
+			}
+		}
+		
 		return ReturnMap.of("kId", kId);
 	}
 
@@ -122,6 +132,17 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 		if (Strings.isNotEmpty(pojo.getkContent())) {
 			String insertContentsSql = "insert into repo_knowledge_content(k_id, k_content) values(?, ?)";
 			getJdbcTemplate().update(insertContentsSql, kId, pojo.getkContent());
+		}
+		
+		// USP
+		String delUspSql = "delete from repo_knowledge_map_usp where k_id = ?";
+		getJdbcTemplate().update(delUspSql, kId);
+		if (pojo.getUspIds() != null) {
+			String[] uspId = pojo.getUspIds().split(",");
+			String insertUspSql = "insert into repo_knowledge_map_usp(usp_id, k_id) values(?, ?)";
+			for (String id : uspId) {
+				getJdbcTemplate().update(insertUspSql, id, kId);
+			}
 		}
 		return ReturnMap.of("kId", kId);
     }
