@@ -24,7 +24,7 @@
 
 <script type="text/javascript" th:inline="javascript">
 
-var controllerPath = contextPath + "auto/knowledge/";
+var controllerPath = contextPath + "auto/mobile/";
 
 // >>>>>>>>>>>>>>>>>>>>>>img
 var img = {};
@@ -262,7 +262,6 @@ function gotoView() {
 	var kId = [[${pojo.kId}]];
 	location.href = [[@{/auto/knowledge/mViewKnowledge}]] + "?id=" + kId;
 }
-
 
 function getUspIdArray() {
 	var title = $("#kTitle").val();

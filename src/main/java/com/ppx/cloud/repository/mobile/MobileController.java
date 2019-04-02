@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.HtmlUtils;
 
 import com.ppx.cloud.common.contoller.ReturnMap;
 import com.ppx.cloud.common.page.MPage;
@@ -85,6 +86,12 @@ public class MobileController {
 	}
     
     public Map<?, ?> insertOrUpdate(Knowledge pojo) {
+    	// title转换
+    	String newTitle = HtmlUtils.htmlEscape(pojo.getkTitle());
+    	System.out.println("0000000000newTitle:" + newTitle);
+    	pojo.setkTitle(newTitle);
+    	
+    	
     	if (pojo.getkId() == null) {
     		return impl.insert(pojo);
     	}
@@ -118,4 +125,5 @@ public class MobileController {
 		mv.addObject("uspList", uspService.list());
 		return mv;
 	}
+
 }
