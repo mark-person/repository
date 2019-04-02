@@ -37,12 +37,12 @@ $(function() {
 });
 
 function back() {
-	location.href = [[@{/index}]];
+	history.go(-1);
 }
 
 function edit() {
 	var kId = [[${pojo.kId}]];
-	location.href = [[@{/auto/knowledge/edit}]] + "?id=" + kId;
+	location.href = [[@{/auto/mobile/edit}]] + "?id=" + kId;
 }
 </script>
 <style type="text/css">
