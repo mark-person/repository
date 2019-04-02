@@ -61,7 +61,7 @@ $('#form').submit(function (e) {
 </script>
 
 <style type="text/css">
-body {font-size:0.825rem;margin:2.75rem auto 3rem auto;width:25.875rem;}
+body {margin-top:2.75rem;}
 .top-div {position:fixed;top:0;background-color:#f0f0f0;padding:.2rem 0;width:25.875rem;}
 .top-div>div {display:flex;justify-content:space-between; padding-left:0.5rem;padding-right:0.5rem;}
 
@@ -78,7 +78,7 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
 </style>
 </head>
 
-<body class="body-width">
+<body>
 <script id="itemTemplate" type="text/html">
 {{each list as v i}}
 <div class="know-item-div" onclick="view({{v.kId}})">

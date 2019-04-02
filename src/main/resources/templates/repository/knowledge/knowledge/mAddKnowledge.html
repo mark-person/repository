@@ -4,7 +4,7 @@
 <head>
 <title></title>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
 
 <link th:replace="common/fragment::mobile"/>
 
@@ -12,38 +12,18 @@
 <script th:replace="repository/knowledge/knowledge/js::js"></script>
 <script th:src="@{/static/markdown/tribute.min.js}" type="text/javascript"></script>
 
-
  <style>
-    .tribute-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: auto;
-  max-height: 300px;
-  max-width: 500px;
-  overflow: auto;
-  display: block;
-  z-index: 999999; }
-  .tribute-container ul {
-    margin: 0;
-    margin-top: 2px;
-    padding: 0;
-    list-style: none;
-    background: #efefef; }
-  .tribute-container li {
-    padding: 5px 5px;
-    cursor: pointer; }
-    .tribute-container li.highlight {
-      background: #ddd; }
-    .tribute-container li span {
-      font-weight: bold; }
-    .tribute-container li.no-match {
-      cursor: default; }
-  .tribute-container .menu-highlighted {
-    font-weight: bold; }
+.tribute-container {position:absolute;top 0;left:0;height auto;max-height:300px;max-width:500px;overflow:auto;display:block;z-index:999999;}
+.tribute-container ul {margin:0;margin-top:2px;padding:0;list-style:none;background: #efefef;}
+.tribute-container li {padding:5px 5px;cursor:pointer;}
+.tribute-container li.highlight {background:#ddd;}
+.tribute-container li span {font-weight:bold;}
+.tribute-container li.no-match {cursor:default;}
+.tribute-container .menu-highlighted {font-weight:bold;}
+</style>
 
-  </style>
 <script type="text/javascript" th:inline="javascript">
+
 var controllerPath = contextPath + "auto/knowledge/";
 
 // >>>>>>>>>>>>>>>>>>>>>>img
@@ -291,18 +271,16 @@ function getUspIdArray() {
 	return uspArray;
 }
 </script>
+
 <style type="text/css">
-.star {
-	border:1px solid rgba(0,0,0,.125);
-	cursor: pointer;
-}
+.star {border:1px solid rgba(0,0,0,.125);cursor: pointer;}
 .star-show {visibility:visible}
 .star-hide {visibility:hidden}
 .badge-dark {margin-left:2rem;padding:0.5rem;}
 </style>
+
 </head>
 <body>
-
 <div class="container">
 
 <div class="panel panel-default">
@@ -312,16 +290,13 @@ function getUspIdArray() {
 <input type="hidden" name="kContent">
 <input type="hidden" name="uspIds">
 <ul class="list-group" id="imgUL">
-
     <li class="list-group-item">
     	<div class="row">
-    		<input   class="form-control" type="text" id="kTitle" name="kTitle" placeholder="无" th:value="${pojo.kTitle}" maxlength="32">
+    		<input class="form-control" type="text" id="kTitle" name="kTitle" placeholder="无" th:value="${pojo.kTitle}" maxlength="32">
     	</div>
     </li>
-    
-    
     <li class="list-group-item">
-   		<div class="row">
+   		<div class="row" >
 	    	<select class="form-control" name="catId">
 	    		<option th:each="item:${catList}" th:text="${item.catName}" th:value="${item.catId}" th:selected="${item.catId == pojo.catId}"></option>
 	    	</select>
@@ -352,8 +327,7 @@ function getUspIdArray() {
 		<span class="badge badge-dark btn" onclick="$(this).parent().find('img').click()">🔍放大</span>
 		<span class="badge badge-dark btn" onclick="img.remove(this)">✖删除</span>
 	</li>
-	<li class="list-group-item" id="imgEndLi"></li>
-	
+	<li class="list-group-item" id="imgEndLi" style="display: none"></li>
 </ul>
 </form>
 <script id="imgTemplate" type="text/html">
@@ -365,15 +339,9 @@ function getUspIdArray() {
 	</li>
 	</script>
 </div>
-
 </div>
 
-<!--  
 <div th:replace="repository/knowledge/knowledge/menu::nav('insertMenu')"></div>
--->
-
-
-
 
 </body>
 </html>
