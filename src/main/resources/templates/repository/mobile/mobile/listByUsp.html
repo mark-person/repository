@@ -57,7 +57,7 @@ template.config("escape", false);
 var uspList = [[${uspList}]];
 template.helper('getTitle', function(v) {
 	for (i in uspList) {
-		v = v.replace(new RegExp("\\$\\{" + uspList[i].uspId + "\\}", "g"), '<a href="/auto/mobile/listByUsp?uspId=' + uspList[i].uspId + '">' + uspList[i].key + '</a>');
+		v = v.replace(new RegExp("\\$\\{" + uspList[i].uspId + "\\}", "g"), uspList[i].key);
 	}
 	return v;
 })
@@ -101,7 +101,7 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
     	<option th:each="item:${catList}" th:text="${item.catName}" th:value="${item.catId}"></option>
     </select>
 	<div>
-		<form id="form"style="width:12.1rem" >
+		<form id="form"style="width:12.1rem">
 			<input type="search" name="title" class="form-control" style="width:100%;"  placeholder="🔍">
 		</form>
 	</div>

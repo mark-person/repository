@@ -96,6 +96,7 @@ public class MobileController {
     public ModelAndView view(ModelAndView mv, @RequestParam Integer id) {
     	Knowledge pojo = impl.get(id);
 		mv.addObject("pojo", pojo);
+		mv.addObject("uspList", uspService.list());
 		
 		if (Strings.isNotEmpty(pojo.getImgSrc())) {
 			mv.addObject("imgList", pojo.getImgSrc().split(","));
