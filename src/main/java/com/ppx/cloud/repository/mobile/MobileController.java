@@ -88,7 +88,6 @@ public class MobileController {
     public Map<?, ?> insertOrUpdate(Knowledge pojo) {
     	// title转换
     	String newTitle = HtmlUtils.htmlEscape(pojo.getkTitle());
-    	System.out.println("0000000000newTitle:" + newTitle);
     	pojo.setkTitle(newTitle);
     	
     	
@@ -102,6 +101,11 @@ public class MobileController {
     
     public ModelAndView view(ModelAndView mv, @RequestParam Integer id) {
     	Knowledge pojo = impl.get(id);
+    	// title转换
+    	String newTitle = HtmlUtils.htmlUnescape(pojo.getkTitle());
+    	System.out.println("newTitle.......newTitle:" + newTitle);
+    	//pojo.setkTitle(newTitle);
+    	
 		mv.addObject("pojo", pojo);
 		mv.addObject("uspList", uspService.list());
 		
