@@ -14,15 +14,6 @@ ALTER TABLE test ADD INDEX idx_test_name (test_name ASC) VISIBLE;
 
 /** 仓库 repository(repo) >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
 
-create table repo_usp
-(
-	usp_id		int not null auto_increment,
-	usp_name 	varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci not null,
-	usp_prio	smallint not null comment '显示优先级',
-	usp_status	tinyint not null default 1 comment '1:正常,0:作废',
-	primary key (usp_id)
-) comment='独特销售主张,好奇、速度';
-
 create table repo_knowledge_category
 (
   cat_id			int not null auto_increment,
@@ -46,6 +37,23 @@ create table repo_knowledge
   modified_by   int not null,
   main_img_src	varchar(255) comment '主图src',
   primary key (k_id)
+) comment='';
+
+create table repo_knowledge_usp
+(
+	usp_id		int not null auto_increment,
+	usp_name 	varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci not null,
+	usp_prio	smallint not null comment '显示优先级',
+	usp_status	tinyint not null default 1 comment '1:正常,0:作废',
+	primary key (usp_id)
+) comment='独特销售主张,好奇、速度';
+ALTER TABLE `repository`.`repo_knowledge_usp` ADD UNIQUE INDEX `idx_usp_name` (`usp_name` ASC) VISIBLE;
+
+create table repo_knowledge_map_usp
+(
+	usp_id		int not null,
+	k_id		int not null,
+	primary key (usp_id, k_id)
 ) comment='';
 
 

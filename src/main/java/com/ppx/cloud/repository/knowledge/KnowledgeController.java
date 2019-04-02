@@ -14,6 +14,7 @@ import com.ppx.cloud.common.contoller.ReturnMap;
 import com.ppx.cloud.common.page.MPage;
 import com.ppx.cloud.common.page.Page;
 import com.ppx.cloud.repository.category.KnowledgeCategoryService;
+import com.ppx.cloud.repository.usp.KnowledgeUspService;
 
 @Controller
 public class KnowledgeController {
@@ -62,12 +63,15 @@ public class KnowledgeController {
     
     @Autowired
     private KnowledgeCategoryService categoryService;
+    @Autowired
+    private KnowledgeUspService uspService;
     
     public ModelAndView mAddKnowledge(ModelAndView mv) {
     	Knowledge pojo = new Knowledge();
     	pojo.setkContent(INIT_CONTENT);
     	mv.addObject("pojo", pojo);
 		mv.addObject("catList", categoryService.list());
+		mv.addObject("uspList", uspService.list());
 		
 		// init_recommend
 		List<String> starList = List.of("", "", "");
@@ -82,6 +86,11 @@ public class KnowledgeController {
 		mv.addObject("list", mList(new MPage(), new Knowledge()));
 		
 		mv.addObject("catList", categoryService.list());
+		
+		
+		
+		
+		
 		return mv;
 	}
 	

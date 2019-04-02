@@ -390,39 +390,36 @@ function gotoView() {
 <div th:replace="repository/knowledge/knowledge/menu::nav('insertMenu')"></div>
 -->
 
-<script>
-      // example of alternative callback
-      var tribute = new Tribute({
-        values: [
-          {
-            key: "Jordan Humphreys",
-            value: "Jordan Humphreys",
-            email: "getstarted@zurb.com"
-          },
-          {
-            key: "Sir Walter Riley",
-            value: "Sir Walter Riley",
-            email: "getstarted+riley@zurb.com"
-          }
-        ],
-        selectTemplate: function(item) {
-          if (typeof item === "undefined") return null;
-          if (this.range.isContentEditable(this.current.element)) {
-            return (
-              '<span contenteditable="false"><a href="http://zurb.com" target="_blank" title="' +
-              item.original.email +
-              '">' +
-              item.original.value +
-              "</a></span>"
-            );
-          }
+<script type="text/javascript" th:inline="javascript">
 
-          return "@" + item.original.value;
-        }
-      });
+var uspList = [[${uspList}]];
+// example of alternative callback
+var tribute = new Tribute({
+    values: uspList,
+    selectTemplate: function(item) {
+      if (typeof item === "undefined") return null;
+      if (this.range.isContentEditable(this.current.element)) {
+        return "html";
+      }
+      return "@" + item.original.value;
+    }
+});
+tribute.attach(document.getElementById("kTitle"));
 
-      tribute.attach(document.getElementById("kTitle"));
-    </script>
+function getUspIdArray() {
+	var title = $("#kTitle").val();
+	var uspArray = [];
+	for (i in uspList) {
+		if (title.indexOf(uspList[i].key) >= 0 && uspArray.indexOf(uspList[i].uspId) == -1) {
+			uspArray.push(uspList[i].uspId);
+		}
+	}
+	alert(uspArray);
+}
+
+</script>
+
+<button onclick="getUspIdArray()">test</button>
 
 
 </body>
