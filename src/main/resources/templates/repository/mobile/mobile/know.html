@@ -235,12 +235,12 @@ $(function() {
 	initkContent = $("#kContent").val();
 	
 	var tribute = new Tribute({
-	 values: uspList,
-	 selectTemplate: function(item) {
-	   if (typeof item === "undefined") return null;
-	   if (this.range.isContentEditable(this.current.element)) {return "html";}
-	   return "@" + item.original.value;
-	 }
+		values: uspList,
+	 	selectTemplate: function(item) {
+	  		if (typeof item === "undefined") return null;
+	   		if (this.range.isContentEditable(this.current.element)) {return "html";}
+	 		return "@" + item.original.value;
+	 	}
 	});
 	tribute.attach(document.getElementById("kTitle"));
 })
