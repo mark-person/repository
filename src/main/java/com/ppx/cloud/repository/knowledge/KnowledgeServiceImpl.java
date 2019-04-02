@@ -68,7 +68,7 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 		}
 		
 		// USP
-		if (pojo.getUspIds() != null) {
+		if (Strings.isNotEmpty(pojo.getUspIds())) {
 			String[] uspId = pojo.getUspIds().split(",");
 			String insertUspSql = "insert into repo_knowledge_map_usp(usp_id, k_id) values(?, ?)";
 			for (String id : uspId) {

@@ -47,6 +47,7 @@ public class MobileController {
     	
     	Knowledge pojo = new Knowledge();
     	pojo.setkContent(INIT_CONTENT);
+    	mv.addObject("initContent", INIT_CONTENT);
     	mv.addObject("pojo", pojo);
 		mv.addObject("catList", categoryService.list());
 		mv.addObject("uspList", uspService.list());
@@ -60,9 +61,14 @@ public class MobileController {
     public ModelAndView edit(ModelAndView mv, @RequestParam Integer id) {
     	mv.setViewName("repository/mobile/mobile/know");
     	Knowledge pojo = impl.get(id);
+    	
+    	String newTitle = HtmlUtils.htmlUnescape(pojo.getkTitle());
+    	pojo.setkTitle(newTitle);
+    	
     	if (Strings.isEmpty(pojo.getkContent())) {
     		pojo.setkContent(INIT_CONTENT);
     	}
+    	mv.addObject("initContent", INIT_CONTENT);
 		mv.addObject("pojo", pojo);
 		mv.addObject("catList", categoryService.list());
 		mv.addObject("uspList", uspService.list());
@@ -90,7 +96,6 @@ public class MobileController {
     	String newTitle = HtmlUtils.htmlEscape(pojo.getkTitle());
     	pojo.setkTitle(newTitle);
     	
-    	
     	if (pojo.getkId() == null) {
     		return impl.insert(pojo);
     	}
@@ -101,10 +106,10 @@ public class MobileController {
     
     public ModelAndView view(ModelAndView mv, @RequestParam Integer id) {
     	Knowledge pojo = impl.get(id);
-    	// title转换
-    	String newTitle = HtmlUtils.htmlUnescape(pojo.getkTitle());
-    	System.out.println("newTitle.......newTitle:" + newTitle);
-    	//pojo.setkTitle(newTitle);
+    	if (Strings.isNotEmpty(pojo.getkContent())) {
+    		String newContent = HtmlUtils.htmlEscape(pojo.getkContent());
+    		pojo.setkContent(newContent);
+    	}
     	
 		mv.addObject("pojo", pojo);
 		mv.addObject("uspList", uspService.list());

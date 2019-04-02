@@ -228,10 +228,13 @@ var initkContent;
 var uspList = [[${uspList}]];
 $(function() {
 	var kTitle = [[${pojo.kTitle}]];
-	$("#kTitle").val(getEmojiTitle(kTitle));
+	if (kTitle) {
+		$("#kTitle").val(getEmojiTitle(kTitle));
+	}
+	
 	
 	refreshRecommend();
-	initkContent = $("#kContent").val();
+	initkContent = [[${initContent}]];
 	
 	var tribute = new Tribute({
 		values: uspList,
@@ -275,7 +278,6 @@ function getUspIdArray() {
 
 function getUspTitle() {
 	var title = $("#kTitle").val();
-	var uspArray = [];
 	for (i in uspList) {
 		title = title.replace(new RegExp(uspList[i].key,"g"), "${" + uspList[i].uspId + "}");
 	}
@@ -330,7 +332,7 @@ function getEmojiTitle(title) {
     </li>
     <li class="list-group-item">
     	<div class="row">
-			<textarea id="kContent" rows="4" class="form-control" th:text="${pojo.kContent}"></textarea>
+			<textarea id="kContent" rows="5" class="form-control" th:text="${pojo.kContent}"></textarea>
     	</div>
     </li>
 	<li class="list-group-item" id="imgLi" style="display:flex;justify-content:space-between;">
@@ -359,7 +361,7 @@ function getEmojiTitle(title) {
 </div>
 </div>
 
-<div th:replace="repository/knowledge/knowledge/menu::nav('insertMenu')"></div>
+<div th:replace="repository/mobile/mobile/menu::nav('insertMenu')"></div>
 
 </body>
 </html>

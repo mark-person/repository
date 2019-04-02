@@ -4,7 +4,7 @@
 
 <div th:fragment="nav(menuId)">
 <style type="text/css">
-.main-menu {position:fixed;bottom: 0; background-color:#f0f0f0;width:25.875rem;}
+.main-menu {position:fixed;bottom: 0; background-color:#f0f0f0;width:25.875rem;;z-index:9999999}
 .main-div {display:flex;justify-content:space-between; padding:0.5rem 0.8rem 0.2rem 0.8rem;}
 .main-item {text-align: center;color:gray;}
 .main-activtiy {color:orange;}
@@ -33,7 +33,7 @@ function gotoPage(obj) {
 	}
 	
 	if (obj.id == "homeMenu") {
-		location.href = [[@{/auto/mobile/list}]];
+		location.href = [[@{/auto/mobile/home}]];
 	}
 	if (obj.id == "insertMenu") {
 		location.href = [[@{/auto/mobile/add}]];
