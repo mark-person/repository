@@ -74,12 +74,11 @@ function edit() {
 <body>
 
 <div class="container">
-
-
-<div onclick="back();" style="position: fixed; left: 2rem; top: 0.5rem; z-index: 99999999; opacity: 0.5; font-size: 2rem;">⬅</div>
+<div style="position: fixed;z-index:99999999;opacity:0.5;font-size:2rem;width:100%;">
+	<div onclick="back();" style="left: 2rem; top: 0.5rem;">⬅</div>
+</div>
 
 <div class="panel panel-default">
-
 	<div class="swiper-container">
 		<div class="swiper-wrapper">
 			<div class="swiper-slide" th:each="item,iterStat:${imgList}">
@@ -112,11 +111,12 @@ function edit() {
 		</li>
 	</ul>
 </div>
+</div>
 
-<div style="position: fixed; left: 0; bottom: 0; width: 100%; background-color: #f0f0f0; height: 2rem">
+<div style="position: fixed; bottom: 0; width:25.875rem; background-color: #f0f0f0;">
 	<div style="display: flex; justify-content: space-between;">
-		<div style="text-align: center; width: 100%">
-			<div>
+		<div style="text-align: center; width: 100%;">
+			<div style="padding:0.2rem">
 				<button type="button" onclick="edit()" class="btn btn-primary btn-sm">&nbsp;&nbsp;&nbsp;&nbsp;修改&nbsp;&nbsp;&nbsp;&nbsp;</button>
 			</div>
 		</div>

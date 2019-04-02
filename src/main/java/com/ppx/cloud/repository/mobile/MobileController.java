@@ -63,6 +63,7 @@ public class MobileController {
     	}
 		mv.addObject("pojo", pojo);
 		mv.addObject("catList", categoryService.list());
+		mv.addObject("uspList", uspService.list());
 		
 		if (Strings.isNotEmpty(pojo.getImgSrc())) {
 			mv.addObject("imgList", pojo.getImgSrc().split(","));
