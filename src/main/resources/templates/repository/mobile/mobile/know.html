@@ -194,6 +194,7 @@ function insertOrUpdateKnowledge() {
 			
 			$("[name=kId]").val(r.kId);
 			$("#actionHint").html("修改");
+			$("#view").show();
 		}
 	});
 }
@@ -251,17 +252,18 @@ function resetForm() {
 	$("[name=kTitle]").val("");
 	$("#kContent").val(initkContent);
 	$(".upload-img").parent().parent().remove();
-	s
+	
 	$("#recommend").html('<span class="star"><b>⭐</b></span><span class="star"><b>⭐</b></span><span class="star"><b>⭐</b></span>' +
 			'<span class="star"><b class="star-hide">⭐</b></span><span class="star"><b class="star-hide">⭐</b></span>');
 	refreshRecommend();
 	
 	$("[name=kId]").val("");
 	$("#actionHint").html("新增");
+	$("#view").hide();
 }
 
 function gotoView() {
-	var kId = [[${pojo.kId}]];
+	var kId = $("[name=kId]").val();;
 	location.href = [[@{/auto/mobile/view}]] + "?id=" + kId;
 }
 
@@ -339,7 +341,7 @@ function getEmojiTitle(title) {
 		<input type="file" multiple="multiple" accept="image/*" onchange="img.fileChange(this)" style="display:none">
 		<a href="#" onclick="$(this).prev().click()">选择图片</a>
 		<a href="javascript:resetForm()">重新新增</a>
-		<a href="javascript:gotoView()">查看</a>
+		<a href="javascript:gotoView()" id="view" th:style="${pojo.kId == null} ? 'display:none' : ''">查看</a>
 		<button type="button" class="btn btn-primary btn-sm" onclick="ok()">确认<span id="actionHint" th:text="${pojo.kId == null} ? '新增' : '修改'"></span></button>
 	</li>
 	<li th:each="item,iterStat:${imgList}" class="list-group-item d-flex align-items-center">
