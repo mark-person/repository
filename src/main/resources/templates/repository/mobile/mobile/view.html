@@ -34,9 +34,7 @@ $(function() {
 	
 });
 
-function back() {
-	history.go(-1);
-}
+
 
 function edit() {
 	var kId = [[${pojo.kId}]];
@@ -75,7 +73,7 @@ function edit() {
 
 <div class="container">
 <div style="position: fixed;z-index:99999999;opacity:0.5;font-size:2rem;width:100%;">
-	<div onclick="back();" style="left: 2rem; top: 0.5rem;">⬅</div>
+	<div onclick="history.go(-1);" style="left: 2rem; top: 0.5rem;">⬅</div>
 </div>
 
 <div class="panel panel-default">

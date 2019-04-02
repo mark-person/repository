@@ -25,7 +25,7 @@ $(window).scroll(function() {
   	// 距离顶部+当前高度 >=文档总高度 即代表滑动到底部 注：-50 上拉加载更灵敏
     if ($(this).scrollTop() + $(document).height() >= $(this).height() - 50) {   
     	// 加载数据
-    	if (hasMore) {
+    	if (pageHasMore) {
     		pageHasMore = false;
     		currentPageNumber++;
     		moreData();
@@ -35,7 +35,7 @@ $(window).scroll(function() {
 function moreData() {
 	$("#pageInfo div").hide();
 	$("#bottomLoading").show();
-	$.post(controllerPath + "mList", {pageNumber:currentPageNumber}, function(r) {
+	$.post(controllerPath + "list", {pageNumber:currentPageNumber}, function(r) {
 		$("#knowDiv").append(template("itemTemplate", r));
 		$("#pageInfo div").hide();
 		if (r.page.pageSize * r.page.pageNumber < r.page.totalRows) {
@@ -51,8 +51,16 @@ function moreData() {
 $('#form').submit(function (e) {
     e.preventDefault();
     e.stopPropagation();
-    alert(1);
  })
+
+template.config("escape", false);
+var uspList = [[${uspList}]];
+template.helper('getTitle', function(v) {
+	for (i in uspList) {
+		v = v.replace(new RegExp("\\$\\{" + uspList[i].uspId + "\\}", "g"), '<a href="/auto/mobile/listByUsp?uspId=' + uspList[i].uspId + '">' + uspList[i].key + '</a>');
+	}
+	return v;
+})
 </script>
 
 <style type="text/css">
@@ -78,7 +86,7 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
 {{each list as v i}}
 <div class="know-item-div" onclick="view({{v.kId}})">
 	<div class="know-img-div"><img src="/img/{{v.mainImgSrc}}_100.jpg" class="know-img"></div>
-	<div class="know-title">{{v.kTitle}}</div>
+	<div class="know-title">{{getTitle(v.kTitle)}}</div>
 </div>
 {{/each}}
 </script>

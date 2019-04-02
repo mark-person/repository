@@ -33,6 +33,7 @@ public class MobileController {
     public ModelAndView home(ModelAndView mv) {
 		mv.addObject("list", list(new MPage(), new Knowledge()));
 		mv.addObject("catList", categoryService.list());
+		mv.addObject("uspList", uspService.list());
 		return mv;
 	}
     
@@ -106,6 +107,14 @@ public class MobileController {
 			starList.add("");
 		}
 		mv.addObject("starList", starList);
+		return mv;
+	}
+    
+    
+    public ModelAndView listByUsp(ModelAndView mv, Integer uspId) {
+    	mv.addObject("list", list(new MPage(), new Knowledge()));
+		mv.addObject("catList", categoryService.list());
+		mv.addObject("uspList", uspService.list());
 		return mv;
 	}
 }

@@ -165,8 +165,11 @@ function upload(files) {
 }
 
 function insertOrUpdateKnowledge() {
-	if (!$("[name=kTitle]").val()) {
+	if (!$("#kTitle").val()) {
 		 $("[name=kTitle]").val($("[name=kTitle]").prop("placeholder"));
+	}
+	else {
+		 $("[name=kTitle]").val(getUspTitle());
 	}
 	$("[name=recommend]").val($("#recommend .star-show").length);
 	
@@ -225,6 +228,9 @@ function refreshRecommend() {
 var initkContent;
 var uspList = [[${uspList}]];
 $(function() {
+	var kTitle = [[${pojo.kTitle}]];
+	$("#kTitle").val(getEmojiTitle(kTitle));
+	
 	refreshRecommend();
 	initkContent = $("#kContent").val();
 	
@@ -268,6 +274,21 @@ function getUspIdArray() {
 	}
 	return uspArray;
 }
+
+function getUspTitle() {
+	var title = $("#kTitle").val();
+	var uspArray = [];
+	for (i in uspList) {
+		title = title.replace(new RegExp(uspList[i].key,"g"), "${" + uspList[i].uspId + "}");
+	}
+	return title;
+}
+function getEmojiTitle(title) {
+	for (i in uspList) {
+		title = title.replace(new RegExp("\\$\\{" + uspList[i].uspId + "\\}", "g"), uspList[i].key);
+	}
+	return title;
+}
 </script>
 
 <style type="text/css">
@@ -284,13 +305,14 @@ function getUspIdArray() {
 <div class="panel panel-default">
 <form id="addForm">
 <input type="hidden" name="kId" th:value="${pojo.kId}">
+<input type="hidden" name="kTitle">
 <input type="hidden" name="recommend">
 <input type="hidden" name="kContent">
 <input type="hidden" name="uspIds">
 <ul class="list-group" id="imgUL">
     <li class="list-group-item">
     	<div class="row">
-    		<input class="form-control" type="text" id="kTitle" name="kTitle" placeholder="无" th:value="${pojo.kTitle}" maxlength="32">
+    		<input class="form-control" type="text" id="kTitle" placeholder="无" th:value="${pojo.kTitle}" maxlength="32">
     	</div>
     </li>
     <li class="list-group-item">
