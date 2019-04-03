@@ -9,8 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.util.HtmlUtils;
 
+import com.hankcs.hanlp.seg.common.Term;
+import com.hankcs.hanlp.tokenizer.StandardTokenizer;
 import com.ppx.cloud.common.contoller.ReturnMap;
 import com.ppx.cloud.common.page.MPage;
 import com.ppx.cloud.repository.category.KnowledgeCategoryService;
@@ -38,9 +39,13 @@ public class MobileController {
 		
 		
 		// https://github.com/ysc/word
+		//List<Word> words = WordSegmenter.seg("杨尚川是APDPlat应用级产品开发平台的作者");
+		//System.out.println("xxxxxxxworks:" + words);
 		
 		
 		
+		List<Term> termList = StandardTokenizer.segment("商品和服务");
+		System.out.println(termList);
 		return mv;
 	}
     
