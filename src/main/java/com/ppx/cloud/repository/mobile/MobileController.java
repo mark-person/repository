@@ -10,8 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.hankcs.hanlp.seg.common.Term;
-import com.hankcs.hanlp.tokenizer.StandardTokenizer;
+import com.hankcs.hanlp.HanLP;
 import com.ppx.cloud.common.contoller.ReturnMap;
 import com.ppx.cloud.common.page.MPage;
 import com.ppx.cloud.repository.category.KnowledgeCategoryService;
@@ -38,10 +37,8 @@ public class MobileController {
 		mv.addObject("uspList", uspService.list());
 		
 		
-		
-		
-		List<Term> termList = StandardTokenizer.segment("商品和服务");
-		System.out.println(termList);
+		// https://github.com/hankcs/HanLP
+		System.out.println(HanLP.segment("你好，欢迎使用HanLP汉语处理包！"));
 		return mv;
 	}
     
