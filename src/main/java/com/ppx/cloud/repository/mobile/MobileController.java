@@ -35,6 +35,12 @@ public class MobileController {
 		mv.addObject("list", list(new MPage(), new Knowledge()));
 		mv.addObject("catList", categoryService.list());
 		mv.addObject("uspList", uspService.list());
+		
+		
+		// https://github.com/ysc/word
+		
+		
+		
 		return mv;
 	}
     
