@@ -62,8 +62,8 @@ public class MobileController {
     	mv.setViewName("repository/mobile/mobile/know");
     	Knowledge pojo = impl.get(id);
     	
-    	String newTitle = HtmlUtils.htmlUnescape(pojo.getkTitle());
-    	pojo.setkTitle(newTitle);
+    	// String newTitle = HtmlUtils.htmlUnescape(pojo.getkTitle());
+    	// pojo.setkTitle(newTitle);
     	
     	if (Strings.isEmpty(pojo.getkContent())) {
     		pojo.setkContent(INIT_CONTENT);
@@ -93,8 +93,10 @@ public class MobileController {
     
     public Map<?, ?> insertOrUpdate(Knowledge pojo) {
     	// title转换
-    	String newTitle = HtmlUtils.htmlEscape(pojo.getkTitle());
-    	pojo.setkTitle(newTitle);
+    	// String newTitle = HtmlUtils.htmlEscape(pojo.getkTitle());
+    	// pojo.setkTitle(newTitle);
+    	
+    	// System.out.println("xxxxxxxxx-newTitle:" + newTitle + "||" + newTitle.length());
     	
     	if (pojo.getkId() == null) {
     		return impl.insert(pojo);
@@ -107,8 +109,8 @@ public class MobileController {
     public ModelAndView view(ModelAndView mv, @RequestParam Integer id) {
     	Knowledge pojo = impl.get(id);
     	if (Strings.isNotEmpty(pojo.getkContent())) {
-    		String newContent = HtmlUtils.htmlEscape(pojo.getkContent());
-    		pojo.setkContent(newContent);
+    		// String newContent = HtmlUtils.htmlEscape(pojo.getkContent());
+    		// pojo.setkContent(newContent);
     	}
     	
 		mv.addObject("pojo", pojo);

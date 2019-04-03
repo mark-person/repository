@@ -53,7 +53,7 @@ $('#form').submit(function (e) {
     e.stopPropagation();
  })
 
-template.config("escape", false);
+// template.config("escape", false);
 var uspList = [[${uspList}]];
 template.helper('getTitle', function(v) {
 	for (i in uspList) {
@@ -61,6 +61,8 @@ template.helper('getTitle', function(v) {
 	}
 	return v;
 })
+
+
 </script>
 
 <style type="text/css">

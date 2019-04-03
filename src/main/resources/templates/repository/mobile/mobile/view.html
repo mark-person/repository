@@ -19,9 +19,8 @@ var controllerPath = contextPath + "auto/mobile/";
 
 $(function() {
 	
-	
 	var uspList = [[${uspList}]];
-	var title = [[${pojo.kTitle}]];
+	var title = $("#kTitleHidden").html();
 	for (i in uspList) {
 		title = title.replace(new RegExp("\\$\\{" + uspList[i].uspId + "\\}", "g"), '<a href="/auto/mobile/listByUsp?uspId=' + uspList[i].uspId + '">' + uspList[i].key + '</a>');
 	}
@@ -32,7 +31,7 @@ $(function() {
 		pagination: '.swiper-pagination'
 	});
 	
-	var kContent = [[${pojo.kContent}]];
+	var kContent = $("#kContentHidden").html();
 	if (kContent) {
 		var html = marked(kContent);
 		$('#kContent').contents().find('body').html(html);
@@ -47,6 +46,8 @@ function edit() {
 	var kId = [[${pojo.kId}]];
 	location.href = [[@{/auto/mobile/edit}]] + "?id=" + kId;
 }
+
+
 </script>
 <style type="text/css">
 .swiper-container {
@@ -94,7 +95,8 @@ function edit() {
 		</div>
 		<ul class="list-group">
 			<li class="list-group-item">
-				<div class="row" id="kTitle"></div>
+				<div th:text="${pojo.kTitle}" id="kTitleHidden" style="display:none;"></div>
+				<div class="row" id="kTitle">&nbsp;</div>
 			</li>
 			<li class="list-group-item">
 				<div class="row" style="display: flex; justify-content: space-between; width:100%" >
@@ -107,6 +109,7 @@ function edit() {
 				</div>
 			</li>
 			<li class="list-group-item" style="padding: 0; margin-bottom: 2rem; height: 100%">
+				<div th:text="${pojo.kContent}" id="kContentHidden" style="display:none;"></div>
 				<iframe id="kContent" style="border: 0; width: 100%; height: 100%;"></iframe>
 			</li>
 		</ul>
