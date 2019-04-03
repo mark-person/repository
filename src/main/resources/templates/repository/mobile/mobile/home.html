@@ -87,7 +87,13 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
 <script id="itemTemplate" type="text/html">
 {{each list as v i}}
 <div class="know-item-div" onclick="view({{v.kId}})">
-	<div class="know-img-div"><img src="/img/{{v.mainImgSrc}}_100.jpg" class="know-img"></div>
+	<div class="know-img-div">
+		{{if v.mainImgSrc != null}}
+		<img src="/img/{{v.mainImgSrc}}_100.jpg" class="know-img">
+		{{else}}
+		无图
+		{{/if}}
+	</div>
 	<div class="know-title">{{getTitle(v.kTitle)}}</div>
 </div>
 {{/each}}
