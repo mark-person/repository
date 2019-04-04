@@ -13,6 +13,29 @@ var controllerPath = contextPath + "auto/mobile/";
 $(function() {
 	var list = [[${list}]];
 	$("#knowDiv").append(template("itemTemplate", list));
+	
+	
+	$('#form').submit(function (e) {
+		
+	    var para = {pageNumber:1, catId:$("#catId").val(), word:$("#word").val()}
+		$.post(controllerPath + "search", para, function(r) {
+			$("#knowDiv").html(template("itemTemplate", r));
+			$("#pageInfo div").hide();
+			if (r.page.pageSize * r.page.pageNumber < r.page.totalRows) {
+				pageHasMore = true;
+				$("#pageMore").show();
+			}
+			else {
+				$("#pageEnd").show();
+			}
+		});
+	  
+	    e.preventDefault();
+	    e.stopPropagation();
+	    
+	  
+	 })
+
 });
 
 function view(kId) {
@@ -51,23 +74,6 @@ function moreData() {
 	});
 }
 
-$('#form').submit(function (e) {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    var para = {pageNumber:1, catId:$("#catId").val(), word:$("#word").val()}
-	$.post(controllerPath + "search", para, function(r) {
-		$("#knowDiv").html(template("itemTemplate", r));
-		$("#pageInfo div").hide();
-		if (r.page.pageSize * r.page.pageNumber < r.page.totalRows) {
-			pageHasMore = true;
-			$("#pageMore").show();
-		}
-		else {
-			$("#pageEnd").show();
-		}
-	});
- })
 
 // template.config("escape", false);
 var uspList = [[${uspList}]];
@@ -121,7 +127,7 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
     	<option th:each="item:${catList}" th:text="${item.catName}" th:value="${item.catId}"></option>
     </select>
 	<div>
-		<form id="form"style="width:12.1rem" >
+		<form id="form" style="width:12.1rem" action="javascript:;">
 			<input type="search" id="word" class="form-control" style="width:100%;"  placeholder="🔍">
 		</form>
 	</div>

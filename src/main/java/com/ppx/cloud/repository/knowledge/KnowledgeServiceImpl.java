@@ -230,10 +230,11 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 		}
 		NamedParameterJdbcTemplate nameTemplate = new NamedParameterJdbcTemplate(getJdbcTemplate());
 		var para = new HashMap<String, Object>();
-		para.put(":kId", kIdPara);
+		para.put("kId", kIdPara);
+		System.out.println(".........kIdPara:" + kIdPara);
 		var resultSql = "select k.*, concat((select cat_name from repo_knowledge_category where cat_id = c.parent_id), '-', cat_name) cat_name"
 				+ " from repo_knowledge k left join repo_knowledge_category c on k.cat_id = c.cat_id where k.k_id in (:kId)";
-		List<Knowledge> resultList = nameTemplate.query(resultSql, BeanPropertyRowMapper.newInstance(Knowledge.class));
+		List<Knowledge> resultList = nameTemplate.query(resultSql, para, BeanPropertyRowMapper.newInstance(Knowledge.class));
 		
 		return resultList;
 	}
