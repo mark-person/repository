@@ -46,6 +46,7 @@ public class MobileController {
 	}
     
     public Map<?, ?> search(MPage page, String word, Integer catId) {
+    	
     	if (Strings.isBlank(word) && catId == null) {
     		return ReturnMap.of(page, impl.mAllList(page));
     	}
@@ -111,10 +112,6 @@ public class MobileController {
     
     public ModelAndView view(ModelAndView mv, @RequestParam Integer id) {
     	Knowledge pojo = impl.get(id);
-    	if (Strings.isNotEmpty(pojo.getkContent())) {
-    		// String newContent = HtmlUtils.htmlEscape(pojo.getkContent());
-    		// pojo.setkContent(newContent);
-    	}
     	
 		mv.addObject("pojo", pojo);
 		mv.addObject("uspList", uspService.list());

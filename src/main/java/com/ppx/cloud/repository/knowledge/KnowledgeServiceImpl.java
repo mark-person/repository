@@ -1,6 +1,7 @@
 package com.ppx.cloud.repository.knowledge;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -51,6 +52,11 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 		int userId = AuthContext.getLoginAccount().getUserId();
 		pojo.setModifiedBy(userId);
 		pojo.setCreatedBy(userId);
+		
+		// 去掉knowledge的created和created_by
+		// 两个表加上recommend_prio可搜索星级和排序
+		// (int) (DateTime.now().getMillis() / 1000)
+		// select unix_timestamp(now()) - 1554386286 + 900000000
 	
 		String[] imgSrc = new String[]{};
 		if (Strings.isNotEmpty(pojo.getImgSrc())) {
@@ -138,6 +144,7 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 	@Transactional
     public Map<String, Object> update(Knowledge pojo) {
     	int userId = AuthContext.getLoginAccount().getUserId();
+    	pojo.setModified(new Date());
 		pojo.setModifiedBy(userId);
 	
 		String[] imgSrc = new String[]{};
@@ -202,7 +209,11 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 	
 	
 	
-	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	// >>>>>>>> search
+	// 1.排序问题 2.传参搜索
+	// 1.主页按更新时间排序 2.精品页排星级+时间,加上USP (查看USP时跑到精品页)
+	
+	
 	public List<Knowledge> mAllList(MPage page) {
 		
 		var cSql = new StringBuilder("select count(*) from repo_knowledge k");

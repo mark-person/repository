@@ -17,18 +17,7 @@ $(function() {
 	
 	$('#form').submit(function (e) {
 		
-	    var para = {pageNumber:1, catId:$("#catId").val(), word:$("#word").val()}
-		$.post(controllerPath + "search", para, function(r) {
-			$("#knowDiv").html(template("itemTemplate", r));
-			$("#pageInfo div").hide();
-			if (r.page.pageSize * r.page.pageNumber < r.page.totalRows) {
-				pageHasMore = true;
-				$("#pageMore").show();
-			}
-			else {
-				$("#pageEnd").show();
-			}
-		});
+		queryPage(1, $("#catId").val(), $("#word").val()) 
 	  
 	    e.preventDefault();
 	    e.stopPropagation();
@@ -37,6 +26,33 @@ $(function() {
 	 })
 
 });
+
+function queryPage(pageNumber, catId, word) {
+	var para = {pageNumber:pageNumber, catId:catId, word:word}
+	$.post(controllerPath + "search", para, function(r) {
+		if (pageNumber == 1) {
+			currentPageNumber = 1;
+			$("#knowDiv").html(template("itemTemplate", r));
+		}
+		else {
+			$("#knowDiv").append(template("itemTemplate", r));
+		}
+		
+		$("#pageInfo div").hide();
+		if (r.page.pageSize * r.page.pageNumber < r.page.totalRows) {
+			pageHasMore = true;
+			$("#pageMore").show();
+		}
+		else {
+			$("#pageEnd").show();
+		}
+	});
+}
+
+
+function catChange() {
+	queryPage(1, $("#catId").val(), $("#word").val());
+}
 
 function view(kId) {
 	top.location.href = controllerPath + "view?id=" + kId;
@@ -60,6 +76,10 @@ $(window).scroll(function() {
 function moreData() {
 	$("#pageInfo div").hide();
 	$("#bottomLoading").show();
+	
+	queryPage(currentPageNumber, $("#catId").val(), $("#word").val()); 
+	
+	/*
 	var para = {pageNumber:currentPageNumber, catId:$("#catId").val(), word:$("#word").val()}
 	$.post(controllerPath + "search", para, function(r) {
 		$("#knowDiv").append(template("itemTemplate", r));
@@ -72,6 +92,7 @@ function moreData() {
 			$("#pageEnd").show();
 		}
 	});
+	*/
 }
 
 
@@ -96,6 +117,7 @@ template.helper('getTitle', function(v) {
 	}
 	return v;
 })
+
 
 
 </script>
@@ -123,11 +145,7 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
 {{each list as v i}}
 <div class="know-item-div" onclick="view({{v.kId}})">
 	<div class="know-img-div">
-		{{if v.mainImgSrc != null}}
-		<img src="/img/{{v.mainImgSrc}}_100.jpg" class="know-img">
-		{{else}}
-		无图
-		{{/if}}
+		{{if v.mainImgSrc != null}}<img src="/img/{{v.mainImgSrc}}_100.jpg" class="know-img">{{else}}无图{{/if}}
 	</div>
 	<div class="know-title">{{getTitle(v.kTitle)}}</div>
 </div>
@@ -135,7 +153,7 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
 </script>
 <div class="top-div">
 <div>
-	<select class="form-control" id="catId" style="width:12.1rem">
+	<select class="form-control" id="catId" style="width:12.1rem" onchange="catChange()">
 		<option value="">全部类目</option>
     	<option th:each="item:${catList}" th:text="${item.catName}" th:value="${item.catId}"></option>
     </select>
