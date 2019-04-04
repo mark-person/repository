@@ -27,15 +27,14 @@ create table repo_knowledge_category
 
 create table repo_knowledge
 (
-  k_id			int not null auto_increment,
-  k_title		varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci not null,
-  cat_id		int not null,
-  recommend 	tinyint not null default 3 comment '推荐星级1、2、3、4、5',
-  created		timestamp not null default current_timestamp,
-  created_by	int not null,
-  modified		timestamp not null default current_timestamp,
-  modified_by   int not null,
-  main_img_src	varchar(255) comment '主图src',
+  k_id				int not null auto_increment,
+  k_title			varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci not null,
+  cat_id			int not null,
+  recommend 		tinyint not null default 3 comment '推荐星级1、2、3、4、5',
+  recommond_prio	int not null comment '星级排序',
+  modified			timestamp not null default current_timestamp,
+  modified_by   	int not null,
+  main_img_src		varchar(255) comment '主图src',
   primary key (k_id)
 ) comment='';
 
@@ -51,8 +50,9 @@ ALTER TABLE `repository`.`repo_knowledge_usp` ADD UNIQUE INDEX `idx_usp_name` (`
 
 create table repo_knowledge_map_usp
 (
-	usp_id		int not null,
-	k_id		int not null,
+	usp_id			int not null,
+	k_id			int not null,
+	recommond_prio	int not null comment '星级排序',
 	primary key (usp_id, k_id)
 ) comment='';
 

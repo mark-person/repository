@@ -51,7 +51,6 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 	public Map<String, Object> insert(Knowledge pojo) {
 		int userId = AuthContext.getLoginAccount().getUserId();
 		pojo.setModifiedBy(userId);
-		pojo.setCreatedBy(userId);
 		
 		// 去掉knowledge的created和created_by
 		// 两个表加上recommend_prio可搜索星级和排序

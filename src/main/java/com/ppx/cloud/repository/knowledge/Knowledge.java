@@ -9,22 +9,19 @@ import com.ppx.cloud.common.jdbc.annotation.Column;
 import com.ppx.cloud.common.jdbc.annotation.Id;
 import com.ppx.cloud.common.jdbc.annotation.Table;
 
-
-
 /**
  * @author mark
  * @date 2019年3月13日
  */
 @Table("repo_knowledge")
 public class Knowledge {
-	
+
 	@Id
 	private Integer kId;
 	private String kTitle;
 	private Integer catId;
 	private Integer recommend;
-	private Date created;
-	private Integer createdBy;
+	private Integer recommendPrio;
 	private Date modified;
 	private Integer modifiedBy;
 	private String mainImgSrc;
@@ -34,11 +31,9 @@ public class Knowledge {
 	private String imgSrc;
 	@Column(readonly = true)
 	private String uspIds;
-	
+
 	private String catName;
-	
-	
-	
+
 	public String getUspIds() {
 		return uspIds;
 	}
@@ -103,20 +98,12 @@ public class Knowledge {
 		this.recommend = recommend;
 	}
 
-	public Date getCreated() {
-		return created;
+	public Integer getRecommendPrio() {
+		return recommendPrio;
 	}
 
-	public void setCreated(Date created) {
-		this.created = created;
-	}
-
-	public Integer getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(Integer createdBy) {
-		this.createdBy = createdBy;
+	public void setRecommendPrio(Integer recommendPrio) {
+		this.recommendPrio = recommendPrio;
 	}
 
 	public Date getModified() {
@@ -142,7 +129,5 @@ public class Knowledge {
 	public void setkContent(String kContent) {
 		this.kContent = kContent;
 	}
-	
-	
 
 }
