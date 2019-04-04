@@ -1,7 +1,10 @@
 package com.ppx.cloud.repository.knowledge;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -9,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.hankcs.hanlp.HanLP;
+import com.hankcs.hanlp.seg.common.Term;
 import com.ppx.cloud.auth.common.AuthContext;
 import com.ppx.cloud.common.contoller.ReturnMap;
 import com.ppx.cloud.common.jdbc.MyDaoSupport;
@@ -76,7 +81,35 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 			}
 		}
 		
+		insertSearchIndex(pojo.getkTitle(), kId, pojo.getCatId());
+		
 		return ReturnMap.of("kId", kId);
+	}
+	
+	private void insertSearchIndex(String kTitle, int kId, int catId) {
+		// 分词
+		// https://github.com/hankcs/HanLP
+		
+		// https://github.com/hankcs/HanLP
+		// CustomDictionary.add("包欢迎");
+		// nature:词性 w表示标点符号
+		Set<String> wordSet = new HashSet<String>(); 
+		
+		List<Term> termList = HanLP.segment(kTitle);
+		for (Term term : termList) {
+			if (!"w".equals(term.nature.toString())) {
+				wordSet.add(term.word);
+			}
+		}
+		
+		List<Object[]> batchArgs = new ArrayList<Object[]>();
+		for (String w : wordSet) {
+			Object[] obj = {w, kId, catId};
+			batchArgs.add(obj);
+		}
+		
+		String batchInsertSql = "insert into repo_search(work, k_id, cat_id) values(?, ?, ?)";
+		getJdbcTemplate().batchUpdate(batchInsertSql, batchArgs);
 	}
 
 	public Knowledge get(Integer id) {
@@ -144,6 +177,10 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 				getJdbcTemplate().update(insertUspSql, id, kId);
 			}
 		}
+		
+		getJdbcTemplate().update("delete from repo_search where k_id = ?", pojo.getkId());
+		insertSearchIndex(pojo.getkTitle(), pojo.getkId(), pojo.getCatId());
+		
 		return ReturnMap.of("kId", kId);
     }
     

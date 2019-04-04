@@ -1,8 +1,10 @@
 package com.ppx.cloud.repository.mobile;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.hankcs.hanlp.HanLP;
+import com.hankcs.hanlp.dictionary.CustomDictionary;
+import com.hankcs.hanlp.seg.common.Term;
+import com.hankcs.hanlp.tokenizer.StandardTokenizer;
 import com.ppx.cloud.common.contoller.ReturnMap;
 import com.ppx.cloud.common.page.MPage;
 import com.ppx.cloud.repository.category.KnowledgeCategoryService;
@@ -35,10 +40,8 @@ public class MobileController {
 		mv.addObject("list", list(new MPage(), new Knowledge()));
 		mv.addObject("catList", categoryService.list());
 		mv.addObject("uspList", uspService.list());
+	
 		
-		
-		// https://github.com/hankcs/HanLP
-		System.out.println(HanLP.segment("你好，欢迎使用HanLP汉语处理包！"));
 		return mv;
 	}
     
@@ -65,9 +68,6 @@ public class MobileController {
     public ModelAndView edit(ModelAndView mv, @RequestParam Integer id) {
     	mv.setViewName("repository/mobile/mobile/know");
     	Knowledge pojo = impl.get(id);
-    	
-    	// String newTitle = HtmlUtils.htmlUnescape(pojo.getkTitle());
-    	// pojo.setkTitle(newTitle);
     	
     	if (Strings.isEmpty(pojo.getkContent())) {
     		pojo.setkContent(INIT_CONTENT);
@@ -96,12 +96,6 @@ public class MobileController {
 	}
     
     public Map<?, ?> insertOrUpdate(Knowledge pojo) {
-    	// title转换
-    	// String newTitle = HtmlUtils.htmlEscape(pojo.getkTitle());
-    	// pojo.setkTitle(newTitle);
-    	
-    	// System.out.println("xxxxxxxxx-newTitle:" + newTitle + "||" + newTitle.length());
-    	
     	if (pojo.getkId() == null) {
     		return impl.insert(pojo);
     	}

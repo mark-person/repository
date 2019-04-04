@@ -28,7 +28,7 @@ create table repo_knowledge_category
 create table repo_knowledge
 (
   k_id			int not null auto_increment,
-  k_title		varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci not null,
+  k_title		varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci not null,
   cat_id		int not null,
   recommend 	tinyint not null default 3 comment '推荐星级1、2、3、4、5',
   created		timestamp not null default current_timestamp,
@@ -72,6 +72,18 @@ create table repo_knowledge_img
   k_img_prio	smallint not null comment '显示优先级',
   primary key (k_img_id)
 ) comment='非主';
+
+
+create table repo_search
+(
+  work 		varchar(64),
+  k_id 		int not null,
+  cat_id	int not null,
+  modified	timestamp not null default current_timestamp, 
+  primary key (work, k_id)
+) comment='';
+ALTER TABLE `repo_search` ADD INDEX `idx_search_k_id` (`k_id` ASC) VISIBLE;
+
 
 
 
