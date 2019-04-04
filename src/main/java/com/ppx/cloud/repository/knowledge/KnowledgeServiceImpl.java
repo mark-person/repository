@@ -110,7 +110,7 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 			batchArgs.add(obj);
 		}
 		
-		String batchInsertSql = "insert into repo_search(work, k_id, cat_id) values(?, ?, ?)";
+		String batchInsertSql = "insert into repo_search(word, k_id, cat_id) values(?, ?, ?)";
 		getJdbcTemplate().batchUpdate(batchInsertSql, batchArgs);
 	}
 
@@ -215,7 +215,7 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 	
 	
 	public List<Knowledge> search(MPage page, String word, Integer catId) {
-		var c = createCriteria("where").addAnd("word = ?", word).addAnd("catId = ?", catId);
+		var c = createCriteria("where").addAnd("word = ?", word).addAnd("cat_id = ?", catId);
 		
 		var cSql = new StringBuilder("select count(*) from repo_search").append(c);
 		var qSql = new StringBuilder("select k_id from repo_search").append(c).append("order by modified desc");
@@ -231,7 +231,6 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 		NamedParameterJdbcTemplate nameTemplate = new NamedParameterJdbcTemplate(getJdbcTemplate());
 		var para = new HashMap<String, Object>();
 		para.put("kId", kIdPara);
-		System.out.println(".........kIdPara:" + kIdPara);
 		var resultSql = "select k.*, concat((select cat_name from repo_knowledge_category where cat_id = c.parent_id), '-', cat_name) cat_name"
 				+ " from repo_knowledge k left join repo_knowledge_category c on k.cat_id = c.cat_id where k.k_id in (:kId)";
 		List<Knowledge> resultList = nameTemplate.query(resultSql, para, BeanPropertyRowMapper.newInstance(Knowledge.class));
