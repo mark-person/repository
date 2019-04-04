@@ -37,7 +37,7 @@ public class MobileController {
     private KnowledgeUspService uspService;
     
     public ModelAndView home(ModelAndView mv) {
-		mv.addObject("list", list(new MPage(), new Knowledge()));
+		mv.addObject("list", search(new MPage(), null, null));
 		mv.addObject("catList", categoryService.list());
 		mv.addObject("uspList", uspService.list());
 	
@@ -45,8 +45,13 @@ public class MobileController {
 		return mv;
 	}
     
-    public Map<?, ?> list(MPage page, Knowledge pojo) {
-		return ReturnMap.of(page, impl.mList(page, pojo));
+    public Map<?, ?> search(MPage page, String word, Integer catId) {
+    	if (Strings.isBlank(word) && catId == null) {
+    		return ReturnMap.of(page, impl.mAllList(page));
+    	}
+    	else {
+    		return ReturnMap.of(page, impl.search(page, word, catId));
+    	}
 	}
     
     public ModelAndView add(ModelAndView mv) {
@@ -129,10 +134,11 @@ public class MobileController {
     
     
     public ModelAndView listByUsp(ModelAndView mv, Integer uspId) {
-    	mv.addObject("list", list(new MPage(), new Knowledge()));
-		mv.addObject("catList", categoryService.list());
-		mv.addObject("uspList", uspService.list());
+//    	mv.addObject("list", list(new MPage(), new Knowledge()));
+//		mv.addObject("catList", categoryService.list());
+//		mv.addObject("uspList", uspService.list());
 		return mv;
 	}
-
+    
+    
 }

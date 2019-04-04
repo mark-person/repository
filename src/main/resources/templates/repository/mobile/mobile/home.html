@@ -32,10 +32,13 @@ $(window).scroll(function() {
     	}
     }
 });
+
+
 function moreData() {
 	$("#pageInfo div").hide();
 	$("#bottomLoading").show();
-	$.post(controllerPath + "list", {pageNumber:currentPageNumber}, function(r) {
+	var para = {pageNumber:currentPageNumber, catId:$("#catId").val(), word:$("#word").val()}
+	$.post(controllerPath + "search", para, function(r) {
 		$("#knowDiv").append(template("itemTemplate", r));
 		$("#pageInfo div").hide();
 		if (r.page.pageSize * r.page.pageNumber < r.page.totalRows) {
@@ -51,6 +54,19 @@ function moreData() {
 $('#form').submit(function (e) {
     e.preventDefault();
     e.stopPropagation();
+    
+    var para = {pageNumber:1, catId:$("#catId").val(), word:$("#word").val()}
+	$.post(controllerPath + "search", para, function(r) {
+		$("#knowDiv").html(template("itemTemplate", r));
+		$("#pageInfo div").hide();
+		if (r.page.pageSize * r.page.pageNumber < r.page.totalRows) {
+			pageHasMore = true;
+			$("#pageMore").show();
+		}
+		else {
+			$("#pageEnd").show();
+		}
+	});
  })
 
 // template.config("escape", false);
@@ -100,12 +116,13 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
 </script>
 <div class="top-div">
 <div>
-	<select class="form-control" name="catId" style="width:12.1rem">
+	<select class="form-control" id="catId" style="width:12.1rem">
+		<option value="">全部类目</option>
     	<option th:each="item:${catList}" th:text="${item.catName}" th:value="${item.catId}"></option>
     </select>
 	<div>
 		<form id="form"style="width:12.1rem" >
-			<input type="search" name="title" class="form-control" style="width:100%;"  placeholder="🔍">
+			<input type="search" id="word" class="form-control" style="width:100%;"  placeholder="🔍">
 		</form>
 	</div>
 </div>

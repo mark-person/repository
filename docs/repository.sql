@@ -76,11 +76,11 @@ create table repo_knowledge_img
 
 create table repo_search
 (
-  work 		varchar(64),
+  word 		varchar(64),
   k_id 		int not null,
   cat_id	int not null,
   modified	timestamp not null default current_timestamp, 
-  primary key (work, k_id)
+  primary key (word, k_id)
 ) comment='';
 ALTER TABLE `repo_search` ADD INDEX `idx_search_k_id` (`k_id` ASC) VISIBLE;
 
