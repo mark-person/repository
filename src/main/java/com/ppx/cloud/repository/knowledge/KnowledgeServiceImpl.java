@@ -210,7 +210,7 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 	
 	// >>>>>>>> search
 	// 1.排序问题 2.传参搜索
-	// 1.主页按更新时间排序 2.精品页排星级+时间,加上USP (查看USP时跑到精品页)
+	// 1.主页按更新时间排序 2.精选页排星级+时间,加上USP (查看USP时跑到精品页)
 	
 	
 	public List<Knowledge> mAllList(MPage page) {
