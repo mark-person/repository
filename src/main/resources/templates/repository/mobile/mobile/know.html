@@ -96,7 +96,7 @@ img.click = function(obj) {
 	var initHeight = new Number($(obj).data("data-init-height"));
 	
 	if (isInit) {
-		$(obj).css({position:"fixed",top:0});
+		$(obj).css({position:"fixed", top:0, indexZ:999999999});
 		
 		var w = $(obj).parents(".list-group-item").width();
 		if (w >= initWidth) {
@@ -257,7 +257,7 @@ function resetForm() {
 	$("#kContent").val(initkContent);
 	$(".upload-img").parent().parent().remove();
 	
-	$("#recommend").html('<span class="star"><b>⭐</b></span><span class="star"><b>⭐</b></span><span class="star"><b>⭐</b></span>' +
+	$("#recommend").html('<span class="star"><b class="star-show">⭐</b></span><span class="star"><b class="star-show">⭐</b></span><span class="star"><b class="star-show">⭐</b></span>' +
 			'<span class="star"><b class="star-hide">⭐</b></span><span class="star"><b class="star-hide">⭐</b></span>');
 	refreshRecommend();
 	

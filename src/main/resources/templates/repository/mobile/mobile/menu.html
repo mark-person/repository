@@ -14,8 +14,8 @@
 	<div class="main-item" id="homeMenu" onclick="gotoPage(this);">
 		<div>🏠</div><div>home</div>
 	</div>
-	<div class="main-item" id="saleMenu" onclick="gotoPage(this);">
-		<div>🎁</div><div>精选</div>
+	<div class="main-item" id="niceMenu" onclick="gotoPage(this);">
+		<div>🎁</div><div>nice</div>
 	</div>
 	<div class="main-item" id="insertMenu" onclick="gotoPage(this)">
 		<div>📝</div><div>insert</div>
@@ -32,7 +32,10 @@ function gotoPage(obj) {
 	if (obj.id == "homeMenu") {
 		location.href = [[@{/auto/mobile/home}]];
 	}
-	if (obj.id == "insertMenu") {
+	else if (obj.id == "niceMenu") {
+		location.href = [[@{/auto/mobile/nice}]];
+	}
+	else if (obj.id == "insertMenu") {
 		location.href = [[@{/auto/mobile/add}]];
 	}
 }

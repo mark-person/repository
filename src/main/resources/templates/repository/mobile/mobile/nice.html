@@ -13,7 +13,46 @@ var controllerPath = contextPath + "auto/mobile/";
 $(function() {
 	var list = [[${list}]];
 	$("#knowDiv").append(template("itemTemplate", list));
+	
+	
+	$('#form').submit(function (e) {
+		
+		queryPage(1, $("#catId").val(), $("#word").val()) 
+	  
+	    e.preventDefault();
+	    e.stopPropagation();
+	    
+	  
+	 })
+
 });
+
+function queryPage(pageNumber, catId, word) {
+	var para = {pageNumber:pageNumber, catId:catId, word:word}
+	$.post(controllerPath + "search", para, function(r) {
+		if (pageNumber == 1) {
+			currentPageNumber = 1;
+			$("#knowDiv").html(template("itemTemplate", r));
+		}
+		else {
+			$("#knowDiv").append(template("itemTemplate", r));
+		}
+		
+		$("#pageInfo div").hide();
+		if (r.page.pageSize * r.page.pageNumber < r.page.totalRows) {
+			pageHasMore = true;
+			$("#pageMore").show();
+		}
+		else {
+			$("#pageEnd").show();
+		}
+	});
+}
+
+
+function catChange() {
+	queryPage(1, $("#catId").val(), $("#word").val());
+}
 
 function view(kId) {
 	top.location.href = controllerPath + "view?id=" + kId;
@@ -32,10 +71,17 @@ $(window).scroll(function() {
     	}
     }
 });
+
+
 function moreData() {
 	$("#pageInfo div").hide();
 	$("#bottomLoading").show();
-	$.post(controllerPath + "list", {pageNumber:currentPageNumber}, function(r) {
+	
+	queryPage(currentPageNumber, $("#catId").val(), $("#word").val()); 
+	
+	/*
+	var para = {pageNumber:currentPageNumber, catId:$("#catId").val(), word:$("#word").val()}
+	$.post(controllerPath + "search", para, function(r) {
 		$("#knowDiv").append(template("itemTemplate", r));
 		$("#pageInfo div").hide();
 		if (r.page.pageSize * r.page.pageNumber < r.page.totalRows) {
@@ -46,25 +92,38 @@ function moreData() {
 			$("#pageEnd").show();
 		}
 	});
+	*/
 }
 
-$('#form').submit(function (e) {
-    e.preventDefault();
-    e.stopPropagation();
- })
+
+function htmlEscape(text){ 
+	  return text.replace(/[<>"&]/g, function(match, pos, originalText){
+	    switch(match){
+	    case "<": return "&lt;"; 
+	    case ">":return "&gt;";
+	    case "&":return "&amp;"; 
+	    case "\"":return "&quot;"; 
+	  } 
+	}); 
+}
 
 template.config("escape", false);
 var uspList = [[${uspList}]];
 template.helper('getTitle', function(v) {
+	v = htmlEscape(v);
 	for (i in uspList) {
-		v = v.replace(new RegExp("\\$\\{" + uspList[i].uspId + "\\}", "g"), uspList[i].key);
+		
+		v = v.replace(new RegExp("\\$\\{" + uspList[i].uspId + "\\}", "g"), '<a href="/auto/mobile/listByUsp?uspId=' + uspList[i].uspId + '">' + uspList[i].key + '</a>');
 	}
 	return v;
 })
+
+
+
 </script>
 
 <style type="text/css">
-body {margin-top:2.75rem;marign-top:0}
+body {margin-top:2.75rem;margin-bottom:3rem}
 .top-div {position:fixed;top:0;background-color:#f0f0f0;padding:.2rem 0;width:25.875rem;}
 .top-div>div {display:flex;justify-content:space-between; padding-left:0.5rem;padding-right:0.5rem;}
 
@@ -85,34 +144,36 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
 <script id="itemTemplate" type="text/html">
 {{each list as v i}}
 <div class="know-item-div" onclick="view({{v.kId}})">
-	<div class="know-img-div"><img src="/img/{{v.mainImgSrc}}_100.jpg" class="know-img"></div>
+	<div class="know-img-div">
+		{{if v.mainImgSrc != null}}<img src="/img/{{v.mainImgSrc}}_100.jpg" class="know-img">{{else}}无图{{/if}}
+	</div>
 	<div class="know-title">{{getTitle(v.kTitle)}}</div>
 </div>
 {{/each}}
 </script>
-
-<div style="position: fixed;z-index:99999999;opacity:0.5;font-size:2rem;width:100%;">
-	<div onclick="history.go(-1);" style="left: 2rem; top: 0.5rem;">⬅</div>
-</div>
-
 <div class="top-div">
 <div>
-	<select class="form-control" name="catId" style="width:12.1rem">
-    	<option th:each="item:${catList}" th:text="${item.catName}" th:value="${item.catId}"></option>
+	<select class="form-control" id="uspId" style="width:12.1rem" onchange="catChange()">
+		<option value="">全部USP</option>
+    	<option th:each="item:${uspList}" th:text="${item.key}" th:value="${item.uspId}"></option>
     </select>
-	<div>
-		<form id="form"style="width:12.1rem">
-			<input type="search" name="title" class="form-control" style="width:100%;"  placeholder="🔍">
-		</form>
-	</div>
+	<select class="form-control" id="uspId" style="width:12.1rem" onchange="catChange()">
+		<option value="">全部星级</option>
+    	<option value="5">5星</option>
+    	<option value="4">4星及以上</option>
+    	<option value="3">3星及以上</option>
+    	<option value="-2">2星及以上</option>
+    	<option value="-1">1星</option>
+    </select>
 </div>
 </div>
 <div id="knowDiv"></div>
 <div id="pageInfo">
 	<div id="pageMore"><p>-- 上拉加载更多 --</p></div>
     <div id="bottomLoading"><p>-- 加载中... --</p></div>
-    <div id="pageEnd"><p>-- 我是有底线的 --</p></div>
+    <div id="pageEnd"><p>-- 暂时就这么多了 --</p></div>
 </div>
+<div th:replace="repository/mobile/mobile/menu::nav('homeMenu')"></div>
 
 </body>
 </html>

@@ -54,7 +54,6 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 	public Map<String, Object> insert(Knowledge pojo) {
 		int userId = AuthContext.getLoginAccount().getUserId();
 		pojo.setModifiedBy(userId);
-		
 		int recommendPrio = (int)(System.currentTimeMillis() / 1000) - NOW_SECOND + RECOMMEND_BASE_VALUE[pojo.getRecommend() - 1];
 		pojo.setRecommendPrio(recommendPrio);
 	

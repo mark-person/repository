@@ -130,10 +130,9 @@ public class MobileController {
 	}
     
     
-    public ModelAndView listByUsp(ModelAndView mv, Integer uspId) {
-//    	mv.addObject("list", list(new MPage(), new Knowledge()));
-//		mv.addObject("catList", categoryService.list());
-//		mv.addObject("uspList", uspService.list());
+    public ModelAndView nice(ModelAndView mv, Integer uspId) {
+    	mv.addObject("list", search(new MPage(), null, null));
+		mv.addObject("uspList", uspService.list());
 		return mv;
 	}
     
