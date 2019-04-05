@@ -143,13 +143,13 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
 		<option value="">全部USP</option>
     	<option th:each="item:${uspList}" th:text="${item.key}" th:value="${item.uspId}" th:selected="${item.uspId == uspId}"></option>
     </select>
-	<select class="form-control" id="uspId" style="width:12.1rem" onchange="catChange()">
+	<select class="form-control" id="recommend" style="width:12.1rem" onchange="catChange()">
 		<option value="">全部星级</option>
     	<option value="5">5星</option>
-    	<option value="4">4星及以上</option>
-    	<option value="3">3星及以上</option>
-    	<option value="-2">2星及以上</option>
-    	<option value="-1">1星</option>
+    	<option value="4">4星</option>
+    	<option value="3">3星</option>
+    	<option value="2">2星</option>
+    	<option value="1">1星</option>
     </select>
 </div>
 </div>

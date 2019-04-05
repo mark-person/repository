@@ -47,7 +47,7 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 		return list;
 	}
 	
-	private int[] RECOMMEND_BASE_VALUE = {900000000, 800000000, 700000000, 600000000, 500000000};
+	private int[] RECOMMEND_BASE_VALUE = {500000000, 600000000, 700000000, 800000000, 900000000};
 	private int NOW_SECOND = 1554386286;
 	
 	@Transactional
@@ -208,26 +208,33 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
         return ReturnMap.of();
     }
 	
-	
-	
 	// >>>>>>>> search
 	// 1.排序问题 2.传参搜索
 	// 1.主页按更新时间排序 2.精选页排星级+时间,加上USP (查看USP时跑到精品页)
 	
 	
-	public List<Knowledge> mAllList(MPage page) {
+	/**
+	 * 主页:全部或按类目找
+	 * @param page
+	 * @return
+	 */
+	public List<Knowledge> byCatSearch(MPage page, Integer catId) {
+		var c = createCriteria("where").addAnd("k.cat_id = ?", catId);
 		
-		var cSql = new StringBuilder("select count(*) from repo_knowledge k");
+		var cSql = new StringBuilder("select count(*) from repo_knowledge k").append(c);
 		var qSql = new StringBuilder("select k.*, concat((select cat_name from repo_knowledge_category where cat_id = c.parent_id), '-', cat_name) cat_name"
-				+ " from repo_knowledge k left join repo_knowledge_category c on k.cat_id = c.cat_id order by modified desc");
-		List<Knowledge> list = queryMPage(Knowledge.class, page, cSql, qSql, null);
+				+ " from repo_knowledge k left join repo_knowledge_category c on k.cat_id = c.cat_id").append(c).append("order by k.modified desc");
+		List<Knowledge> list = queryMPage(Knowledge.class, page, cSql, qSql, c.getParaList());
 		
 		return list;
 	}
 	
-	
-	public List<Knowledge> homeSearch(MPage page, String word, Integer catId) {
-		// 改成不同参数，不同搜索方法
+	/**
+	 * 主页:分词查找
+	 * @param page
+	 * @return
+	 */
+	public List<Knowledge> byWordSearch(MPage page, String word, Integer catId) {
 		var c = createCriteria("where").addAnd("word = ?", word).addAnd("cat_id = ?", catId);
 		
 		var cSql = new StringBuilder("select count(*) from repo_search").append(c);
@@ -251,13 +258,47 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 		return resultList;
 	}
 	
-	
-	public List<Knowledge> niceSearch(MPage page, String word, Integer catId) {
-		// 改成不同参数，不同搜索方法
-		var c = createCriteria("where").addAnd("word = ?", word).addAnd("cat_id = ?", catId);
+	/**
+	 * nice页:全部或按星级
+	 * @param page
+	 * @param recommendPrio
+	 * @return
+	 */
+	public List<Knowledge> byRecommendSearch(MPage page, Integer recommend) {
+		var c = createCriteria("where");
+		if (recommend == 5) {
+			c.addAnd("k.recommend_prio > ?", RECOMMEND_BASE_VALUE[4]);
+		}
+		else {
+			c.addAnd("k.recommend_prio > ?", RECOMMEND_BASE_VALUE[recommend - 1]);
+			c.addAnd("k.recommend_prio < ?", RECOMMEND_BASE_VALUE[recommend]);
+		}
 		
-		var cSql = new StringBuilder("select count(*) from repo_search").append(c);
-		var qSql = new StringBuilder("select k_id from repo_search").append(c).append("order by modified desc");
+		var cSql = new StringBuilder("select count(*) from repo_knowledge k").append(c);
+		var qSql = new StringBuilder("select k.*, concat((select cat_name from repo_knowledge_category where cat_id = c.parent_id), '-', cat_name) cat_name"
+				+ " from repo_knowledge k left join repo_knowledge_category c on k.cat_id = c.cat_id").append(c).append("order by k.recommend_prio desc");
+		List<Knowledge> list = queryMPage(Knowledge.class, page, cSql, qSql, c.getParaList());
+		
+		return list;
+	}
+	
+	/**
+	 * nice页:usp查找
+	 * @param page
+	 * @return
+	 */
+	public List<Knowledge> byUspSearch(MPage page, Integer uspId, Integer recommend) {
+		var c = createCriteria("where").addAnd("usp_id = ?", uspId);
+		if (recommend == 5) {
+			c.addAnd("k.recommend_prio > ?", RECOMMEND_BASE_VALUE[4]);
+		}
+		else {
+			c.addAnd("k.recommend_prio > ?", RECOMMEND_BASE_VALUE[recommend - 1]);
+			c.addAnd("k.recommend_prio < ?", RECOMMEND_BASE_VALUE[recommend]);
+		}
+		
+		var cSql = new StringBuilder("select count(*) from repo_knowledge_map_usp").append(c);
+		var qSql = new StringBuilder("select k_id from repo_knowledge_map_usp").append(c).append("order by recommend_prio desc");
 		List<Knowledge> kIdList = queryMPage(Knowledge.class, page, cSql, qSql, c.getParaList());
 		if (kIdList.isEmpty()) {
 			return kIdList;

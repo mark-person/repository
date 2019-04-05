@@ -46,11 +46,11 @@ public class MobileController {
     
     public Map<?, ?> homeSearch(MPage page, String word, Integer catId) {
     	
-    	if (Strings.isBlank(word) && catId == null) {
-    		return ReturnMap.of(page, impl.mAllList(page));
+    	if (Strings.isBlank(word)) {
+    		return ReturnMap.of(page, impl.byCatSearch(page, catId));
     	}
     	else {
-    		return ReturnMap.of(page, impl.homeSearch(page, word, catId));
+    		return ReturnMap.of(page, impl.byWordSearch(page, word, catId));
     	}
 	}
     
@@ -136,13 +136,12 @@ public class MobileController {
 		return mv;
 	}
     
-    public Map<?, ?> niceSearch(MPage page, String word, Integer catId) {
-    	
-    	if (Strings.isBlank(word) && catId == null) {
-    		return ReturnMap.of(page, impl.mAllList(page));
+    public Map<?, ?> niceSearch(MPage page, Integer uspId, Integer recommend) {
+    	if (uspId == null) {
+    		return ReturnMap.of(page, impl.byRecommendSearch(page, recommend));
     	}
     	else {
-    		return ReturnMap.of(page, impl.niceSearch(page, word, catId));
+    		return ReturnMap.of(page, impl.byUspSearch(page, uspId, recommend));
     	}
 	}
     
