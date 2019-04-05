@@ -88,12 +88,12 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 			}
 		}
 		
-		insertSearchIndex(pojo.getkTitle(), kId, pojo.getCatId());
+		insertSearchWord(pojo.getkTitle(), kId, pojo.getCatId());
 		
 		return ReturnMap.of("kId", kId);
 	}
 	
-	private void insertSearchIndex(String kTitle, int kId, int catId) {
+	private void insertSearchWord(String kTitle, int kId, int catId) {
 		// 分词
 		// https://github.com/hankcs/HanLP
 		
@@ -115,7 +115,7 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 			batchArgs.add(obj);
 		}
 		
-		String batchInsertSql = "insert into repo_search(word, k_id, cat_id) values(?, ?, ?)";
+		String batchInsertSql = "insert into repo_search_word(word, k_id, cat_id) values(?, ?, ?)";
 		getJdbcTemplate().batchUpdate(batchInsertSql, batchArgs);
 	}
 
@@ -188,11 +188,8 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 			}
 		}
 		
-		// TODO
-		// 更新两个搜索字段
-		
-		getJdbcTemplate().update("delete from repo_search where k_id = ?", pojo.getkId());
-		insertSearchIndex(pojo.getkTitle(), pojo.getkId(), pojo.getCatId());
+		getJdbcTemplate().update("delete from repo_search_word where k_id = ?", pojo.getkId());
+		insertSearchWord(pojo.getkTitle(), pojo.getkId(), pojo.getCatId());
 		
 		return ReturnMap.of("kId", kId);
     }
