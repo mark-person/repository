@@ -266,13 +266,17 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 	 */
 	public List<Knowledge> byRecommendSearch(MPage page, Integer recommend) {
 		var c = createCriteria("where");
-		if (recommend == 5) {
-			c.addAnd("k.recommend_prio > ?", RECOMMEND_BASE_VALUE[4]);
+		
+		if (recommend != null) {
+			if (recommend == 5) {
+				c.addAnd("k.recommend_prio > ?", RECOMMEND_BASE_VALUE[4]);
+			}
+			else {
+				c.addAnd("k.recommend_prio > ?", RECOMMEND_BASE_VALUE[recommend - 1]);
+				c.addAnd("k.recommend_prio < ?", RECOMMEND_BASE_VALUE[recommend]);
+			}
 		}
-		else {
-			c.addAnd("k.recommend_prio > ?", RECOMMEND_BASE_VALUE[recommend - 1]);
-			c.addAnd("k.recommend_prio < ?", RECOMMEND_BASE_VALUE[recommend]);
-		}
+		
 		
 		var cSql = new StringBuilder("select count(*) from repo_knowledge k").append(c);
 		var qSql = new StringBuilder("select k.*, concat((select cat_name from repo_knowledge_category where cat_id = c.parent_id), '-', cat_name) cat_name"
@@ -290,12 +294,14 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 	public List<Knowledge> byUspSearch(MPage page, Integer uspId, Integer recommend) {
 		var c = createCriteria("where").addAnd("usp_id = ?", uspId);
 		
-		if (recommend == 5) {
-			c.addAnd("recommend_prio > ?", RECOMMEND_BASE_VALUE[4]);
-		}
-		else {
-			c.addAnd("recommend_prio > ?", RECOMMEND_BASE_VALUE[recommend - 1]);
-			c.addAnd("recommend_prio < ?", RECOMMEND_BASE_VALUE[recommend]);
+		if (recommend != null) {
+			if (recommend == 5) {
+				c.addAnd("recommend_prio > ?", RECOMMEND_BASE_VALUE[4]);
+			}
+			else {
+				c.addAnd("recommend_prio > ?", RECOMMEND_BASE_VALUE[recommend - 1]);
+				c.addAnd("recommend_prio < ?", RECOMMEND_BASE_VALUE[recommend]);
+			}
 		}
 		
 		var cSql = new StringBuilder("select count(*) from repo_knowledge_map_usp").append(c);
