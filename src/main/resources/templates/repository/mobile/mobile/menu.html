@@ -25,9 +25,7 @@
 <script type="text/javascript" th:inline="javascript">
 $("#" + [[${menuId}]]).addClass("main-activtiy");
 function gotoPage(obj) {
-	if ($(obj).hasClass("main-activtiy")) {
-		return;
-	}
+	
 	
 	if (obj.id == "homeMenu") {
 		location.href = [[@{/auto/mobile/home}]];
