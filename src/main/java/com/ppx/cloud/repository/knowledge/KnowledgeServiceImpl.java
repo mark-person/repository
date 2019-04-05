@@ -188,6 +188,9 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 			}
 		}
 		
+		// TODO
+		// 更新两个搜索字段
+		
 		getJdbcTemplate().update("delete from repo_search where k_id = ?", pojo.getkId());
 		insertSearchIndex(pojo.getkTitle(), pojo.getkId(), pojo.getCatId());
 		
@@ -289,12 +292,13 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 	 */
 	public List<Knowledge> byUspSearch(MPage page, Integer uspId, Integer recommend) {
 		var c = createCriteria("where").addAnd("usp_id = ?", uspId);
+		
 		if (recommend == 5) {
-			c.addAnd("k.recommend_prio > ?", RECOMMEND_BASE_VALUE[4]);
+			c.addAnd("recommend_prio > ?", RECOMMEND_BASE_VALUE[4]);
 		}
 		else {
-			c.addAnd("k.recommend_prio > ?", RECOMMEND_BASE_VALUE[recommend - 1]);
-			c.addAnd("k.recommend_prio < ?", RECOMMEND_BASE_VALUE[recommend]);
+			c.addAnd("recommend_prio > ?", RECOMMEND_BASE_VALUE[recommend - 1]);
+			c.addAnd("recommend_prio < ?", RECOMMEND_BASE_VALUE[recommend]);
 		}
 		
 		var cSql = new StringBuilder("select count(*) from repo_knowledge_map_usp").append(c);
