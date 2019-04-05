@@ -29,7 +29,7 @@ $(function() {
 
 function queryPage(pageNumber, catId, word) {
 	var para = {pageNumber:pageNumber, catId:catId, word:word}
-	$.post(controllerPath + "search", para, function(r) {
+	$.post(controllerPath + "homeSearch", para, function(r) {
 		if (pageNumber == 1) {
 			currentPageNumber = 1;
 			$("#knowDiv").html(template("itemTemplate", r));

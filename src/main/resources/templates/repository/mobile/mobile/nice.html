@@ -29,7 +29,7 @@ $(function() {
 
 function queryPage(pageNumber, catId, word) {
 	var para = {pageNumber:pageNumber, catId:catId, word:word}
-	$.post(controllerPath + "search", para, function(r) {
+	$.post(controllerPath + "niceSearch", para, function(r) {
 		if (pageNumber == 1) {
 			currentPageNumber = 1;
 			$("#knowDiv").html(template("itemTemplate", r));
@@ -79,20 +79,6 @@ function moreData() {
 	
 	queryPage(currentPageNumber, $("#catId").val(), $("#word").val()); 
 	
-	/*
-	var para = {pageNumber:currentPageNumber, catId:$("#catId").val(), word:$("#word").val()}
-	$.post(controllerPath + "search", para, function(r) {
-		$("#knowDiv").append(template("itemTemplate", r));
-		$("#pageInfo div").hide();
-		if (r.page.pageSize * r.page.pageNumber < r.page.totalRows) {
-			pageHasMore = true;
-			$("#pageMore").show();
-		}
-		else {
-			$("#pageEnd").show();
-		}
-	});
-	*/
 }
 
 

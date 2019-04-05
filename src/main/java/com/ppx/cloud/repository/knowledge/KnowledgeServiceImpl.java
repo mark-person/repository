@@ -226,7 +226,8 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 	}
 	
 	
-	public List<Knowledge> search(MPage page, String word, Integer catId) {
+	public List<Knowledge> homeSearch(MPage page, String word, Integer catId) {
+		// 改成不同参数，不同搜索方法
 		var c = createCriteria("where").addAnd("word = ?", word).addAnd("cat_id = ?", catId);
 		
 		var cSql = new StringBuilder("select count(*) from repo_search").append(c);
@@ -250,6 +251,31 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 		return resultList;
 	}
 	
+	
+	public List<Knowledge> niceSearch(MPage page, String word, Integer catId) {
+		// 改成不同参数，不同搜索方法
+		var c = createCriteria("where").addAnd("word = ?", word).addAnd("cat_id = ?", catId);
+		
+		var cSql = new StringBuilder("select count(*) from repo_search").append(c);
+		var qSql = new StringBuilder("select k_id from repo_search").append(c).append("order by modified desc");
+		List<Knowledge> kIdList = queryMPage(Knowledge.class, page, cSql, qSql, c.getParaList());
+		if (kIdList.isEmpty()) {
+			return kIdList;
+		}
+		
+		List<Integer> kIdPara = new ArrayList<Integer>();
+		for (Knowledge knowledge : kIdList) {
+			kIdPara.add(knowledge.getkId());
+		}
+		NamedParameterJdbcTemplate nameTemplate = new NamedParameterJdbcTemplate(getJdbcTemplate());
+		var para = new HashMap<String, Object>();
+		para.put("kId", kIdPara);
+		var resultSql = "select k.*, concat((select cat_name from repo_knowledge_category where cat_id = c.parent_id), '-', cat_name) cat_name"
+				+ " from repo_knowledge k left join repo_knowledge_category c on k.cat_id = c.cat_id where k.k_id in (:kId)";
+		List<Knowledge> resultList = nameTemplate.query(resultSql, para, BeanPropertyRowMapper.newInstance(Knowledge.class));
+		
+		return resultList;
+	}
 	
 
 }

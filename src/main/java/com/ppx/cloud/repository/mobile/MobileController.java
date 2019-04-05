@@ -37,21 +37,20 @@ public class MobileController {
     private KnowledgeUspService uspService;
     
     public ModelAndView home(ModelAndView mv) {
-		mv.addObject("list", search(new MPage(), null, null));
+		mv.addObject("list", homeSearch(new MPage(), null, null));
 		mv.addObject("catList", categoryService.list());
 		mv.addObject("uspList", uspService.list());
 	
-		
 		return mv;
 	}
     
-    public Map<?, ?> search(MPage page, String word, Integer catId) {
+    public Map<?, ?> homeSearch(MPage page, String word, Integer catId) {
     	
     	if (Strings.isBlank(word) && catId == null) {
     		return ReturnMap.of(page, impl.mAllList(page));
     	}
     	else {
-    		return ReturnMap.of(page, impl.search(page, word, catId));
+    		return ReturnMap.of(page, impl.homeSearch(page, word, catId));
     	}
 	}
     
@@ -131,10 +130,20 @@ public class MobileController {
     
     
     public ModelAndView nice(ModelAndView mv, Integer uspId) {
-    	mv.addObject("list", search(new MPage(), null, null));
+    	mv.addObject("list", niceSearch(new MPage(), null, null));
     	mv.addObject("uspId", uspId);
 		mv.addObject("uspList", uspService.list());
 		return mv;
+	}
+    
+    public Map<?, ?> niceSearch(MPage page, String word, Integer catId) {
+    	
+    	if (Strings.isBlank(word) && catId == null) {
+    		return ReturnMap.of(page, impl.mAllList(page));
+    	}
+    	else {
+    		return ReturnMap.of(page, impl.niceSearch(page, word, catId));
+    	}
 	}
     
     
