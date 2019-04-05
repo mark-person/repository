@@ -113,7 +113,7 @@ template.helper('getTitle', function(v) {
 	v = htmlEscape(v);
 	for (i in uspList) {
 		
-		v = v.replace(new RegExp("\\$\\{" + uspList[i].uspId + "\\}", "g"), '<a href="/auto/mobile/listByUsp?uspId=' + uspList[i].uspId + '">' + uspList[i].key + '</a>');
+		v = v.replace(new RegExp("\\$\\{" + uspList[i].uspId + "\\}", "g"), '<a href="/auto/mobile/nice?uspId=' + uspList[i].uspId + '">' + uspList[i].key + '</a>');
 	}
 	return v;
 })
@@ -155,7 +155,7 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
 <div>
 	<select class="form-control" id="uspId" style="width:12.1rem" onchange="catChange()">
 		<option value="">全部USP</option>
-    	<option th:each="item:${uspList}" th:text="${item.key}" th:value="${item.uspId}"></option>
+    	<option th:each="item:${uspList}" th:text="${item.key}" th:value="${item.uspId}" th:selected="${item.uspId == uspId}"></option>
     </select>
 	<select class="form-control" id="uspId" style="width:12.1rem" onchange="catChange()">
 		<option value="">全部星级</option>
@@ -173,7 +173,7 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
     <div id="bottomLoading"><p>-- 加载中... --</p></div>
     <div id="pageEnd"><p>-- 暂时就这么多了 --</p></div>
 </div>
-<div th:replace="repository/mobile/mobile/menu::nav('homeMenu')"></div>
+<div th:replace="repository/mobile/mobile/menu::nav('niceMenu')"></div>
 
 </body>
 </html>
