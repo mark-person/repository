@@ -298,18 +298,37 @@ function getEmojiTitle(title) {
 function textToImg() {
 	var kContent = $("#kContent").val();
 	if (kContent) {
+		var isTitleCenter = $("#titleCenter").prop("checked");
+		if (isTitleCenter) {
+			var line = kContent.split("\n");
+			var newKContent = [];
+			for (var i = 0; i < line.length; i++) {
+				var str = $.trim(line[i]);
+				if (str.indexOf("#") == 0) {
+					var last = str.lastIndexOf("#");
+					newKContent.push(str.substring(0, last + 1) + " <center>" + str.substring(last + 2, str.length) + "</center>");
+				}
+				else {
+					newKContent.push(str);
+				}
+			}
+			kContent = newKContent.join("\n");
+			alert(kContent);
+		}
+		
 		var html = marked(kContent);
-		$('#kContentIframe').contents().find('body').html(html);
-		$('#kContentIframe').contents().find('body').css("padding", "0.5rem");
-		$('#kContentIframe').contents().find('body').css("background", "url(/static/background/timg.jpg)");
-		$('#kContentIframe').contents().find('body').css("font-size", "0.825rem");
+		var iframeBody = $('#kContentIframe').contents().find('body');
+		iframeBody.html(html);
+		iframeBody.css("padding", "0.5rem");
+		iframeBody.css("background", "url(/static/background/timg.jpg)");
+		iframeBody.css("font-size", "0.825rem");
 	}
 	
 	html2canvas($('#kContentIframe').contents().find('body')[0]).then(function(canvas) {
 		var url = canvas.toDataURL();
 		var f = [];
 		f.push(dataURLtoFile(url));
-		img.loadImg(f, 1, 0.7);
+		img.loadImg(f, 1, 0.8);
     });
 }
 
@@ -350,7 +369,7 @@ function textToImg() {
     </li>
     <li class="list-group-item">
     	<div class="row">
-	    	<div id="recommend" class="col-form-label col-12" style="display:flex;justify-content:space-between;padding:0 0.375rem">
+	    	<div id="recommend" class="col-form-label col-12" style="display:flex;justify-content:space-between;padding:0 0.375rem;">
 		    	<span class="star" th:each="item:${starList}"><b class="star-show">⭐</b></span>
 		    	<span class="star" th:each="item:${noStarList}"><b class="star-hide">⭐</b></span>
 	    	</div>
@@ -358,9 +377,13 @@ function textToImg() {
     </li>
     <li class="list-group-item">
     	<div class="row">
-			<textarea id="kContent" rows="5" class="form-control" th:text="${pojo.kContent}"></textarea>
-			<div style="width:100%;text-align: center;margin-top:0.5rem"><a href="#" onclick="textToImg()">转成图片</a></div>
-    	</div>
+			<textarea id="kContent" rows="4" class="form-control" th:text="${pojo.kContent}"></textarea>
+			<div style="display:flex;justify-content:space-between;width:100%;margin:1rem 1rem 0 1rem">
+				<a href="#" onclick="textToImg()">转成图片</a>
+				<div><input type="checkbox" checked="checked" id="titleCenter">标题居中</div>
+				<div>背景图:<input type="radio" name="background" checked="checked">红色<input type="radio" name="background">红色<input type="radio" name="background">红色</div>
+			</div>
+		</div>
     </li>
 	<li class="list-group-item" id="imgLi" style="display:flex;justify-content:space-between;padding-top:.375rem;padding-bottom:.375rem">
 		<input type="file" multiple="multiple" accept="image/*" onchange="img.fileChange(this)" style="display:none">
