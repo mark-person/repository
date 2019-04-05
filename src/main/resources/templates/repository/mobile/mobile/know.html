@@ -11,6 +11,7 @@
 <link th:src="@{/static/markdown/tribute.css}" rel="stylesheet"/>
 <script th:src="@{/static/markdown/tribute.min.js}" type="text/javascript"></script>
 <script th:src="@{/static/markdown/html2canvas.min.js}" type="text/javascript"></script>
+<script th:src="@{/static/markdown/marked.min.js}" type="text/javascript"></script>
 
  <style>
 .tribute-container {position:absolute;top 0;left:0;height auto;max-height:300px;max-width:500px;overflow:auto;display:block;z-index:999999;}
@@ -30,11 +31,11 @@ var controllerPath = contextPath + "auto/mobile/";
 var img = {};
 var IMG_SCALE_HEIGHT = 60;
 img.fileChange = function(obj) {
-	this.loadImg(obj.files, obj.files.length);
+	this.loadImg(obj.files, obj.files.length, 0.2);
 	// 重新生成一个，防失效
 	$(obj).prop("outerHTML", $(obj).prop("outerHTML"));
 }
-img.loadImg = function(f, n) {
+img.loadImg = function(f, n, encoder) {
 	n--;
 	var reader = new FileReader();
 	reader.onload = function() {
@@ -45,7 +46,7 @@ img.loadImg = function(f, n) {
 		    canvas.height = this.height;
 		    var context = canvas.getContext("2d");
 		    context.drawImage(this, 0, 0, this.width, this.height, 0, 0, this.width, this.height);
-		    var newSrc = canvas.toDataURL('image/jpeg', 0.2);
+		    var newSrc = canvas.toDataURL('image/jpeg', encoder);
 		    
 		    var jObj = $($("#imgTemplate").html());
 			var imgObj = jObj.find(".upload-img");
@@ -53,7 +54,7 @@ img.loadImg = function(f, n) {
 			imgObj.data("mFile", dataURLtoFile(newSrc));
 			$("#imgEndLi").before(jObj);
 			if (n > 0) {
-				img.loadImg(f, n);
+				img.loadImg(f, n, encoder);
 			}
 			else {
 				img.refreshTop();
@@ -95,7 +96,7 @@ img.click = function(obj) {
 	var initHeight = new Number($(obj).data("data-init-height"));
 	
 	if (isInit) {
-		$(obj).css({position:"fixed", left:0, top:0});
+		$(obj).css({position:"fixed",top:0});
 		
 		var w = $(obj).parents(".list-group-item").width();
 		if (w >= initWidth) {
@@ -165,13 +166,14 @@ function upload(files) {
 }
 
 function insertOrUpdateKnowledge() {
-	if (!$("#kTitle").val()) {
-		 $("[name=kTitle]").val($("[name=kTitle]").prop("placeholder"));
+	if ($("#kTitle").val() == "") {
+		$("[name=kTitle]").val($("#kTitle").prop("placeholder"));
 	}
 	else {
-		 $("[name=kTitle]").val(getUspTitle());
+		$("[name=kTitle]").val(getUspTitle());
 	}
 	$("[name=recommend]").val($("#recommend .star-show").length);
+	
 	
 	var srcList = [];
 	$(".upload-img").each(function(i, o) {
@@ -247,26 +249,7 @@ $(function() {
 	 	}
 	});
 	tribute.attach(document.getElementById("kTitle"));
-	
-	html2canvas($("#kContentDiv")[0]).then(function(canvas) {
-		var url = canvas.toDataURL();
-		//alert(url)
-		$("#viewImg").attr("src", url);
-    });
-	
-	/*
-	html2canvas(document.body, {
-		onrendered: function(canvas) {
-		  alert(1)
-	    //var url = canvas.toDataURL();//图片地址
-	    alert(url)
-	    $("#viewImg").attr("src", url);
-	   // document.body.appendChild(canvas);
-	  },
-	  width: 100,
-	  height: 100
-	});*/
-	
+
 })
 
 function resetForm() {
@@ -314,13 +297,27 @@ function getEmojiTitle(title) {
 }
 
 
-
-
-
-
-
-
-
+function textToImg() {
+	
+	var kContent = $("#kContent").val();
+	
+	if (kContent) {
+		var html = marked(kContent);
+		$('#kContentIframe').contents().find('body').html(html);
+		$('#kContentIframe').contents().find('body').css("padding", "0.5rem");
+		$('#kContentIframe').contents().find('body').css("background", "url(/static/background/timg.jpg)");
+		$('#kContentIframe').contents().find('body').css("font-size", "0.825rem");
+	}
+	
+	html2canvas($('#kContentIframe').contents().find('body')[0]).then(function(canvas) {
+		var url = canvas.toDataURL();
+		var f = [];
+		f.push(dataURLtoFile(url));
+		img.loadImg(f, 1, 0.7);
+    });
+	
+	
+}
 
 </script>
 
@@ -346,7 +343,6 @@ function getEmojiTitle(title) {
     <li class="list-group-item">
     	<div class="row">
     		<input class="form-control" type="text" id="kTitle" placeholder="无" th:value="${pojo.kTitle}" maxlength="64">
-    		<img id="viewImg" style="width:100px;height:100px">
     	</div>
     </li>
     <li class="list-group-item">
@@ -364,13 +360,14 @@ function getEmojiTitle(title) {
 	    	</div>
     	</div>
     </li>
-    <li class="list-group-item" id="kContentDiv">
+    <li class="list-group-item">
     	<div class="row">
 			<textarea id="kContent" rows="5" class="form-control" th:text="${pojo.kContent}"></textarea>
     	</div>
     </li>
 	<li class="list-group-item" id="imgLi" style="display:flex;justify-content:space-between;">
 		<input type="file" multiple="multiple" accept="image/*" onchange="img.fileChange(this)" style="display:none">
+		<a href="#" onclick="textToImg()">转成图片</a>
 		<a href="#" onclick="$(this).prev().click()">选择图片</a>
 		<a href="javascript:resetForm()">重新新增</a>
 		<a href="javascript:gotoView()" id="view" th:style="${pojo.kId == null} ? 'display:none' : ''">查看</a>
@@ -382,6 +379,10 @@ function getEmojiTitle(title) {
 		<span class="badge badge-dark btn" onclick="img.remove(this)">✖删除</span>
 	</li>
 	<li class="list-group-item" id="imgEndLi" style="display: none"></li>
+	<li class="list-group-item" style="padding: 0; margin-bottom: 2rem; height: 100%; visibility: hidden;">
+		<iframe id="kContentIframe" style="border: 0; width: 100%; height: 100%;"></iframe>
+	</li>
+	
 </ul>
 </form>
 <script id="imgTemplate" type="text/html">

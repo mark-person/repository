@@ -47,15 +47,16 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 		return list;
 	}
 	
+	private int[] RECOMMEND_BASE_VALUE = {900000000, 800000000, 700000000, 600000000, 500000000};
+	private int NOW_SECOND = 1554386286;
+	
 	@Transactional
 	public Map<String, Object> insert(Knowledge pojo) {
 		int userId = AuthContext.getLoginAccount().getUserId();
 		pojo.setModifiedBy(userId);
 		
-		// 去掉knowledge的created和created_by
-		// 两个表加上recommend_prio可搜索星级和排序
-		// (int) (DateTime.now().getMillis() / 1000)
-		// select unix_timestamp(now()) - 1554386286 + 900000000
+		int recommendPrio = (int)(System.currentTimeMillis() / 1000) - NOW_SECOND + RECOMMEND_BASE_VALUE[pojo.getRecommend() - 1];
+		pojo.setRecommendPrio(recommendPrio);
 	
 		String[] imgSrc = new String[]{};
 		if (Strings.isNotEmpty(pojo.getImgSrc())) {
@@ -82,9 +83,9 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 		// USP
 		if (Strings.isNotEmpty(pojo.getUspIds())) {
 			String[] uspId = pojo.getUspIds().split(",");
-			String insertUspSql = "insert into repo_knowledge_map_usp(usp_id, k_id) values(?, ?)";
+			String insertUspSql = "insert into repo_knowledge_map_usp(usp_id, k_id, recommend_prio) values(?, ?, ?)";
 			for (String id : uspId) {
-				getJdbcTemplate().update(insertUspSql, id, kId);
+				getJdbcTemplate().update(insertUspSql, id, kId, recommendPrio);
 			}
 		}
 		
@@ -145,6 +146,8 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
     	int userId = AuthContext.getLoginAccount().getUserId();
     	pojo.setModified(new Date());
 		pojo.setModifiedBy(userId);
+		int recommendPrio = (int)(System.currentTimeMillis() / 1000) - NOW_SECOND + RECOMMEND_BASE_VALUE[pojo.getRecommend() - 1];
+		pojo.setRecommendPrio(recommendPrio);
 	
 		String[] imgSrc = new String[]{};
 		if (Strings.isNotEmpty(pojo.getImgSrc())) {
@@ -180,9 +183,9 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 		getJdbcTemplate().update(delUspSql, kId);
 		if (Strings.isNotEmpty(pojo.getUspIds())) {
 			String[] uspId = pojo.getUspIds().split(",");
-			String insertUspSql = "insert into repo_knowledge_map_usp(usp_id, k_id) values(?, ?)";
+			String insertUspSql = "insert into repo_knowledge_map_usp(usp_id, k_id, recommend_prio) values(?, ?, ?)";
 			for (String id : uspId) {
-				getJdbcTemplate().update(insertUspSql, id, kId);
+				getJdbcTemplate().update(insertUspSql, id, kId, recommendPrio);
 			}
 		}
 		
