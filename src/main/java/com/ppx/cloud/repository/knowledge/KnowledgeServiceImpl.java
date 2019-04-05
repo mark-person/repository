@@ -237,8 +237,8 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 	public List<Knowledge> byWordSearch(MPage page, String word, Integer catId) {
 		var c = createCriteria("where").addAnd("word = ?", word).addAnd("cat_id = ?", catId);
 		
-		var cSql = new StringBuilder("select count(*) from repo_search").append(c);
-		var qSql = new StringBuilder("select k_id from repo_search").append(c).append("order by modified desc");
+		var cSql = new StringBuilder("select count(*) from repo_search_word").append(c);
+		var qSql = new StringBuilder("select k_id from repo_search_word").append(c).append("order by modified desc");
 		List<Knowledge> kIdList = queryMPage(Knowledge.class, page, cSql, qSql, c.getParaList());
 		if (kIdList.isEmpty()) {
 			return kIdList;
