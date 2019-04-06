@@ -313,14 +313,19 @@ function textToImg() {
 				}
 			}
 			kContent = newKContent.join("\n");
-			alert(kContent);
+			//alert(kContent);
 		}
 		
 		var html = marked(kContent);
 		var iframeBody = $('#kContentIframe').contents().find('body');
 		iframeBody.html(html);
 		iframeBody.css("padding", "0.5rem");
-		iframeBody.css("background", "url(/static/background/timg.jpg)");
+		
+		var b = $("[name=background]:checked").val();
+		iframeBody.css("background", "url(/static/background/" + b + ")");
+		if (b != "0.png") {
+			iframeBody.css("color", "white");
+		}
 		iframeBody.css("font-size", "0.825rem");
 	}
 	
@@ -381,7 +386,11 @@ function textToImg() {
 			<div style="display:flex;justify-content:space-between;width:100%;margin:1rem 1rem 0 1rem">
 				<a href="#" onclick="textToImg()">转成图片</a>
 				<div><input type="checkbox" checked="checked" id="titleCenter">标题居中</div>
-				<div>背景图:<input type="radio" name="background" checked="checked">红色<input type="radio" name="background">红色<input type="radio" name="background">红色</div>
+				<div>背景图:
+					<input type="radio" name="background" checked="checked" value="0.png"><img src="/static/background/0.png" style="width:1rem;height:1rem">
+					<input type="radio" name="background" value="1.png"><img src="/static/background/1.png" style="width:1rem;height:1rem">
+					<input type="radio" name="background" value="2.png"><img src="/static/background/2.png" style="width:1rem;height:1remx">
+				</div>
 			</div>
 		</div>
     </li>
