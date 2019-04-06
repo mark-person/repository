@@ -74,7 +74,7 @@ create table repo_knowledge_img
 ) comment='非主';
 
 
-create table insert_search_word
+create table repo_search_word
 (
   word 		varchar(64),
   k_id 		int not null,
@@ -82,7 +82,7 @@ create table insert_search_word
   modified	timestamp not null default current_timestamp, 
   primary key (word, k_id)
 ) comment='';
-ALTER TABLE `insert_search_word` ADD INDEX `idx_search_k_id` (`k_id` ASC) VISIBLE;
+ALTER TABLE `repo_search_word` ADD INDEX `idx_search_k_id` (`k_id` ASC) VISIBLE;
 
 
  
