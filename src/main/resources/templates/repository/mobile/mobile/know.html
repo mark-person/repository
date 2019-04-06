@@ -32,13 +32,6 @@ var controllerPath = contextPath + "auto/mobile/";
 var img = {};
 var IMG_SCALE_HEIGHT = 60;
 img.fileChange = function(obj) {
-	
-   
-	
-	
-	
-	
-	
 	this.loadImg(obj.files, obj.files.length, 0.2);
 	// 重新生成一个，防失效
 	$(obj).prop("outerHTML", $(obj).prop("outerHTML"));
@@ -46,9 +39,11 @@ img.fileChange = function(obj) {
 
 
 function changeOrient(tmpImg, canvas, context, orientation) {
-	 
+	 var degree = 0;
+	 var drawWidth = tmpImg.width;
+     var drawHeight = tmpImg.height;
      switch(orientation){
-    		//iphone横屏拍摄，此时home键在左侧
+    	//iphone横屏拍摄，此时home键在左侧
      	 case 3:
           degree=180;
           drawWidth=-tmpImg.width;
@@ -90,18 +85,17 @@ img.loadImg = function(f, n, encoder) {
 		    
 		    //EXIF js 可以读取图片的元信息  https://github.com/exif-js/exif-js
 		    EXIF.getData(this, function() {
-		        var orientation = EXIF.getTag(this, 'Orientation');
+		        var orient = EXIF.getTag(this, 'Orientation');
 		        
 		        var drawWidth = tmpImg.width;
 		        var drawHeight = tmpImg.height;
-		        if (orientation) {
-		        	var o = changeOrient(tmpImg, canvas, context, orientation)
+		        // iphone不同方向拍摄
+		        if (orient == 3 || orient == 6 || orient == 8) {
+		        	var o = changeOrient(tmpImg, canvas, context, orient)
 		        	drawWidth = o.drawWidth;
 		        	drawHeight = o.drawHeight;
 		        }
-		       
-		        
-		        
+		       	
 		        context.drawImage(this, 0, 0, drawWidth, drawHeight);
 			    var newSrc = canvas.toDataURL('image/jpeg', encoder);
 			    
@@ -139,22 +133,59 @@ img.resize = function(img) {
 	$(img).data("data-init-boolean", true);
 	
 	if (initWidth < initHeight) {
+		
 		$(img).css({width:IMG_SCALE_HEIGHT * initWidth / initHeight, height:IMG_SCALE_HEIGHT});
 	}
 	else {
-		$(img).css({width:IMG_SCALE_HEIGHT, height:IMG_SCALE_HEIGHT * initHeight / initWidth});
+		var marginTop = (IMG_SCALE_HEIGHT - IMG_SCALE_HEIGHT * initHeight / initWidth) / 2;
+		$(img).css({width:IMG_SCALE_HEIGHT, height:IMG_SCALE_HEIGHT * initHeight / initWidth, marginTop:marginTop});
 	}
 	$(".upload-img").show();
+	
 }
+
+
+
+
+
 img.click = function(obj) {
-	var isInit = $(obj).data("data-init-boolean");
-	 $(obj).data("data-init-boolean", isInit ? false : true);
+	//var isInit = $(obj).data("data-init-boolean");
+	// $(obj).data("data-init-boolean", isInit ? false : true);
 	
 	var initWidth = new Number($(obj).data("data-init-width"));
 	var initHeight = new Number($(obj).data("data-init-height"));
 	
-	if (isInit) {
-		$(obj).css({position:"fixed", top:0, indexZ:999999999});
+	//if (isInit) {
+		
+		// init
+		//$("#viewImg").css("margin-top", ($(document.body).height() - $(document.body).width()*initHeight/initWidth) / 2);
+		//$("#viewImg").css("width", $(document.body).width());
+		//$("#viewImg").css("hight", $(document.body).width()*initHeight/initWidth);
+		
+		//$("#viewImg").css("margin-top", ($(document.body).height() - $(document.body).width()*initHeight/initWidth) / 2);
+		
+		if (initWidth/initHeight > $(document.body).width()/$(document.body).height()) {
+			$("#viewImg").css("margin-top", ($(window).height() - $(document.body).width()*initHeight/initWidth) / 2);
+			$("#viewImg").css("width", $(document.body).width());
+			$("#viewImg").css("hight", $(document.body).width()*initHeight/initWidth);
+		}
+		else {
+			$("#viewImg").css("margin-top", 0);
+			$("#viewImg").css("width",  $(document.body).height()*initWidth/initHeight);
+			$("#viewImg").css("hight", $(document.body).height());
+		}
+		
+		
+		$("#viewImg").attr("src", obj.src);
+		
+		$("#imgBack").css("width", $(window).width());
+		$("#imgBack").css("height", $(window).height());
+		$("#imgBack").show();
+		
+		return;
+		
+		/*
+		$(obj).css({position:"fixed", top:0, zIndex:999999999,left:0});
 		
 		var w = $(obj).parents(".list-group-item").width();
 		if (w >= initWidth) {
@@ -162,16 +193,22 @@ img.click = function(obj) {
 		}
 		else {
 			$(obj).css({width:w, height:w*initHeight/initWidth});
-		}
-	}
+		}*/
+		
+		//$("#imgBack").hide();
+		
+	//}
+	/*
 	else {
+		$("#imgBack").hide();
+		alert(2)
 		if (initWidth < initHeight) {
 			$(obj).css({position:"", width:IMG_SCALE_HEIGHT * initWidth / initHeight, height:IMG_SCALE_HEIGHT});
 		}
 		else {
 			$(obj).css({position:"", width:IMG_SCALE_HEIGHT, height:IMG_SCALE_HEIGHT * initHeight / initWidth});
 		}
-	}
+	}*/
 }
 img.refreshTop = function() {
 	$(".to-top").show();
@@ -371,7 +408,6 @@ function textToImg() {
 				}
 			}
 			kContent = newKContent.join("\n");
-			//alert(kContent);
 		}
 		
 		var html = marked(kContent);
@@ -380,6 +416,7 @@ function textToImg() {
 		iframeBody.css("padding", "0.5rem");
 		
 		var b = $("[name=background]:checked").val();
+		iframeBody.css("margin", 0);
 		iframeBody.css("background", "url(/static/background/" + b + ")");
 		if (b != "0.png") {
 			iframeBody.css("color", "white");
@@ -442,7 +479,7 @@ function textToImg() {
     	<div class="row">
 			<textarea id="kContent" rows="4" class="form-control" th:text="${pojo.kContent}"></textarea>
 			<div style="display:flex;justify-content:space-between;width:100%;margin:1rem 1rem 0 1rem">
-				<a href="#" onclick="textToImg()">转成图片</a>
+				<a href="#" onclick="textToImg()" class="btn-default">转成图片</a>
 				<div><input type="checkbox" checked="checked" id="titleCenter">标题居中</div>
 				<div>背景图:
 					<input type="radio" name="background" checked="checked" value="0.png"><img src="/static/background/0.png" style="width:1rem;height:1rem">
@@ -454,15 +491,16 @@ function textToImg() {
     </li>
 	<li class="list-group-item" id="imgLi" style="display:flex;justify-content:space-between;padding-top:.375rem;padding-bottom:.375rem">
 		<input type="file" multiple="multiple" accept="image/*" onchange="img.fileChange(this)" style="display:none">
-		<button type="button" class="btn btn-sm" onclick="$(this).prev().click()">选择图片</button>
-		<button type="button" class="btn btn-sm" onclick="resetForm()">重新新增</button>
-		<button type="button" class="btn btn-sm" onclick="gotoView()" id="view" th:style="${pojo.kId == null} ? 'display:none' : ''">查看</button>
+		
+		<button type="button" class="btn btn-sm btn-link" onclick="$(this).prev().click()">选择图片</button>
+		<button type="button" class="btn btn-sm btn-link" onclick="resetForm()">重新新增</button>
+		<button type="button" class="btn btn-sm btn-link" onclick="gotoView()" id="view" th:style="${pojo.kId == null} ? 'display:none' : ''">查看</button>
 		<button type="button" class="btn btn-primary btn-sm" onclick="ok()">确认<span id="actionHint" th:text="${pojo.kId == null} ? '新增' : '修改'"></span></button>
 	</li>
-	<li th:each="item,iterStat:${imgList}" class="list-group-item d-flex align-items-center">
-		<div style="width:3.75rem;height:3.75rem"><img th:src="'/img/' + ${item}" th:attr="data-url=${item}" class="upload-img" style="display:none" onload="img.resize(this)" onclick="img.click(this)"></div>
+	<li th:each="item,iterStat:${imgList}" class="list-group-item d-flex align-items-center" style="padding-top:0.265rem;padding-bottom:0.265rem">
+		<div style="width:3.75rem;height:3.75rem;text-align:center;"><img th:src="'/img/' + ${item}" th:attr="data-url=${item}" class="upload-img" style="display:none;cursor: pointer;" onload="img.resize(this)" onclick="img.click(this)"></div>
 		<span class="badge badge-dark btn" onclick="$(this).parent().find('img').click()">🔍放大</span>
-		<span class="badge badge-dark btn" onclick="img.remove(this)">✖删除</span>
+		<span class="badge badge-dark btn" onclick="img.remove(this)">❌删除</span>
 	</li>
 	<li class="list-group-item" id="imgEndLi" style="display: none"></li>
 	<li class="list-group-item" style="padding: 0; margin-bottom: 2rem; height: 100%; visibility: hidden;">
@@ -472,17 +510,25 @@ function textToImg() {
 </ul>
 </form>
 <script id="imgTemplate" type="text/html">
-	<li class="list-group-item d-flex align-items-center">
-		<div style="width:3.75rem;height:3.75rem"><img class="upload-img" style="display:none" onload="img.resize(this)" onclick="img.click(this)"></div>
+	<li class="list-group-item d-flex align-items-center" style="padding-top:0.265rem;padding-bottom:0.265rem">
+		<div style="width:3.75rem;height:3.75rem;text-align:center;"><img class="upload-img" style="display:none;cursor: pointer;" onload="img.resize(this)" onclick="img.click(this)"></div>
 		<span class="badge badge-dark btn" onclick="$(this).parent().find('img').click()">🔍放大</span>
-		<span class="badge badge-dark btn" onclick="img.remove(this)">✖删除</span>
+		<span class="badge badge-dark btn" onclick="img.remove(this)">❌删除</span>
 		<span class="badge badge-dark btn to-top" style="display:none;" onclick="img.top(this)">🔝置顶</span>
 	</li>
 	</script>
 </div>
 </div>
 
+
+
 <div th:replace="repository/mobile/mobile/menu::nav('insertMenu')"></div>
+
+
+<div style="position:fixed;top:0;left:0;background-color:black;z-index:99999999;display:none;text-align: center;cursor: pointer;" id="imgBack" onclick='$("#imgBack").hide();'>
+	<div style="position:fixed;top:1rem;left:1rem;color:white;">❌</div>
+	<img id="viewImg">
+</div> 
 
 </body>
 </html>
