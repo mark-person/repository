@@ -94,6 +94,25 @@ ALTER TABLE `repo_search_word` ADD INDEX `idx_search_k_id` (`k_id` ASC) VISIBLE;
 
 
 
+/**
+ * # 初始化数据
+ * # 导有表情的 mysqldump -u root -pPASSWORD repository repo_knowledge_usp --default-character-set=utf8mb4 >c:\test.sql
+ */
+
+insert into repo_knowledge_category values(1,0,'brand',1,1);
+insert into repo_knowledge_category values(2,0,'customer',2,1);
+insert into repo_knowledge_category values(3,0,'channel',3,1);
+insert into repo_knowledge_category values(4,1,'brain',4,1);
+insert into repo_knowledge_category values(5,1,'product',5,1);
+insert into repo_knowledge_category values(6,1,'tech',6,1);
+insert into repo_knowledge_category values(7,3,'operation',7,1);
+insert into repo_knowledge_category values(8,2,'competitor',8,1);
+insert into repo_knowledge_category values(9,1,'common',9,1);
+
+
+
+INSERT INTO `repo_knowledge_usp` VALUES (1,'好奇😲',1,1),(2,'速度💥',2,1),(3,'节日🍞',3,1);
+
 
 
 
