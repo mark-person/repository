@@ -326,6 +326,50 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 		return resultList;
 	}
 	
+	/**
+	 * 我的知识页
+	 * @param page
+	 * @return
+	 */
+	public List<Knowledge> myKnowSearch(MPage page, Integer catId, Integer recommend) {
+		var c = createCriteria("and").addAnd("cat_id = ?", catId);
+		
+		if (recommend != null) {
+			if (recommend == 5) {
+				c.addAnd("recommend_prio > ?", RECOMMEND_BASE_VALUE[4]);
+			}
+			else {
+				c.addAnd("recommend_prio > ?", RECOMMEND_BASE_VALUE[recommend - 1]);
+				c.addAnd("recommend_prio < ?", RECOMMEND_BASE_VALUE[recommend]);
+			}
+		}
+		
+		int userId = AuthContext.getLoginAccount().getUserId();
+		c.addPrePara(userId);
+		
+		var cSql = new StringBuilder("select count(*) from repo_knowledge where modified_by = ?").append(c);
+		var qSql = new StringBuilder("select * from repo_knowledge where modified_by = ?").append(c).append("order by modified desc");
+		List<Knowledge> resultList = queryMPage(Knowledge.class, page, cSql, qSql, c.getParaList());
+		return resultList;
+	}
+	
+	/**
+	 * favorite页
+	 * @param page
+	 * @return
+	 */
+	public List<Knowledge> favoriteSearch(MPage page, Integer catId) {
+		var c = createCriteria("where").addAnd("cat_id = ?", catId);
+		int userId = AuthContext.getLoginAccount().getUserId();
+		c.addPrePara(userId);
+		
+		var cSql = new StringBuilder("select count(*) from repo_knowledge k join repo_favorite f"
+				+ " on k.k_id = f.k_id and f.repo_user_id = ?").append(c);
+		var qSql = new StringBuilder("select k.* from repo_knowledge k join repo_favorite f "
+				+ " on k.k_id = f.k_id and f.repo_user_id = ?").append(c).append("order by k.modified desc");
+		List<Knowledge> resultList = queryMPage(Knowledge.class, page, cSql, qSql, c.getParaList());
+		return resultList;
+	}
 	
 	public boolean isFavorite(int kId) {
 		int userid = AuthContext.getLoginAccount().getUserId();
@@ -357,5 +401,7 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 		String sql = "delete from repo_favorite where repo_user_id = ? and k_id = ?";
 		return getJdbcTemplate().update(sql, userId, kId);
 	}
+	
+	
 
 }

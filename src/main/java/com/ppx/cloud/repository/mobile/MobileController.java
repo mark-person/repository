@@ -157,5 +157,24 @@ public class MobileController {
 		return mv;
 	}
     
+    public ModelAndView favorite(ModelAndView mv) {
+    	mv.addObject("list", favoriteSearch(new MPage(), null));
+		mv.addObject("catList", categoryService.list());
+		return mv;
+	}
+    
+    public Map<?, ?> favoriteSearch(MPage page, Integer catId) {
+		return ReturnMap.of(page, impl.favoriteSearch(page, catId));
+	}
+    
+    public ModelAndView myKnow(ModelAndView mv) {
+    	mv.addObject("list", myKnowSearch(new MPage(), null, null));
+		mv.addObject("catList", categoryService.list());
+		return mv;
+	}
+    
+    public Map<?, ?> myKnowSearch(MPage page, Integer catId, Integer recommend) {
+		return ReturnMap.of(page, impl.myKnowSearch(page, catId, recommend));
+	}
     
 }
