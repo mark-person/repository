@@ -1,10 +1,8 @@
 package com.ppx.cloud.repository.mobile;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.hankcs.hanlp.HanLP;
-import com.hankcs.hanlp.dictionary.CustomDictionary;
-import com.hankcs.hanlp.seg.common.Term;
-import com.hankcs.hanlp.tokenizer.StandardTokenizer;
 import com.ppx.cloud.common.contoller.ReturnMap;
 import com.ppx.cloud.common.page.MPage;
 import com.ppx.cloud.repository.category.KnowledgeCategoryService;
@@ -125,9 +119,13 @@ public class MobileController {
 			starList.add("");
 		}
 		mv.addObject("starList", starList);
+		
+		
+		// favorite
+		boolean isFavorite = impl.isFavorite(id);
+		mv.addObject("isFavorite", isFavorite);
 		return mv;
 	}
-    
     
     public ModelAndView nice(ModelAndView mv, Integer uspId) {
     	mv.addObject("list", niceSearch(new MPage(), uspId, null));
@@ -143,6 +141,20 @@ public class MobileController {
     	else {
     		return ReturnMap.of(page, impl.byUspSearch(page, uspId, recommend));
     	}
+	}
+    
+    public Map<?, ?> confirmFavorite(Integer kId) {
+    	impl.confirmFavorite(kId);
+    	return ReturnMap.of();
+	}
+    
+    public Map<?, ?> cancelFavorite(Integer kId) {
+    	impl.cancelFavorite(kId);
+    	return ReturnMap.of();
+	}
+     
+    public ModelAndView my(ModelAndView mv) {
+		return mv;
 	}
     
     

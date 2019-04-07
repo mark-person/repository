@@ -48,6 +48,21 @@ function edit() {
 }
 
 
+var isFavorite = [[${isFavorite}]];
+function favorite() {
+	var uri = isFavorite ? "cancelFavorite" : "confirmFavorite";
+	var msg = isFavorite ? "取消收藏成功" : "收藏成功";
+	showLoading();
+	$.post(controllerPath + uri, "kId=[[${pojo.kId}]]", function(r) {
+		hideLoading();
+		if (r.errcode === 0) {
+			isFavorite = isFavorite ? false : true;
+			alertSuccess(msg);
+		}
+	});
+}
+
+
 </script>
 <style type="text/css">
 .swiper-container {
@@ -103,7 +118,7 @@ function edit() {
 					<div th:text="${pojo.catName}"></div>
 					<div>
 						<div id="recommend" style="display: flex; justify-content: space-between; width:100%">
-							<span class="star" th:each="item:${starList}">⭐</span>
+							<span class="star" th:each="item:${starList}">❤️</span>
 						</div>
 					</div>
 				</div>
@@ -121,6 +136,9 @@ function edit() {
 		<div style="text-align: center; width: 100%;">
 			<div style="padding: 0.2rem">
 				<button type="button" onclick="edit()" class="btn btn-primary btn-sm">&nbsp;&nbsp;&nbsp;&nbsp;修改&nbsp;&nbsp;&nbsp;&nbsp;</button>
+				
+				
+				<button th:text="${isFavorite?'取消收藏':'收藏'}" type="button" onclick="favorite()" class="btn btn-primary btn-sm"></button>
 			</div>
 		</div>
 	</div>

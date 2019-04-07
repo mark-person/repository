@@ -85,7 +85,28 @@ create table repo_search_word
 ALTER TABLE `repo_search_word` ADD INDEX `idx_search_k_id` (`k_id` ASC) VISIBLE;
 
 
- 
+
+
+create table repo_user (
+  repo_user_id 		int(11) not null,
+  repo_user_name 	varchar(32) not null,
+  repo_user_status 	tinyint(1) not null default 1 comment '0:删除 1:正常',
+  favorite_n		int(11) not null default 0 comment '收藏数量',
+  created 			timestamp not null default current_timestamp,
+  primary key (repo_user_id)
+) comment='知识用户';
+
+create table repo_favorite
+(
+	repo_user_id	int(11) not null,
+	k_id			int(11) not null,
+	created 		timestamp not null default current_timestamp,
+	primary key (repo_user_id, k_id)
+) comment='收藏';
+
+
+
+
 
 
 

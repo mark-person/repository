@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.hankcs.hanlp.HanLP;
 import com.hankcs.hanlp.seg.common.Term;
 import com.ppx.cloud.auth.common.AuthContext;
+import com.ppx.cloud.auth.console.grant.AuthGrant;
 import com.ppx.cloud.common.contoller.ReturnMap;
 import com.ppx.cloud.common.jdbc.MyDaoSupport;
 import com.ppx.cloud.common.page.MPage;
@@ -325,5 +326,36 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 		return resultList;
 	}
 	
+	
+	public boolean isFavorite(int kId) {
+		int userid = AuthContext.getLoginAccount().getUserId();
+		String sql = "select count(*) from repo_favorite where repo_user_id = ? and k_id = ?";
+		int r = getJdbcTemplate().queryForObject(sql, Integer.class, userid, kId);
+		if (r == 1) return true;
+		else return false;
+	}
+	
+	@Transactional
+	public int confirmFavorite(int kId) {
+		int userId = AuthContext.getLoginAccount().getUserId();
+		
+		String updateSql = "update repo_user set favorite_n = favorite_n + 1 where repo_user_id = ?";
+		getJdbcTemplate().update(updateSql, userId);
+		
+		String sql = "insert into repo_favorite(repo_user_id, k_id) values(?, ?)";
+		return getJdbcTemplate().update(sql, userId, kId);
+	}
+	
+	
+	@Transactional
+	public int cancelFavorite(int kId) {
+		int userId = AuthContext.getLoginAccount().getUserId();
+		
+		String updateSql = "update repo_user set favorite_n = favorite_n - 1 where repo_user_id = ?";
+		getJdbcTemplate().update(updateSql, userId);
+		
+		String sql = "delete from repo_favorite where repo_user_id = ?, k_id = ?";
+		return getJdbcTemplate().update(sql, userId, kId);
+	}
 
 }
