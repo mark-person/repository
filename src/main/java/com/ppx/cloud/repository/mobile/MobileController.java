@@ -144,11 +144,14 @@ public class MobileController {
 	}
     
     public Map<?, ?> confirmFavorite(Integer kId) {
+    
+    	
     	impl.confirmFavorite(kId);
     	return ReturnMap.of();
 	}
     
     public Map<?, ?> cancelFavorite(Integer kId) {
+    	
     	impl.cancelFavorite(kId);
     	return ReturnMap.of();
 	}
@@ -158,6 +161,9 @@ public class MobileController {
 	}
     
     public ModelAndView favorite(ModelAndView mv) {
+    	
+    	
+    	
     	mv.addObject("list", favoriteSearch(new MPage(), null));
 		mv.addObject("catList", categoryService.list());
 		return mv;

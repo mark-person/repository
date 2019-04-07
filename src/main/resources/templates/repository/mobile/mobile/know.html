@@ -173,12 +173,12 @@ img.click = function(obj) {
 		if (initWidth/initHeight > $(document.body).width()/$(document.body).height()) {
 			$("#viewImg").css("margin-top", ($(window).height() - $(document.body).width()*initHeight/initWidth) / 2);
 			$("#viewImg").css("width", $(document.body).width());
-			$("#viewImg").css("hight", $(document.body).width()*initHeight/initWidth);
+			$("#viewImg").css("height", $(document.body).width()*initHeight/initWidth);
 		}
 		else {
 			$("#viewImg").css("margin-top", 0);
 			$("#viewImg").css("width",  $(document.body).height()*initWidth/initHeight);
-			$("#viewImg").css("hight", $(document.body).height());
+			$("#viewImg").css("height", $(document.body).height());
 		}
 		
 		
