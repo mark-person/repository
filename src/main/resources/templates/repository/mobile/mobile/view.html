@@ -56,8 +56,10 @@ function favorite() {
 	$.post(controllerPath + uri, "kId=[[${pojo.kId}]]", function(r) {
 		hideLoading();
 		if (r.errcode === 0) {
+			isFavorite ? $("#favoriteButton").text("收藏") : $("#favoriteButton").text("取消收藏");
 			isFavorite = isFavorite ? false : true;
 			alertSuccess(msg);
+			
 		}
 	});
 }
@@ -138,7 +140,7 @@ function favorite() {
 				<button type="button" onclick="edit()" class="btn btn-primary btn-sm">&nbsp;&nbsp;&nbsp;&nbsp;修改&nbsp;&nbsp;&nbsp;&nbsp;</button>
 				
 				
-				<button th:text="${isFavorite?'取消收藏':'收藏'}" type="button" onclick="favorite()" class="btn btn-primary btn-sm"></button>
+				<button id="favoriteButton" th:text="${isFavorite?'取消收藏':'收藏'}" type="button" onclick="favorite()" class="btn btn-primary btn-sm"></button>
 			</div>
 		</div>
 	</div>

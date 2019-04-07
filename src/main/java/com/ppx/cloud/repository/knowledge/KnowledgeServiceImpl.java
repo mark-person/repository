@@ -354,7 +354,7 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 		String updateSql = "update repo_user set favorite_n = favorite_n - 1 where repo_user_id = ?";
 		getJdbcTemplate().update(updateSql, userId);
 		
-		String sql = "delete from repo_favorite where repo_user_id = ?, k_id = ?";
+		String sql = "delete from repo_favorite where repo_user_id = ? and k_id = ?";
 		return getJdbcTemplate().update(sql, userId, kId);
 	}
 
