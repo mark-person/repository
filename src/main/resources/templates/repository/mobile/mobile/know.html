@@ -188,33 +188,6 @@ img.click = function(obj) {
 		$("#imgBack").css("height", $(window).height());
 		$("#imgBack").show();
 		
-		return;
-		
-		/*
-		$(obj).css({position:"fixed", top:0, zIndex:999999999,left:0});
-		
-		var w = $(obj).parents(".list-group-item").width();
-		if (w >= initWidth) {
-			$(obj).css({width:initWidth, height:initHeight});
-		}
-		else {
-			$(obj).css({width:w, height:w*initHeight/initWidth});
-		}*/
-		
-		//$("#imgBack").hide();
-		
-	//}
-	/*
-	else {
-		$("#imgBack").hide();
-		alert(2)
-		if (initWidth < initHeight) {
-			$(obj).css({position:"", width:IMG_SCALE_HEIGHT * initWidth / initHeight, height:IMG_SCALE_HEIGHT});
-		}
-		else {
-			$(obj).css({position:"", width:IMG_SCALE_HEIGHT, height:IMG_SCALE_HEIGHT * initHeight / initWidth});
-		}
-	}*/
 }
 img.refreshTop = function() {
 	$(".to-top").show();
@@ -481,17 +454,12 @@ function textToImg() {
 		    	</a>
 		    </div>
 		</div>
-   			<!--
-	    	<select class="form-control" name="catId">
-	    		<option th:each="item:${catList}" th:text="${item.catName}" th:value="${item.catId}" th:selected="${item.catId == pojo.catId}"></option>
-	    	</select>
-	    	-->
     </li>
     <li class="list-group-item">
     	<div class="row">
 	    	<div id="recommend" class="col-form-label col-12" style="display:flex;justify-content:space-between;padding:0 0.375rem;">
-		    	<span class="star" th:each="item:${starList}"><b class="star-show">❤️</b></span>
-		    	<span class="star" th:each="item:${noStarList}"><b class="star-hide">❤️</b></span>
+		    	<span class="star" th:each="item:${starList}"><b class="star-show">⭐</b></span>
+		    	<span class="star" th:each="item:${noStarList}"><b class="star-hide">⭐</b></span>
 	    	</div>
     	</div>
     </li>
@@ -500,24 +468,10 @@ function textToImg() {
 			<textarea id="kContent" rows="4" class="form-control" th:text="${pojo.kContent}"></textarea>
 			<div style="display:flex;justify-content:space-between;width:100%;margin:1rem 1rem 0 1rem">
 				<a href="#" onclick="textToImg()">转成图片</a>
-				
-				<!--
-				<div class="input-group-text"><label><input type="checkbox" checked="checked" id="titleCenter">标题居中</label></div>
-				 -->
-				 
 				<div class="custom-control custom-checkbox">
 					<input type="checkbox" class="custom-control-input" id="titleCenter" checked="checked">
 					<label class="custom-control-label" for="titleCenter">标题居中</label>
 				</div>
-				<!--
-				<div class="form-check form-check-inline">
-				  <input class="form-check-input" type="checkbox" id="titleCenter">
-				  <label class="form-check-label" for="titleCenter">标题居</label>
-				</div> -->
-				
-				
-				
-				
 				<div>
 					<div class="custom-control custom-radio custom-control-inline">
 						<input type="radio" id="background1" name="background" class="custom-control-input" checked="checked" value="0.png">
@@ -533,12 +487,6 @@ function textToImg() {
 						<input type="radio" id="background3" name="background" class="custom-control-input" value="2.png">
 						<label class="custom-control-label" for="background3"><img src="/static/background/2.png" style="width:1rem;height:1rem"></label>
 					</div>
-				
-					<!--  
-					<input type="radio" name="background" checked="checked" value="0.png">
-					<input type="radio" name="background" value="1.png"><img  id="testImgId" src="/static/background/1.png" style="width:1rem;height:1rem">
-					<input type="radio" name="background" value="2.png"><img src="/static/background/2.png" style="width:1rem;height:1remx">
-					-->
 				</div>
 			</div>
 		</div>
