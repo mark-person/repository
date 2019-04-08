@@ -232,7 +232,7 @@ $(function() {
 
 <div id="bottomDiv" style="position: fixed; bottom: 0; width: 25.875rem; background-color: #f0f0f0;z-index:9999">
 	<div style="padding: 0.2rem; display: flex; justify-content: space-around;align-items:center;" >
-		<div>
+		<div th:if="${action!='readonly'}">
 			<a style="background-color: orange;color:white;padding:0.4rem 2.8rem;border-radius: 0.865rem;cursor: pointer;" onclick="edit()">修改</a>
 		</div>
 		<div style="text-align: center;cursor: pointer;" onclick="favorite()">

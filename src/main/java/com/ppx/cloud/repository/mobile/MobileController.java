@@ -116,6 +116,12 @@ public class MobileController {
     	}
     }
     
+    public ModelAndView addView(ModelAndView mv, @RequestParam Integer id) {
+    	mv.setViewName("repository/mobile/mobile/view");
+    	mv.addObject("action", "readonly");
+    	return view(mv, id);
+    }
+    
     public ModelAndView view(ModelAndView mv, @RequestParam Integer id) {
     	Knowledge pojo = impl.get(id);
     	

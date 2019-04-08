@@ -334,14 +334,14 @@ function resetForm() {
 			'<span class="star"><b class="star-hide">⭐</b></span><span class="star"><b class="star-hide">⭐</b></span>');
 	refreshRecommend();
 	
-	$("[name=kId]").val("");
+	$("#kTitle").val("");
 	$("#actionHint").html("新增");
 	$("#view").hide();
 }
 
 function gotoView() {
 	var kId = $("[name=kId]").val();;
-	location.href = [[@{/auto/mobile/view}]] + "?id=" + kId;
+	location.href = [[@{/auto/mobile/addView}]] + "?id=" + kId;
 }
 
 function getUspIdArray() {
