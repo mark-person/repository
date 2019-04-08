@@ -14,21 +14,17 @@ $(function() {
 	var list = [[${list}]];
 	$("#knowDiv").append(template("itemTemplate", list));
 	
-	
 	$('#form').submit(function (e) {
 		
-		queryPage(1, $("#catId").val(), $("#word").val()) 
-	  
+		queryPage(1);
+	  	
 	    e.preventDefault();
 	    e.stopPropagation();
-	    
-	  
 	 })
-
 });
 
-function queryPage(pageNumber, catId, word) {
-	var para = {pageNumber:pageNumber, catId:catId, word:word}
+function queryPage(pageNumber) {
+	var para = {pageNumber:pageNumber, catId:$("#catId").val(), word:$("#word").val(), orderBy:$("#orderBy").val()}
 	$.post(controllerPath + "homeSearch", para, function(r) {
 		if (pageNumber == 1) {
 			currentPageNumber = 1;
@@ -49,9 +45,8 @@ function queryPage(pageNumber, catId, word) {
 	});
 }
 
-
 function catChange() {
-	queryPage(1, $("#catId").val(), $("#word").val());
+	queryPage(1);
 }
 
 function view(kId) {
@@ -77,7 +72,7 @@ function moreData() {
 	$("#pageInfo div").hide();
 	$("#bottomLoading").show();
 	
-	queryPage(currentPageNumber, $("#catId").val(), $("#word").val()); 
+	queryPage(currentPageNumber); 
 }
 
 
@@ -115,7 +110,7 @@ body {margin-top:2.75rem;margin-bottom:3rem}
 input::-webkit-input-placeholder {padding-top:0.175rem;}
 
 #knowDiv {display:flex;justify-content:space-between;flex-wrap:wrap;margin-left:0.3rem;margin-right:0.3rem;}
-.know-item-div {border:1px solid #DCDCDC;background-color:white;margin:0.2rem 0.2rem;border-radius:0.5rem;cursor: pointer;}
+.know-item-div {border:1px solid #DCDCDC;background-color:white;margin:0.225rem;border-radius:0.5rem;cursor: pointer;}
 .know-img {max-width:100%;max-height:100%;}
 .know-img-div {width:12rem;height:12rem;border-bottom:1px solid #DCDCDC;display:table-cell;vertical-align:middle;text-align:center;}
 .know-title {width:12rem;display:-webkit-box !important; overflow:hidden;-webkit-line-clamp:1;-webkit-box-orient:vertical;font-size: 0.825rem;padding:0.2rem;}
@@ -139,13 +134,45 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
 </script>
 <div class="top-div">
 <div>
-	<select class="form-control" id="catId" style="width:12.1rem" onchange="catChange()">
+	<div class="nav-item dropdown">
+	
+		<script>
+		function orderBy(type, obj) {
+			$(".order-item").css("color", "black");
+			$(".order-yes").text("");
+			
+			$(obj).css("color", "orange");
+			$(obj).find(".order-yes").text("✔");
+			$("#orderBy").val(type);
+			$("#orderName").text($(obj).find(".order-name").text());
+			queryPage(1);
+		}
+		
+		</script>
+		<input type="hidden" id="orderBy" value="0">
+	    <a id="orderName" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color:orange;">最新</a>
+	    <div class="dropdown-menu" style="min-width:24.875rem;font-size:0.865rem;">
+	    	<a href="#" class="dropdown-item order-item" style="display: flex;justify-content:space-between;color:orange;" onclick="orderBy(0, this)">
+	    		<span href="#" class="order-name">最新</span>
+	    		<span class="order-yes">✔</span>
+	    	</a>
+	    	<a href="#" class="dropdown-item" style="display: flex;justify-content:space-between;" onclick="orderBy(1, this)">
+	    		<span href="#" class="order-name">推荐</span>
+	    		<span class="order-yes"></span>
+	    	</a>
+	    </div>
+    </div>
+    
+	<select class="form-control" id="catId" style="width:10rem;font-size:0.865rem" onchange="catChange()">
 		<option value="">全部类目</option>
     	<option th:each="item:${catList}" th:text="${item.catName}" th:value="${item.catId}"></option>
     </select>
+    
+    
+    
 	<div>
-		<form id="form" style="width:12.1rem" action="javascript:;">
-			<input type="search" id="word" class="form-control" style="width:100%;"  placeholder="🔍">
+		<form id="form" style="width:10rem;font-size:0.865rem" action="javascript:;">
+			<input type="search" id="word" class="form-control" style="width:100%;" placeholder="🔍">
 		</form>
 	</div>
 </div>

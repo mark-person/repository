@@ -31,20 +31,20 @@ public class MobileController {
     private KnowledgeUspService uspService;
     
     public ModelAndView home(ModelAndView mv) {
-		mv.addObject("list", homeSearch(new MPage(), null, null));
+		mv.addObject("list", homeSearch(new MPage(), null, null, null));
 		mv.addObject("catList", categoryService.list());
 		mv.addObject("uspList", uspService.list());
 	
 		return mv;
 	}
     
-    public Map<?, ?> homeSearch(MPage page, String word, Integer catId) {
+    public Map<?, ?> homeSearch(MPage page, String word, Integer catId, Integer orderBy) {
     	
     	if (Strings.isBlank(word)) {
-    		return ReturnMap.of(page, impl.byCatSearch(page, catId));
+    		return ReturnMap.of(page, impl.byCatSearch(page, catId, orderBy));
     	}
     	else {
-    		return ReturnMap.of(page, impl.byWordSearch(page, word, catId));
+    		return ReturnMap.of(page, impl.byWordSearch(page, word, catId, orderBy));
     	}
 	}
     

@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.hankcs.hanlp.HanLP;
 import com.hankcs.hanlp.seg.common.Term;
 import com.ppx.cloud.auth.common.AuthContext;
-import com.ppx.cloud.auth.console.grant.AuthGrant;
 import com.ppx.cloud.common.contoller.ReturnMap;
 import com.ppx.cloud.common.jdbc.MyDaoSupport;
 import com.ppx.cloud.common.page.MPage;
@@ -89,12 +88,12 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 			}
 		}
 		
-		insertSearchWord(pojo.getkTitle(), kId, pojo.getCatId());
+		insertSearchWord(pojo.getkTitle(), kId, pojo.getCatId(), recommendPrio);
 		
 		return ReturnMap.of("kId", kId);
 	}
 	
-	private void insertSearchWord(String kTitle, int kId, int catId) {
+	private void insertSearchWord(String kTitle, int kId, int catId, int recommendPrio) {
 		// 分词
 		// https://github.com/hankcs/HanLP
 		
@@ -112,11 +111,11 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 		
 		List<Object[]> batchArgs = new ArrayList<Object[]>();
 		for (String w : wordSet) {
-			Object[] obj = {w, kId, catId};
+			Object[] obj = {w, kId, catId, recommendPrio};
 			batchArgs.add(obj);
 		}
 		
-		String batchInsertSql = "insert into repo_search_word(word, k_id, cat_id) values(?, ?, ?)";
+		String batchInsertSql = "insert into repo_search_word(word, k_id, cat_id, recommend_prio) values(?, ?, ?, ?)";
 		getJdbcTemplate().batchUpdate(batchInsertSql, batchArgs);
 	}
 
@@ -190,7 +189,7 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 		}
 		
 		getJdbcTemplate().update("delete from repo_search_word where k_id = ?", pojo.getkId());
-		insertSearchWord(pojo.getkTitle(), pojo.getkId(), pojo.getCatId());
+		insertSearchWord(pojo.getkTitle(), pojo.getkId(), pojo.getCatId(), recommendPrio);
 		
 		return ReturnMap.of("kId", kId);
     }
@@ -219,12 +218,18 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 	 * @param page
 	 * @return
 	 */
-	public List<Knowledge> byCatSearch(MPage page, Integer catId) {
+	public List<Knowledge> byCatSearch(MPage page, Integer catId, Integer orderBy) {
+		
+		String orderStr = "order by k.modified desc";
+		if (orderBy != null && orderBy == 1) {
+			orderStr = "order by k.recommend_prio desc";
+		}
+		
 		var c = createCriteria("where").addAnd("k.cat_id = ?", catId);
 		
 		var cSql = new StringBuilder("select count(*) from repo_knowledge k").append(c);
 		var qSql = new StringBuilder("select k.*, concat((select cat_name from repo_knowledge_category where cat_id = c.parent_id), '-', cat_name) cat_name"
-				+ " from repo_knowledge k left join repo_knowledge_category c on k.cat_id = c.cat_id").append(c).append("order by k.modified desc");
+				+ " from repo_knowledge k left join repo_knowledge_category c on k.cat_id = c.cat_id").append(c).append(orderStr);
 		List<Knowledge> list = queryMPage(Knowledge.class, page, cSql, qSql, c.getParaList());
 		
 		return list;
@@ -235,11 +240,16 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 	 * @param page
 	 * @return
 	 */
-	public List<Knowledge> byWordSearch(MPage page, String word, Integer catId) {
+	public List<Knowledge> byWordSearch(MPage page, String word, Integer catId, Integer orderBy) {
+		String orderStr = "order by modified desc";
+		if (orderBy != null && orderBy == 1) {
+			orderStr = "order by recommend_prio desc";
+		}
+		
 		var c = createCriteria("where").addAnd("word = ?", word).addAnd("cat_id = ?", catId);
 		
 		var cSql = new StringBuilder("select count(*) from repo_search_word").append(c);
-		var qSql = new StringBuilder("select k_id from repo_search_word").append(c).append("order by modified desc");
+		var qSql = new StringBuilder("select k_id from repo_search_word").append(c).append(orderStr);
 		List<Knowledge> kIdList = queryMPage(Knowledge.class, page, cSql, qSql, c.getParaList());
 		if (kIdList.isEmpty()) {
 			return kIdList;
@@ -277,7 +287,6 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 				c.addAnd("k.recommend_prio < ?", RECOMMEND_BASE_VALUE[recommend]);
 			}
 		}
-		
 		
 		var cSql = new StringBuilder("select count(*) from repo_knowledge k").append(c);
 		var qSql = new StringBuilder("select k.*, concat((select cat_name from repo_knowledge_category where cat_id = c.parent_id), '-', cat_name) cat_name"
