@@ -499,12 +499,46 @@ function textToImg() {
     	<div class="row">
 			<textarea id="kContent" rows="4" class="form-control" th:text="${pojo.kContent}"></textarea>
 			<div style="display:flex;justify-content:space-between;width:100%;margin:1rem 1rem 0 1rem">
-				<a href="#" onclick="textToImg()" class="btn-default">转成图片</a>
-				<div><input type="checkbox" checked="checked" id="titleCenter">标题居中</div>
-				<div>背景图:
-					<input type="radio" name="background" checked="checked" value="0.png"><img src="/static/background/0.png" style="width:1rem;height:1rem">
+				<a href="#" onclick="textToImg()">转成图片</a>
+				
+				<!--
+				<div class="input-group-text"><label><input type="checkbox" checked="checked" id="titleCenter">标题居中</label></div>
+				 -->
+				 
+				<div class="custom-control custom-checkbox">
+					<input type="checkbox" class="custom-control-input" id="titleCenter" checked="checked">
+					<label class="custom-control-label" for="titleCenter">标题居中</label>
+				</div>
+				<!--
+				<div class="form-check form-check-inline">
+				  <input class="form-check-input" type="checkbox" id="titleCenter">
+				  <label class="form-check-label" for="titleCenter">标题居</label>
+				</div> -->
+				
+				
+				
+				
+				<div>
+					<div class="custom-control custom-radio custom-control-inline">
+						<input type="radio" id="background1" name="background" class="custom-control-input" checked="checked" value="0.png">
+						<label class="custom-control-label" for="background1"><img src="/static/background/0.png" style="width:1rem;height:1rem"></label>
+					</div>
+					
+					<div class="custom-control custom-radio custom-control-inline">
+						<input type="radio" id="background2" name="background" class="custom-control-input" value="1.png">
+						<label class="custom-control-label" for="background2"><img src="/static/background/1.png" style="width:1rem;height:1rem"></label>
+					</div>
+					
+					<div class="custom-control custom-radio custom-control-inline">
+						<input type="radio" id="background3" name="background" class="custom-control-input" value="2.png">
+						<label class="custom-control-label" for="background3"><img src="/static/background/2.png" style="width:1rem;height:1rem"></label>
+					</div>
+				
+					<!--  
+					<input type="radio" name="background" checked="checked" value="0.png">
 					<input type="radio" name="background" value="1.png"><img  id="testImgId" src="/static/background/1.png" style="width:1rem;height:1rem">
 					<input type="radio" name="background" value="2.png"><img src="/static/background/2.png" style="width:1rem;height:1remx">
+					-->
 				</div>
 			</div>
 		</div>
@@ -513,9 +547,20 @@ function textToImg() {
 		<input type="file" multiple="multiple" accept="image/*" onchange="img.fileChange(this)" style="display:none">
 		
 		<button type="button" class="btn btn-sm btn-link" onclick="$(this).prev().click()">选择图片</button>
+		
+		<!--  
+		<button type="button" class="btn btn-primary btn-sm" onclick="ok()">确认<span id="actionHint" th:text="${pojo.kId == null} ? '新增' : '修改'"></span></button>
+		-->
+		
+		<a style="background-color: orange;color:white;padding:0.3rem 0.6rem;border-radius: 0.865rem;cursor: pointer;" onclick="ok()">
+			确认<span id="actionHint" th:text="${pojo.kId == null} ? '新增' : '修改'">
+			</span>
+		</a>
+		
+		
 		<button type="button" class="btn btn-sm btn-link" onclick="resetForm()">重新新增</button>
 		<button type="button" class="btn btn-sm btn-link" onclick="gotoView()" id="view" th:style="${pojo.kId == null} ? 'display:none' : ''">查看</button>
-		<button type="button" class="btn btn-primary btn-sm" onclick="ok()">确认<span id="actionHint" th:text="${pojo.kId == null} ? '新增' : '修改'"></span></button>
+		
 	</li>
 	<li th:each="item,iterStat:${imgList}" class="list-group-item d-flex align-items-center" style="padding-top:0.265rem;padding-bottom:0.265rem">
 		<div style="width:3.75rem;height:3.75rem;text-align:center;"><img th:src="'/img/' + ${item}" th:attr="data-url=${item}" class="upload-img" style="display:none;cursor: pointer;" onload="img.resize(this)" onclick="img.click(this)"></div>
