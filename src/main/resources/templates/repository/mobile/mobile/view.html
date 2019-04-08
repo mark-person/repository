@@ -104,7 +104,7 @@ function showImg() {
 		else {
 			$(".list-group,#backDiv").show();
 			$(document.body).css("background-color", "white");
-		$(".swiper-slide").css("background-color", "white");
+			$(".swiper-slide").css("background-color", "white");
 			$("#bottomDiv").show();
 			$(".swiper-container").css({position:""})
 			// 还原
@@ -175,10 +175,29 @@ imgOnload = function(img) {
 </style>
 </head>
 <body>
+
+<script>
+function back() {
+	if (document.referrer.indexOf("edit") > 0) {
+		location.href = localStorage.getItem("lastViewReferrer");
+	}
+	else {
+		history.go(-1);
+	}
+}
+
+$(function() {
+	if (document.referrer.indexOf("edit") == -1) {
+		localStorage.setItem("lastViewReferrer", document.referrer);
+	}
+})
+</script>
+
+
 <div class="container" style="padding:0px">
 	
-	<div style="position: fixed; z-index: 99999999; opacity: 0.5;margin-top:1rem;cursor: pointer;" id="backDiv">
-		<div onclick="history.go(-1);" style=""><span style="font-size: 2.2rem;margin-left:1rem" class="iconfont icon-fanhui5"></span></div>
+	<div style="position:fixed; z-index:99999999;opacity:0.5;margin-top:-0.3rem;cursor:pointer;" id="backDiv">
+		<div onclick="back();" style=""><span style="font-size: 2.2rem;margin-left:1rem" class="iconfont icon-fanhui5"></span></div>
 	</div>
 
 	<div class="panel panel-default">
@@ -214,7 +233,7 @@ imgOnload = function(img) {
 <div id="bottomDiv" style="position: fixed; bottom: 0; width: 25.875rem; background-color: #f0f0f0;z-index:9999">
 	<div style="padding: 0.2rem; display: flex; justify-content: space-around;align-items:center;" >
 		<div>
-			<a style="background-color: orange;color:white;padding:0.4rem 2.8rem;border-radius: 0.865rem" onclick="edit()">修改</a>
+			<a style="background-color: orange;color:white;padding:0.4rem 2.8rem;border-radius: 0.865rem;cursor: pointer;" onclick="edit()">修改</a>
 		</div>
 		<div style="text-align: center;cursor: pointer;" onclick="favorite()">
 			<div class="iconfont icon-shoucang" id="favoriteButton" th:if="${!isFavorite}"></div>

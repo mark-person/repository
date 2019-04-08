@@ -423,7 +423,14 @@ function textToImg() {
 
 </head>
 <body>
+
+<div th:if="${action=='edit'}" style="position:fixed; z-index:99999999;opacity:0.5;margin-top:-0.3rem;cursor:pointer;" id="backDiv">
+	<div onclick="window.location.href = document.referrer;" style=""><span style="font-size: 2.2rem;margin-left:1rem" class="iconfont icon-fanhui5"></span></div>
+</div>
+	
 <div class="container">
+
+
 
 <div class="panel panel-default">
 <form id="addForm">
@@ -433,8 +440,13 @@ function textToImg() {
 <input type="hidden" name="kContent">
 <input type="hidden" name="uspIds">
 <ul class="list-group" id="imgUL">
+	 <li class="list-group-item">
+    	<div class="row">
+    		<div style="text-align: center;width:100%">提示:输入空格@后，自动带出USP</div>
+    	</div>
+    </li>
     <li class="list-group-item">
-    	<div class="row" >
+    	<div class="row">
     		<input class="form-control" type="text" id="kTitle" placeholder="请输入标题" th:value="${pojo.kTitle}" maxlength="64">
     	</div>
     </li>
@@ -496,9 +508,7 @@ function textToImg() {
 		
 		<button type="button" class="btn btn-sm btn-link" onclick="$(this).prev().click()">选择图片</button>
 		
-		<!--  
-		<button type="button" class="btn btn-primary btn-sm" onclick="ok()">确认<span id="actionHint" th:text="${pojo.kId == null} ? '新增' : '修改'"></span></button>
-		-->
+		
 		
 		<a style="background-color: orange;color:white;padding:0.3rem 0.6rem;border-radius: 0.865rem;cursor: pointer;" onclick="ok()">
 			确认<span id="actionHint" th:text="${pojo.kId == null} ? '新增' : '修改'">
@@ -506,8 +516,8 @@ function textToImg() {
 		</a>
 		
 		
-		<button type="button" class="btn btn-sm btn-link" onclick="resetForm()">重新新增</button>
-		<button type="button" class="btn btn-sm btn-link" onclick="gotoView()" id="view" th:style="${pojo.kId == null} ? 'display:none' : ''">查看</button>
+		<button th:if="${action=='add'}" type="button" class="btn btn-sm btn-link" onclick="resetForm()">重新新增</button>
+		<button th:if="${action=='add'}" type="button" class="btn btn-sm btn-link" onclick="gotoView()" id="view" th:style="${pojo.kId == null} ? 'display:none' : ''">查看</button>
 		
 	</li>
 	<li th:each="item,iterStat:${imgList}" class="list-group-item d-flex align-items-center" style="padding-top:0.265rem;padding-bottom:0.265rem">
@@ -534,12 +544,9 @@ function textToImg() {
 </div>
 
 
-
-<div th:replace="repository/mobile/mobile/menu::nav('insertMenu')"></div>
-
+<div th:if="${action=='add'}"><div th:replace="repository/mobile/mobile/menu::nav('insertMenu')"></div></div>
 
 <div style="position:fixed;top:0;left:0;background-color:black;z-index:99999999;display:none;text-align: center;cursor: pointer;" id="imgBack" onclick='$("#imgBack").hide();'>
-	<div style="position:fixed;top:1rem;left:1rem;color:white;">❌</div>
 	<img id="viewImg">
 </div> 
 

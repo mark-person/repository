@@ -67,7 +67,9 @@ public class MobileController {
 		
 		// init_recommend
 		mv.addObject("starList", (List<String>)List.of("", "", ""));
-		mv.addObject("noStarList", (List<String>)List.of("", ""));		
+		mv.addObject("noStarList", (List<String>)List.of("", ""));
+		
+		mv.addObject("action", "add");
 		return mv;
 	}
     
@@ -98,6 +100,10 @@ public class MobileController {
 			noStarList.add("");
 		}
 		mv.addObject("noStarList", noStarList);
+		
+		
+		mv.addObject("action", "edit");
+		
 		return mv;
 	}
     
