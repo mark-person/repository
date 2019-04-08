@@ -15,7 +15,7 @@ public class KnowledgeCategory {
 	private Integer parentId;
 	private String catName;
 	private Integer catPrio;
-	private Integer cat_Status;
+	private Integer catStatus;
 
 	public Integer getCatId() {
 		return catId;
@@ -49,12 +49,14 @@ public class KnowledgeCategory {
 		this.catPrio = catPrio;
 	}
 
-	public Integer getCat_Status() {
-		return cat_Status;
+	public Integer getCatStatus() {
+		return catStatus;
 	}
 
-	public void setCat_Status(Integer cat_Status) {
-		this.cat_Status = cat_Status;
+	public void setCatStatus(Integer catStatus) {
+		this.catStatus = catStatus;
 	}
+
+	
 
 }

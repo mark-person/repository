@@ -440,7 +440,7 @@ function textToImg() {
 </script>
 
 <style type="text/css">
-.star {border:1px solid rgba(0,0,0,.125);cursor: pointer;}
+.star {border:1px solid rgba(0,0,0,.125);cursor: pointer;width:1.345rem;height:1.345rem}
 .star-show {visibility:visible}
 .star-hide {visibility:hidden}
 .badge-dark {margin-left:2rem;padding:0.5rem;}
@@ -465,12 +465,27 @@ function textToImg() {
     		<input class="form-control" type="text" id="kTitle" placeholder="请输入标题" th:value="${pojo.kTitle}" maxlength="64">
     	</div>
     </li>
-    <li class="list-group-item">
-   		<div class="row">
+    <li class="list-group-item" style="padding:0.265rem;">
+   		<div class="row col-12">
+   			<script>
+			function catSelect(val, obj) {
+				$("#catId").val(val);
+				$("#catName").text($(obj).find(".cat-name").text());
+			}
+			</script>
+			<input type="hidden" id="catId" name="catId" th:value="${pojo.catId}">
+		    <a id="catName" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color:#f40" th:text="${pojo.catName}">选择类目</a>
+		    <div class="dropdown-menu" style="min-width:15rem;font-size:0.865rem;">
+		    	<a th:each="item:${catList}" href="#" class="dropdown-item cat-item" style="display: flex;justify-content:space-between;" th:onclick="'catSelect(' + ${item.catId} + ', this)'">
+		    		<span href="#" class="cat-name" th:text="${item.catName}">推荐</span><span class="cat-yes"></span>
+		    	</a>
+		    </div>
+		</div>
+   			<!--
 	    	<select class="form-control" name="catId">
 	    		<option th:each="item:${catList}" th:text="${item.catName}" th:value="${item.catId}" th:selected="${item.catId == pojo.catId}"></option>
 	    	</select>
-    	</div>
+	    	-->
     </li>
     <li class="list-group-item">
     	<div class="row">

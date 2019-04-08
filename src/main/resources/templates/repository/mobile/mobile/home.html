@@ -135,38 +135,62 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
 <div class="top-div">
 <div>
 	<div class="nav-item dropdown">
-	
 		<script>
-		function orderBy(type, obj) {
+		function orderBy(val, obj) {
 			$(".order-item").css("color", "black");
 			$(".order-yes").text("");
 			
-			$(obj).css("color", "orange");
+			$(obj).css("color", "#f40");
 			$(obj).find(".order-yes").text("✔");
-			$("#orderBy").val(type);
+			$("#orderBy").val(val);
 			$("#orderName").text($(obj).find(".order-name").text());
 			queryPage(1);
 		}
-		
 		</script>
 		<input type="hidden" id="orderBy" value="0">
-	    <a id="orderName" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color:orange;">最新</a>
+	    <a id="orderName" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color:#f40;">最新</a>
 	    <div class="dropdown-menu" style="min-width:24.875rem;font-size:0.865rem;">
-	    	<a href="#" class="dropdown-item order-item" style="display: flex;justify-content:space-between;color:orange;" onclick="orderBy(0, this)">
-	    		<span href="#" class="order-name">最新</span>
-	    		<span class="order-yes">✔</span>
+	    	<a href="#" class="dropdown-item order-item" style="display: flex;justify-content:space-between;color:#f40;" onclick="orderBy(0, this)">
+	    		<span href="#" class="order-name">最新</span><span class="order-yes">✔</span>
 	    	</a>
-	    	<a href="#" class="dropdown-item" style="display: flex;justify-content:space-between;" onclick="orderBy(1, this)">
-	    		<span href="#" class="order-name">推荐</span>
-	    		<span class="order-yes"></span>
+	    	<a href="#" class="dropdown-item order-item" style="display: flex;justify-content:space-between;" onclick="orderBy(1, this)">
+	    		<span href="#" class="order-name">推荐</span><span class="order-yes"></span>
 	    	</a>
 	    </div>
     </div>
     
+    
+    <div class="nav-item dropdown">
+		<script>
+		function catSearch(val, obj) {
+			$(".cat-item").css("color", "black");
+			$(".cat-yes").text("");
+			
+			$(obj).css("color", "#f40");
+			$(obj).find(".cat-yes").text("✔");
+			$("#catId").val(val);
+			$("#catName").text($(obj).find(".cat-name").text());
+			queryPage(1);
+		}
+		</script>
+		<input type="hidden" id="catId" value="0">
+	    <a id="catName" class="nav-link dropdown-toggle ellipsis" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color:#f40;max-width:10rem">全部类目</a>
+	    <div class="dropdown-menu" style="min-width:15rem;font-size:0.865rem;">
+	    	<a href="#" class="dropdown-item cat-item" style="display: flex;justify-content:space-between;color:#f40" onclick="catSearch('', this)">
+	    		<span href="#" class="cat-name" >全部类目</span><span class="cat-yes">✔</span>
+	    	</a>
+	    	<a th:each="item:${catList}" href="#" class="dropdown-item cat-item" style="display: flex;justify-content:space-between;" th:onclick="'catSearch(' + ${item.catId} + ', this)'">
+	    		<span href="#" class="cat-name" th:text="${item.catName}">推荐</span><span class="cat-yes"></span>
+	    	</a>
+	    </div>
+    </div>
+    
+    <!--  
 	<select class="form-control" id="catId" style="width:10rem;font-size:0.865rem" onchange="catChange()">
 		<option value="">全部类目</option>
     	<option th:each="item:${catList}" th:text="${item.catName}" th:value="${item.catId}"></option>
     </select>
+    -->
     
     
     

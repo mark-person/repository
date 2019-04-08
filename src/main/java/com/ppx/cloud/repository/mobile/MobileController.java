@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ppx.cloud.common.contoller.ReturnMap;
 import com.ppx.cloud.common.page.MPage;
+import com.ppx.cloud.repository.category.KnowledgeCategory;
 import com.ppx.cloud.repository.category.KnowledgeCategoryService;
 import com.ppx.cloud.repository.knowledge.Knowledge;
 import com.ppx.cloud.repository.knowledge.KnowledgeServiceImpl;
@@ -55,8 +56,14 @@ public class MobileController {
     	pojo.setkContent(INIT_CONTENT);
     	mv.addObject("initContent", INIT_CONTENT);
     	mv.addObject("pojo", pojo);
+    	
+    	List<KnowledgeCategory> catList = categoryService.list();
 		mv.addObject("catList", categoryService.list());
 		mv.addObject("uspList", uspService.list());
+		
+		// init_cat
+		pojo.setCatId(catList.get(0).getCatId());
+		pojo.setCatName(catList.get(0).getCatName());
 		
 		// init_recommend
 		mv.addObject("starList", (List<String>)List.of("", "", ""));
