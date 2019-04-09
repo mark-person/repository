@@ -72,23 +72,12 @@ function moreData() {
 	queryPage(currentPageNumber); 
 }
 
-function htmlEscape(text){ 
-	  return text.replace(/[<>"&]/g, function(match, pos, originalText){
-	    switch(match){
-	    case "<": return "&lt;"; 
-	    case ">":return "&gt;";
-	    case "&":return "&amp;"; 
-	    case "\"":return "&quot;"; 
-	  } 
-	}); 
-}
 
 template.config("escape", false);
 var uspList = [[${uspList}]];
 template.helper('getTitle', function(v) {
 	v = htmlEscape(v);
 	for (i in uspList) {
-		
 		v = v.replace(new RegExp("\\$\\{" + uspList[i].uspId + "\\}", "g"), '<a href="/auto/mobile/nice?uspId=' + uspList[i].uspId + '">' + uspList[i].key + '</a>');
 	}
 	return v;

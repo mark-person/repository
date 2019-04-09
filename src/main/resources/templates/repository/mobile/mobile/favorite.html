@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
 
 <link th:replace="common/fragment::mobile"/>
+
 <script th:src="@{/static/cdn/template-3.0.0.js}" type="text/javascript" ></script>
 <script type="text/javascript" th:inline="javascript">
 
@@ -76,23 +77,13 @@ function moreData() {
 }
 
 
-function htmlEscape(text){ 
-	  return text.replace(/[<>"&]/g, function(match, pos, originalText){
-	    switch(match){
-	    case "<": return "&lt;"; 
-	    case ">":return "&gt;";
-	    case "&":return "&amp;"; 
-	    case "\"":return "&quot;"; 
-	  } 
-	}); 
-}
+
 
 template.config("escape", false);
 var uspList = [[${uspList}]];
 template.helper('getTitle', function(v) {
 	v = htmlEscape(v);
 	for (i in uspList) {
-		
 		v = v.replace(new RegExp("\\$\\{" + uspList[i].uspId + "\\}", "g"), '<a href="/auto/mobile/nice?uspId=' + uspList[i].uspId + '">' + uspList[i].key + '</a>');
 	}
 	return v;
@@ -122,8 +113,6 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
 </head>
 
 <body>
-
-
 
 <script id="itemTemplate" type="text/html">
 {{each list as v i}}
