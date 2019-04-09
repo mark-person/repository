@@ -32,7 +32,7 @@ var controllerPath = contextPath + "auto/mobile/";
 var img = {};
 var IMG_SCALE_HEIGHT = 60;
 img.fileChange = function(obj) {
-	this.loadImg(obj.files, obj.files.length, 0.2);
+	this.loadImg(obj.files, obj.files.length, 0.1);
 	// 重新生成一个，防失效
 	$(obj).prop("outerHTML", $(obj).prop("outerHTML"));
 }
