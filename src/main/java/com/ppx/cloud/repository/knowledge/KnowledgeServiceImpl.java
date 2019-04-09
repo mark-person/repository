@@ -305,6 +305,7 @@ public class KnowledgeServiceImpl extends MyDaoSupport {
 		var c = createCriteria("where").addAnd("usp_id = ?", uspId);
 		
 		if (recommend != null) {
+			System.out.println("recommend:" + recommend);
 			if (recommend == 5) {
 				c.addAnd("recommend_prio > ?", RECOMMEND_BASE_VALUE[4]);
 			}
