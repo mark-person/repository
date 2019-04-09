@@ -14,6 +14,10 @@ var controllerPath = contextPath + "auto/mobile/";
 $(function() {
 	var list = [[${list}]];
 	$("#knowDiv").append(template("itemTemplate", list));
+	if (list.page.totalRows <= list.page.pageSize) {
+		pageHasMore = false;
+		$("#pageEnd").show();
+	}
 	
 	$('#form').submit(function (e) {
 		queryPage(1) 
