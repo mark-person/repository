@@ -48,6 +48,7 @@ function favorite() {
 	var uri = isFavorite ? "cancelFavorite" : "confirmFavorite";
 	var msg = isFavorite ? "取消收藏成功" : "收藏成功";
 	showLoading();
+	localStorage.setItem("execFavorite", "true");
 	$.post(controllerPath + uri, "kId=[[${pojo.kId}]]", function(r) {
 		hideLoading();
 		if (r.errcode === 0) {
@@ -178,10 +179,11 @@ imgOnload = function(img) {
 
 <script>
 function back() {
-	if (document.referrer.indexOf("edit") > 0) {
+	if (document.referrer.indexOf("edit") > 0 || localStorage.getItem("execFavorite") == "true") {
 		location.href = localStorage.getItem("lastViewReferrer");
 	}
 	else {
+		alert("go");
 		history.go(-1);
 	}
 }
@@ -190,6 +192,7 @@ $(function() {
 	if (document.referrer.indexOf("edit") == -1) {
 		localStorage.setItem("lastViewReferrer", document.referrer);
 	}
+	localStorage.setItem("execFavorite", "false");
 })
 </script>
 
