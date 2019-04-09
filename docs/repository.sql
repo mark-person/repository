@@ -121,6 +121,8 @@ create table repo_favorite
  * # 导有表情的 mysqldump -u root -pPASSWORD repository repo_knowledge_usp --default-character-set=utf8mb4 >c:\test.sql
  */
 
+INSERT INTO `repo_user` (`repo_user_id`,`repo_user_name`,`repo_user_status`,`favorite_n`,`created`) VALUES (-1,'我是小丑',1,0,now());
+
 insert into repo_knowledge_category values(1,0,'brand',1,1);
 insert into repo_knowledge_category values(2,0,'customer',2,1);
 insert into repo_knowledge_category values(3,0,'channel',3,1);
