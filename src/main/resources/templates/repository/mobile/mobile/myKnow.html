@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>个人知识管理</title>
+<title>我的知识</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
 
@@ -14,10 +14,8 @@ $(function() {
 	var list = [[${list}]];
 	$("#knowDiv").append(template("itemTemplate", list));
 	
-	
-	
 	$('#form').submit(function (e) {
-		queryPage(1, $("#catId").val()) 
+		queryPage(1) 
 	    e.preventDefault();
 	    e.stopPropagation();
 	 })
@@ -25,7 +23,7 @@ $(function() {
 });
 
 function queryPage(pageNumber, catId) {
-	var para = {pageNumber:pageNumber, catId:catId}
+	var para = {pageNumber:pageNumber, catId:$("#catId").val()}
 	$.post(controllerPath + "myKnowSearch", para, function(r) {
 		if (pageNumber == 1) {
 			currentPageNumber = 1;
@@ -47,8 +45,8 @@ function queryPage(pageNumber, catId) {
 }
 
 
-function catChange() {
-	queryPage(1, $("#catId").val());
+function catSearch() {
+	queryPage(1);
 }
 
 function view(kId) {
@@ -74,7 +72,7 @@ function moreData() {
 	$("#pageInfo div").hide();
 	$("#bottomLoading").show();
 	
-	queryPage(currentPageNumber, $("#catId").val(), $("#word").val()); 
+	queryPage(currentPageNumber); 
 }
 
 
@@ -100,7 +98,9 @@ template.helper('getTitle', function(v) {
 	return v;
 })
 
-
+function back() {
+	location.href = "/auto/mobile/my";
+}
 
 </script>
 
@@ -140,19 +140,44 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
 <div class="top-div">
 <div>
 	
-	<div onclick="history.go(-1);" style="left: 2rem; top: 0rem;opacity: 0.5; font-size: 1.5rem; ">⬅</div>
+	<div style="position:fixed; z-index:99999999;opacity:0.5;margin-top:-0.4rem;margin-left:0.4rem;cursor:pointer;" id="backDiv">
+		<div onclick="back();" style=""><span style="font-size: 2.2rem;" class="iconfont icon-fanhui5"></span></div>
+	</div>
 	
 	<div>
-		<!--  
-		<form id="form" style="width:12.1rem" action="javascript:;">
-			<input type="search" id="word" class="form-control" style="width:100%;"  placeholder="🔍">
-		</form>
-		-->
 	</div>
+	
+	<div class="nav-item dropdown">
+		<script>
+		function catSearch(val, obj) {
+			$(".cat-item").css("color", "black");
+			$(".cat-yes").text("");
+			
+			$(obj).css("color", "#f40");
+			$(obj).find(".cat-yes").text("✔");
+			$("#catId").val(val);
+			$("#catName").text($(obj).find(".cat-name").text());
+			queryPage(1);
+		}
+		</script>
+		<input type="hidden" id="catId" value="0">
+	    <a id="catName" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color:#f40;max-width:12.1rem">全部类目</a>
+	    <div class="dropdown-menu" style="min-width:15rem;font-size:0.865rem;">
+	    	<a href="#" class="dropdown-item cat-item" style="display: flex;justify-content:space-between;color:#f40" onclick="catSearch('', this)">
+	    		<span href="#" class="cat-name" >全部类目</span><span class="cat-yes">✔</span>
+	    	</a>
+	    	<a th:each="item:${catList}" href="#" class="dropdown-item cat-item" style="display: flex;justify-content:space-between;" th:onclick="'catSearch(' + ${item.catId} + ', this)'">
+	    		<span href="#" class="cat-name" th:text="${item.catName}"></span><span class="cat-yes"></span>
+	    	</a>
+	    </div>
+    </div>
+	
+	<!--  
 	<select class="form-control" id="catId" style="width:12.1rem" onchange="catChange()">
 		<option value="">全部类目</option>
     	<option th:each="item:${catList}" th:text="${item.catName}" th:value="${item.catId}"></option>
     </select>
+    -->
 </div>
 </div>
 <div id="knowDiv"></div>

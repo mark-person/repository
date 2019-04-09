@@ -181,7 +181,7 @@ public class MobileController {
     
     public ModelAndView favorite(ModelAndView mv) {
     	
-    	
+    	mv.addObject("uspList", uspService.list());
     	
     	mv.addObject("list", favoriteSearch(new MPage(), null));
 		mv.addObject("catList", categoryService.list());
@@ -195,6 +195,8 @@ public class MobileController {
     public ModelAndView myKnow(ModelAndView mv) {
     	mv.addObject("list", myKnowSearch(new MPage(), null, null));
 		mv.addObject("catList", categoryService.list());
+		
+		mv.addObject("uspList", uspService.list());
 		return mv;
 	}
     

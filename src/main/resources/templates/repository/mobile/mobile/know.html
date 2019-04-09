@@ -409,11 +409,11 @@ function textToImg() {
 </head>
 <body>
 
-<div th:if="${action=='edit'}" style="position:fixed; z-index:99999999;opacity:0.5;margin-top:-0.3rem;cursor:pointer;" id="backDiv">
-	<div onclick="window.location.href = document.referrer;" style=""><span style="font-size: 2.2rem;margin-left:1rem" class="iconfont icon-fanhui5"></span></div>
+<div th:if="${action=='edit'}" style="position:fixed; z-index:99999999;opacity:0.5;margin-top:-0.245rem;margin-left:0.9rem;cursor:pointer;" id="backDiv">
+	<div onclick="window.location.href = document.referrer;" style=""><span style="font-size: 2.2rem;" class="iconfont icon-fanhui5"></span></div>
 </div>
 	
-<div class="container">
+<div class="container" style="padding:0px">
 <div class="panel panel-default">
 <form id="addForm">
 <input type="hidden" name="kId" th:value="${pojo.kId}">
