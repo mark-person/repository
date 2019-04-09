@@ -374,6 +374,10 @@ function textToImg() {
 		var iframeBody = $('#kContentIframe').contents().find('body');
 		iframeBody.html(html);
 		iframeBody.css("padding", "0.5rem");
+		iframeBody.css("margin", "0rem");
+		
+		iframeBody.css("height", iframeBody.height());
+		
 		
 		var b = $("[name=background]:checked").val();
 		iframeBody.css("background", "url(/static/background/" + b + ")");
@@ -381,15 +385,17 @@ function textToImg() {
 			iframeBody.css("color", "white");
 		}
 		iframeBody.css("font-size", "0.825rem");
+		
+		var iframeBody = $('#kContentIframe').contents().find('body');
+		html2canvas(iframeBody[0]).then(function(canvas) {
+			var url = canvas.toDataURL();
+			var f = [];
+			f.push(dataURLtoFile(url));
+			img.loadImg(f, 1, 0.8);
+	    });
 	}
-	
-	html2canvas($('#kContentIframe').contents().find('body')[0]).then(function(canvas) {
-		var url = canvas.toDataURL();
-		var f = [];
-		f.push(dataURLtoFile(url));
-		img.loadImg(f, 1, 0.8);
-    });
 }
+
 
 </script>
 
@@ -404,6 +410,8 @@ function textToImg() {
 .select-class {
 	display: flex;justify-content:space-between;
 }
+
+
 </style>
 
 </head>
@@ -449,7 +457,7 @@ function textToImg() {
 		    <a id="catName" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color:#f40" th:text="${pojo.catName}">选择类目</a>
 		    <div class="dropdown-menu" style="min-width:15rem;font-size:0.865rem;">
 		    	<a th:each="item:${catList}" href="#" class="dropdown-item cat-item select-class" th:style="${item.catId == pojo.catId ? 'color:#f40' : ''}" th:onclick="'catSelect(' + ${item.catId} + ', this)'">
-		    		<span href="#" class="cat-name" th:text="${item.catName}">推荐</span>
+		    		<span class="cat-name" th:text="${item.catName}"></span>
 		    		<span class="cat-yes" th:text="${item.catId == pojo.catId ? '✔' : ''}"></span>
 		    	</a>
 		    </div>
@@ -468,6 +476,7 @@ function textToImg() {
 			<textarea id="kContent" rows="4" class="form-control" th:text="${pojo.kContent}"></textarea>
 			<div style="display:flex;justify-content:space-between;width:100%;margin:1rem 1rem 0 1rem">
 				<a href="#" onclick="textToImg()">转成图片</a>
+				
 				<div class="custom-control custom-checkbox">
 					<input type="checkbox" class="custom-control-input" id="titleCenter" checked="checked">
 					<label class="custom-control-label" for="titleCenter">标题居中</label>
@@ -494,8 +503,7 @@ function textToImg() {
 		<input type="file" multiple="multiple" accept="image/*" onchange="img.fileChange(this)" style="display:none">
 		<button type="button" class="btn btn-sm btn-link" onclick="$(this).prev().click()">选择图片</button>
 		<a style="background-color: orange;color:white;padding:0.3rem 0.6rem;border-radius: 0.865rem;cursor: pointer;" onclick="ok()">
-			确认<span id="actionHint" th:text="${pojo.kId == null} ? '新增' : '修改'">
-			</span>
+			确认<span id="actionHint" th:text="${pojo.kId == null} ? '新增' : '修改'"></span>
 		</a>
 		<button th:if="${action=='add'}" type="button" class="btn btn-sm btn-link" onclick="resetForm()">重新新增</button>
 		<button th:if="${action=='add'}" type="button" class="btn btn-sm btn-link" onclick="gotoView()" id="view" th:style="${pojo.kId == null} ? 'display:none' : ''">查看</button>
@@ -506,7 +514,7 @@ function textToImg() {
 		<span class="badge badge-dark btn" onclick="img.remove(this)">❌删除</span>
 	</li>
 	<li class="list-group-item" id="imgEndLi" style="display: none"></li>
-	<li class="list-group-item" style="padding: 0; margin-bottom: 2rem; height: 100%; visibility:hidden;">
+	<li id="kContentLi" class="list-group-item" style="padding: 0; margin-bottom: 2rem; height: 100%; visibility:hidden;">
 		<iframe id="kContentIframe" style="border: 0; width: 100%; height: 100%;"></iframe>
 	</li>
 </ul>
