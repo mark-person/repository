@@ -42,7 +42,7 @@ $(function() {
     </li>
     <li class="list-group-item" onclick="location.href='/auto/mobile/favorite'" style="cursor: pointer;">
    		<div class="row" style="display: flex;justify-content:space-between;">
-	    	<div>我的收藏</div><div style="color:gray;font-size:0.815rem;"><span style="padding-right:.5rem;">108</span><span style="font-size:0.815rem;" class="iconfont icon-xiangyou"></span></div>
+	    	<div>我的收藏</div><div style="color:gray;font-size:0.815rem;"><span style="padding-right:.5rem;" th:text="${u.favoriteN}"></span><span style="font-size:0.815rem;" class="iconfont icon-xiangyou"></span></div>
     	</div>
     </li>
     <li class="list-group-item" onclick="location.href='/auto/mobile/myKnow'" style="cursor: pointer;">

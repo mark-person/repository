@@ -10,12 +10,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ppx.cloud.auth.common.AuthContext;
 import com.ppx.cloud.common.contoller.ReturnMap;
 import com.ppx.cloud.common.page.MPage;
 import com.ppx.cloud.repository.category.KnowledgeCategory;
 import com.ppx.cloud.repository.category.KnowledgeCategoryService;
 import com.ppx.cloud.repository.knowledge.Knowledge;
 import com.ppx.cloud.repository.knowledge.KnowledgeServiceImpl;
+import com.ppx.cloud.repository.user.RepoUser;
+import com.ppx.cloud.repository.user.RepoUserService;
 import com.ppx.cloud.repository.usp.KnowledgeUspService;
 
 @Controller
@@ -175,7 +178,14 @@ public class MobileController {
     	return ReturnMap.of();
 	}
      
+    @Autowired
+    private RepoUserService repoUserService;
     public ModelAndView my(ModelAndView mv) {
+    	
+    	int userId = AuthContext.getLoginAccount().getUserId();
+    	RepoUser u = repoUserService.get(userId);
+    	mv.addObject("u", u);
+    	
 		return mv;
 	}
     
