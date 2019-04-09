@@ -31,12 +31,13 @@ $(function() {
 <div class="container">
 
 <div class="panel panel-default">
-
 <ul class="list-group" id="imgUL">
-	
     <li class="list-group-item">
-    	<div class="row" style="height:5rem;display: flex;align-items:center;">
-    		<div><span style="font-size: 3rem">🤡</span>我是佰生人</div>
+    	<div class="row" style="height:5rem;">
+    		<div style="display: flex;align-items:center;">
+    			<div style="font-size: 3rem">🤡</div>
+    			<div style="margin-left:0.5rem">我是小丑</div>
+    		</div>
     	</div>
     </li>
     <li class="list-group-item" onclick="location.href='/auto/mobile/myKnow'" style="cursor: pointer;">
@@ -49,8 +50,6 @@ $(function() {
 	    	<div>我的收藏</div><div>></div>
     	</div>
     </li>
-    
-	
 </ul>
 </div>
 </div>
@@ -58,7 +57,6 @@ $(function() {
 
 
 <div th:replace="repository/mobile/mobile/menu::nav('myMenu')"></div>
-
 
 
 

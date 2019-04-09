@@ -172,7 +172,7 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
 	    		<span href="#" class="cat-name" >全部类目</span><span class="cat-yes">✔</span>
 	    	</a>
 	    	<a th:each="item:${catList}" href="#" class="dropdown-item cat-item" style="display: flex;justify-content:space-between;" th:onclick="'catSearch(' + ${item.catId} + ', this)'">
-	    		<span href="#" class="cat-name" th:text="${item.catName}">推荐</span><span class="cat-yes"></span>
+	    		<span href="#" class="cat-name" th:text="${item.catName}"></span><span class="cat-yes"></span>
 	    	</a>
 	    </div>
     </div>

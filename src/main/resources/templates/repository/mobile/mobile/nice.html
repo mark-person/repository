@@ -14,19 +14,15 @@ $(function() {
 	var list = [[${list}]];
 	$("#knowDiv").append(template("itemTemplate", list));
 	
-	
 	$('#form').submit(function (e) {
-		
-		queryPage(1, $("#uspId").val(), $("#recommend").val()) 
-	  	
+		queryPage(1) 
 	    e.preventDefault();
 	    e.stopPropagation();
 	 })
-
 });
 
-function queryPage(pageNumber, uspId, recommend) {
-	var para = {pageNumber:pageNumber, uspId:uspId, recommend:recommend}
+function queryPage(pageNumber) {
+	var para = {pageNumber:pageNumber, uspId:$("#uspId").val(), recommend:$("#recommend").val()}
 	$.post(controllerPath + "niceSearch", para, function(r) {
 		if (pageNumber == 1) {
 			currentPageNumber = 1;
@@ -47,13 +43,12 @@ function queryPage(pageNumber, uspId, recommend) {
 	});
 }
 
-
 function recommendChange() {
-	queryPage(1, $("#uspId").val(), $("#recommend").val());
+	queryPage(1);
 }
 
 function uspChange() {
-	queryPage(1, $("#uspId").val(), $("#recommend").val());
+	queryPage(1);
 }
 
 function view(kId) {
@@ -74,15 +69,12 @@ $(window).scroll(function() {
     }
 });
 
-
 function moreData() {
 	$("#pageInfo div").hide();
 	$("#bottomLoading").show();
 	
-	queryPage(currentPageNumber, $("#uspId").val(), $("#recommend").val()); 
-	
+	queryPage(currentPageNumber); 
 }
-
 
 function htmlEscape(text){ 
 	  return text.replace(/[<>"&]/g, function(match, pos, originalText){
@@ -100,13 +92,10 @@ var uspList = [[${uspList}]];
 template.helper('getTitle', function(v) {
 	v = htmlEscape(v);
 	for (i in uspList) {
-		
 		v = v.replace(new RegExp("\\$\\{" + uspList[i].uspId + "\\}", "g"), '<a href="/auto/mobile/nice?uspId=' + uspList[i].uspId + '">' + uspList[i].key + '</a>');
 	}
 	return v;
 })
-
-
 
 </script>
 
@@ -141,10 +130,75 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
 </script>
 <div class="top-div">
 <div>
+	<!--
 	<select class="form-control" id="uspId" style="width:12.1rem" onchange="uspChange()">
 		<option value="">全部USP</option>
     	<option th:each="item:${uspList}" th:text="${item.key}" th:value="${item.uspId}" th:selected="${item.uspId == uspId}"></option>
     </select>
+    -->
+    <div class="nav-item dropdown">
+		<script>
+		function uspSearch(val, obj) {
+			$(".usp-item").css("color", "black");
+			$(".usp-yes").text("");
+			
+			$(obj).css("color", "#f40");
+			$(obj).find(".usp-yes").text("✔");
+			$("#uspId").val(val);
+			$("#uspName").text($(obj).find(".usp-name").text());
+			queryPage(1);
+		}
+		</script>
+		<input type="hidden" id="uspId" value="0">
+	    <a id="uspName" class="nav-link dropdown-toggle ellipsis" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color:#f40;max-width:12.1rem">全部USP</a>
+	    <div class="dropdown-menu" style="min-width:15rem;font-size:0.865rem;">
+	    	<a href="#" class="dropdown-item usp-item" style="display: flex;justify-content:space-between;color:#f40" onclick="uspSearch('', this)">
+	    		<span href="#" class="usp-name">全部USP</span><span class="usp-yes">✔</span>
+	    	</a>
+	    	<a th:each="item:${uspList}" href="#" class="dropdown-item usp-item" style="display: flex;justify-content:space-between;" th:onclick="'uspSearch(' + ${item.uspId} + ', this)'">
+	    		<span href="#" class="usp-name" th:text="${item.key}"></span><span class="usp-yes"></span>
+	    	</a>
+	    </div>
+    </div>
+    
+    
+    <div class="nav-item dropdown">
+		<script>
+		function recommendSearch(val, obj) {
+			$(".recommend-item").css("color", "black");
+			$(".recommend-yes").text("");
+			
+			$(obj).css("color", "#f40");
+			$(obj).find(".recommend-yes").text("✔");
+			$("#recommend").val(val);
+			$("#recommendName").text($(obj).find(".recommend-name").text());
+			queryPage(1);
+		}
+		</script>
+		<input type="hidden" id="recommend" value="0">
+	    <a id="recommendName" class="nav-link dropdown-toggle ellipsis" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color:#f40;max-width:12.1rem">全部推荐</a>
+	    <div class="dropdown-menu" style="min-width:15rem;font-size:0.865rem;">
+	    	<a href="#" class="dropdown-item recommend-item" style="display: flex;justify-content:space-between;color:#f40" onclick="recommendSearch('', this)">
+	    		<span href="#" class="recommend-name">全部推荐</span><span class="recommend-yes">✔</span>
+	    	</a>
+	    	<a href="#" class="dropdown-item recommend-item" style="display: flex;justify-content:space-between;color:#f40" onclick="recommendSearch('5', this)">
+	    		<span href="#" class="recommend-name">⭐⭐⭐⭐⭐</span><span class="recommend-yes"></span>
+	    	</a>
+	    	<a href="#" class="dropdown-item recommend-item" style="display: flex;justify-content:space-between;color:#f40" onclick="recommendSearch('4', this)">
+	    		<span href="#" class="recommend-name">⭐⭐⭐⭐</span><span class="recommend-yes"></span>
+	    	</a>
+	    	<a href="#" class="dropdown-item recommend-item" style="display: flex;justify-content:space-between;color:#f40" onclick="recommendSearch('3', this)">
+	    		<span href="#" class="recommend-name">⭐⭐⭐</span><span class="recommend-yes"></span>
+	    	</a>
+	    	<a href="#" class="dropdown-item recommend-item" style="display: flex;justify-content:space-between;color:#f40" onclick="recommendSearch('2', this)">
+	    		<span href="#" class="recommend-name">⭐⭐</span><span class="recommend-yes"></span>
+	    	</a>
+	    	<a href="#" class="dropdown-item recommend-item" style="display: flex;justify-content:space-between;color:#f40" onclick="recommendSearch('1', this)">
+	    		<span href="#" class="recommend-name">⭐</span><span class="recommend-yes"></span>
+	    	</a>
+	    </div>
+    </div>
+    <!-- 
 	<select class="form-control" id="recommend" style="width:12.1rem" onchange="recommendChange()">
 		<option value="">全部⭐</option>
     	<option value="5">⭐⭐⭐⭐⭐</option>
@@ -153,6 +207,7 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
     	<option value="2">⭐⭐</option>
     	<option value="1">⭐</option>
     </select>
+     -->
 </div>
 </div>
 <div id="knowDiv"></div>
