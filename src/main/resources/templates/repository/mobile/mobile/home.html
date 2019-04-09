@@ -15,9 +15,7 @@ $(function() {
 	$("#knowDiv").append(template("itemTemplate", list));
 	
 	$('#form').submit(function (e) {
-		
 		queryPage(1);
-	  	
 	    e.preventDefault();
 	    e.stopPropagation();
 	 })
@@ -67,14 +65,12 @@ $(window).scroll(function() {
     }
 });
 
-
 function moreData() {
 	$("#pageInfo div").hide();
 	$("#bottomLoading").show();
 	
 	queryPage(currentPageNumber); 
 }
-
 
 function htmlEscape(text){ 
 	  return text.replace(/[<>"&]/g, function(match, pos, originalText){
@@ -97,8 +93,6 @@ template.helper('getTitle', function(v) {
 	}
 	return v;
 })
-
-
 
 </script>
 
@@ -158,8 +152,6 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
 	    	</a>
 	    </div>
     </div>
-    
-    
     <div class="nav-item dropdown">
 		<script>
 		function catSearch(val, obj) {
@@ -184,16 +176,6 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
 	    	</a>
 	    </div>
     </div>
-    
-    <!--  
-	<select class="form-control" id="catId" style="width:10rem;font-size:0.865rem" onchange="catChange()">
-		<option value="">全部类目</option>
-    	<option th:each="item:${catList}" th:text="${item.catName}" th:value="${item.catId}"></option>
-    </select>
-    -->
-    
-    
-    
 	<div>
 		<form id="form" style="width:10rem;font-size:0.865rem" action="javascript:;">
 			<input type="search" id="word" class="form-control" style="width:100%;" placeholder="🔍">

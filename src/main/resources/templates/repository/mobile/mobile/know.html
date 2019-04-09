@@ -147,46 +147,27 @@ img.resize = function(img) {
 		$(img).css({width:IMG_SCALE_HEIGHT, height:IMG_SCALE_HEIGHT * initHeight / initWidth, marginTop:marginTop});
 	}
 	$(".upload-img").show();
-	
 }
 
-
-
-
-
 img.click = function(obj) {
-	//var isInit = $(obj).data("data-init-boolean");
-	// $(obj).data("data-init-boolean", isInit ? false : true);
-	
 	var initWidth = new Number($(obj).data("data-init-width"));
 	var initHeight = new Number($(obj).data("data-init-height"));
 	
-	//if (isInit) {
-		
-		// init
-		//$("#viewImg").css("margin-top", ($(document.body).height() - $(document.body).width()*initHeight/initWidth) / 2);
-		//$("#viewImg").css("width", $(document.body).width());
-		//$("#viewImg").css("hight", $(document.body).width()*initHeight/initWidth);
-		
-		//$("#viewImg").css("margin-top", ($(document.body).height() - $(document.body).width()*initHeight/initWidth) / 2);
-		
-		if (initWidth/initHeight > $(document.body).width()/$(document.body).height()) {
-			$("#viewImg").css("margin-top", ($(window).height() - $(document.body).width()*initHeight/initWidth) / 2);
-			$("#viewImg").css("width", $(document.body).width());
-			$("#viewImg").css("height", $(document.body).width()*initHeight/initWidth);
-		}
-		else {
-			$("#viewImg").css("margin-top", 0);
-			$("#viewImg").css("width",  $(document.body).height()*initWidth/initHeight);
-			$("#viewImg").css("height", $(document.body).height());
-		}
-		
-		
-		$("#viewImg").attr("src", obj.src);
-		
-		$("#imgBack").css("width", $(window).width());
-		$("#imgBack").css("height", $(window).height());
-		$("#imgBack").show();
+	if (initWidth/initHeight > $(document.body).width()/$(document.body).height()) {
+		$("#viewImg").css("margin-top", ($(window).height() - $(document.body).width()*initHeight/initWidth) / 2);
+		$("#viewImg").css("width", $(document.body).width());
+		$("#viewImg").css("height", $(document.body).width()*initHeight/initWidth);
+	}
+	else {
+		$("#viewImg").css("margin-top", 0);
+		$("#viewImg").css("width",  $(document.body).height()*initWidth/initHeight);
+		$("#viewImg").css("height", $(document.body).height());
+	}
+	
+	$("#viewImg").attr("src", obj.src);
+	$("#imgBack").css("width", $(window).width());
+	$("#imgBack").css("height", $(window).height());
+	$("#imgBack").show();
 		
 }
 img.refreshTop = function() {
@@ -419,6 +400,10 @@ function textToImg() {
 .badge-dark {margin-left:2rem;padding:0.5rem;}
 
 .form-control {margin:-0.275rem 0rem}
+
+.select-class {
+	display: flex;justify-content:space-between;
+}
 </style>
 
 </head>
@@ -429,9 +414,6 @@ function textToImg() {
 </div>
 	
 <div class="container">
-
-
-
 <div class="panel panel-default">
 <form id="addForm">
 <input type="hidden" name="kId" th:value="${pojo.kId}">
@@ -454,6 +436,11 @@ function textToImg() {
    		<div class="row col-12">
    			<script>
 			function catSelect(val, obj) {
+				$(".cat-item").css("color", "black");
+				$(".cat-yes").text("");
+				$(obj).css("color", "#f40");
+				$(obj).find(".cat-yes").text("✔");
+				
 				$("#catId").val(val);
 				$("#catName").text($(obj).find(".cat-name").text());
 			}
@@ -461,8 +448,9 @@ function textToImg() {
 			<input type="hidden" id="catId" name="catId" th:value="${pojo.catId}">
 		    <a id="catName" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color:#f40" th:text="${pojo.catName}">选择类目</a>
 		    <div class="dropdown-menu" style="min-width:15rem;font-size:0.865rem;">
-		    	<a th:each="item:${catList}" href="#" class="dropdown-item cat-item" style="display: flex;justify-content:space-between;" th:onclick="'catSelect(' + ${item.catId} + ', this)'">
-		    		<span href="#" class="cat-name" th:text="${item.catName}">推荐</span><span class="cat-yes"></span>
+		    	<a th:each="item:${catList}" href="#" class="dropdown-item cat-item select-class" th:style="${item.catId == pojo.catId ? 'color:#f40' : ''}" th:onclick="'catSelect(' + ${item.catId} + ', this)'">
+		    		<span href="#" class="cat-name" th:text="${item.catName}">推荐</span>
+		    		<span class="cat-yes" th:text="${item.catId == pojo.catId ? '✔' : ''}"></span>
 		    	</a>
 		    </div>
 		</div>
@@ -489,7 +477,6 @@ function textToImg() {
 						<input type="radio" id="background1" name="background" class="custom-control-input" checked="checked" value="0.png">
 						<label class="custom-control-label" for="background1"><img src="/static/background/0.png" style="width:1rem;height:1rem"></label>
 					</div>
-					
 					<div class="custom-control custom-radio custom-control-inline">
 						<input type="radio" id="background2" name="background" class="custom-control-input" value="1.png">
 						<label class="custom-control-label" for="background2"><img src="/static/background/1.png" style="width:1rem;height:1rem"></label>
@@ -505,20 +492,13 @@ function textToImg() {
     </li>
 	<li class="list-group-item" id="imgLi" style="display:flex;justify-content:space-between;padding-top:.375rem;padding-bottom:.375rem">
 		<input type="file" multiple="multiple" accept="image/*" onchange="img.fileChange(this)" style="display:none">
-		
 		<button type="button" class="btn btn-sm btn-link" onclick="$(this).prev().click()">选择图片</button>
-		
-		
-		
 		<a style="background-color: orange;color:white;padding:0.3rem 0.6rem;border-radius: 0.865rem;cursor: pointer;" onclick="ok()">
 			确认<span id="actionHint" th:text="${pojo.kId == null} ? '新增' : '修改'">
 			</span>
 		</a>
-		
-		
 		<button th:if="${action=='add'}" type="button" class="btn btn-sm btn-link" onclick="resetForm()">重新新增</button>
 		<button th:if="${action=='add'}" type="button" class="btn btn-sm btn-link" onclick="gotoView()" id="view" th:style="${pojo.kId == null} ? 'display:none' : ''">查看</button>
-		
 	</li>
 	<li th:each="item,iterStat:${imgList}" class="list-group-item d-flex align-items-center" style="padding-top:0.265rem;padding-bottom:0.265rem">
 		<div style="width:3.75rem;height:3.75rem;text-align:center;"><img th:src="'/img/' + ${item}" th:attr="data-url=${item}" class="upload-img" style="display:none;cursor: pointer;" onload="img.resize(this)" onclick="img.click(this)"></div>
@@ -529,7 +509,6 @@ function textToImg() {
 	<li class="list-group-item" style="padding: 0; margin-bottom: 2rem; height: 100%; visibility:hidden;">
 		<iframe id="kContentIframe" style="border: 0; width: 100%; height: 100%;"></iframe>
 	</li>
-	
 </ul>
 </form>
 <script id="imgTemplate" type="text/html">
