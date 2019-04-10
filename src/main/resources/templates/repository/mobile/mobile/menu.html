@@ -9,35 +9,24 @@
 </style>
 <div class="main-menu">
 <div class="main-div">
-	<div class="main-item" id="homeMenu" onclick="gotoPage(this);">
-		<div th:class="${menuId} == 'homeMenu' ? 'iconfont icon-shouye1' : 'iconfont icon-shouye'"></div><div>首页</div>
+	<div class="main-item" id="home" onclick="gotoPage(this);">
+		<div th:class="${menuId} == 'home' ? 'iconfont icon-shouye1' : 'iconfont icon-shouye'"></div><div>首页</div>
 	</div>
-	<div class="main-item" id="niceMenu" onclick="gotoPage(this);">
+	<div class="main-item" id="nice" onclick="gotoPage(this);">
 		<div class="iconfont icon-jingxuan"></div><div>精选</div>
 	</div>
-	<div class="main-item" id="insertMenu" onclick="gotoPage(this)">
-		<div th:class="${menuId} == 'insertMenu' ? 'iconfont icon-tianjia1' : 'iconfont icon-tianjia'"></div><div>添加</div>
+	<div class="main-item" id="add" onclick="gotoPage(this)">
+		<div th:class="${menuId} == 'add' ? 'iconfont icon-tianjia1' : 'iconfont icon-tianjia'"></div><div>添加</div>
 	</div>
-	<div class="main-item" id="myMenu" onclick="gotoPage(this)">
-		<div th:class="${menuId} == 'myMenu' ? 'iconfont icon-wode1' : 'iconfont icon-wode'"></div><div>我的</div>
+	<div class="main-item" id="my" onclick="gotoPage(this)">
+		<div th:class="${menuId} == 'my' ? 'iconfont icon-wode1' : 'iconfont icon-wode'"></div><div>我的</div>
 	</div>
 </div>
 </div>
 <script type="text/javascript" th:inline="javascript">
 $("#" + [[${menuId}]]).addClass("main-activtiy");
 function gotoPage(obj) {
-	if (obj.id == "homeMenu") {
-		location.href = [[@{/auto/mobile/home}]];
-	}
-	else if (obj.id == "niceMenu") {
-		location.href = [[@{/auto/mobile/nice}]];
-	}
-	else if (obj.id == "insertMenu") {
-		location.href = [[@{/auto/mobile/add}]];
-	}
-	else if (obj.id == "myMenu") {
-		location.href = [[@{/auto/mobile/my}]];
-	}
+	location.href = [[@{/auto/mobile/}]] + obj.id;
 }
 </script>
 </div>
