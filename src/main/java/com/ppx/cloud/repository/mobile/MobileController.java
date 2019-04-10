@@ -144,7 +144,6 @@ public class MobileController {
 		}
 		mv.addObject("starList", starList);
 		
-		
 		// favorite
 		boolean isFavorite = impl.isFavorite(id);
 		mv.addObject("isFavorite", isFavorite);
@@ -183,14 +182,11 @@ public class MobileController {
 	}
     
     public Map<?, ?> confirmFavorite(Integer kId) {
-    
-    	
     	impl.confirmFavorite(kId);
     	return ReturnMap.of();
 	}
     
     public Map<?, ?> cancelFavorite(Integer kId) {
-    	
     	impl.cancelFavorite(kId);
     	return ReturnMap.of();
 	}
@@ -222,7 +218,6 @@ public class MobileController {
     public ModelAndView myKnow(ModelAndView mv) {
     	mv.addObject("list", myKnowSearch(new MPage(), null, null));
 		mv.addObject("catList", categoryService.list());
-		
 		mv.addObject("uspList", uspService.list());
 		return mv;
 	}

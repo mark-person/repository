@@ -6,14 +6,9 @@
 <script type="text/javascript" th:inline="javascript">
 var controllerPath = contextPath + "auto/mobile/";
 var searchMethod = "niceSearch";
-
 function getQueryString(pageNumber) {
 	return {pageNumber:pageNumber, uspId:$("#uspId").val(), recommend:$("#recommend").val()};
 }
-
-$(function() {
-});
-
 
 function uspSearch(val, obj) {
 	$(".usp-item").css("color", "black");
