@@ -354,12 +354,19 @@ function textToImg() {
 	var kContent = $("#kContent").val();
 	if (kContent) {
 		var isTitleCenter = $("#titleCenter").prop("checked");
-		if (isTitleCenter) {
-			var line = kContent.split("\n");
-			var newKContent = [];
-			for (var i = 0; i < line.length; i++) {
-				var str = $.trim(line[i]);
-				if (str.indexOf("#") == 0) {
+		
+	
+		var line = kContent.split("\n");
+		var newKContent = [];
+		for (var i = 0; i < line.length; i++) {
+			var str = $.trim(line[i]);
+			if (str.indexOf("#") == 0) {
+				// marked的一个bug少了个li
+				if (i != 0 ) {
+					str = '\n' + str;
+				}
+				
+				if (isTitleCenter) {
 					var last = str.lastIndexOf("#");
 					newKContent.push(str.substring(0, last + 1) + " <center>" + str.substring(last + 2, str.length) + "</center>");
 				}
@@ -367,27 +374,35 @@ function textToImg() {
 					newKContent.push(str);
 				}
 			}
-			kContent = newKContent.join("\n");
+			else {
+				newKContent.push(str);
+			}
 		}
+		kContent = newKContent.join("\n");
+		
 		
 		var html = marked(kContent);
-		alert(html)
+		//alert(html)
 		var iframeBody = $('#kContentIframe').contents().find('body');
 		iframeBody.html(html);
 		iframeBody.css("padding", "0.5rem");
 		iframeBody.css("margin", "0rem");
 		
 		var b = $("[name=background]:checked").val();
-		//iframeBody.css("background", "url(/static/background/" + b + ")");
+		iframeBody.css("background", "url(/static/background/" + b + ")");
 		if (b != "0.png") {
 			iframeBody.css("color", "white");
 		}
 		else {
 			iframeBody.css("color", "black");
 		}
+		
 		iframeBody.css("font-size", "0.825rem");
 		
-		iframeBody.css("height", iframeBody.height());
+		
+		//iframeBody.css("width", "25rem");
+		
+		iframeBody.css("height", iframeBody[0].scrollHeight);
 		html2canvas(iframeBody[0]).then(function(canvas) {
 			var url = canvas.toDataURL();
 			var f = []; 
@@ -397,6 +412,8 @@ function textToImg() {
 	}
 }
 
+$(function() {
+})
 
 </script>
 
