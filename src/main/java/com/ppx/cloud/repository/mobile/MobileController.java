@@ -19,6 +19,7 @@ import com.ppx.cloud.repository.knowledge.Knowledge;
 import com.ppx.cloud.repository.knowledge.KnowledgeServiceImpl;
 import com.ppx.cloud.repository.user.RepoUser;
 import com.ppx.cloud.repository.user.RepoUserService;
+import com.ppx.cloud.repository.usp.KnowledgeUsp;
 import com.ppx.cloud.repository.usp.KnowledgeUspService;
 
 @Controller
@@ -153,7 +154,22 @@ public class MobileController {
     public ModelAndView nice(ModelAndView mv, Integer uspId) {
     	mv.addObject("list", niceSearch(new MPage(), uspId, null));
     	mv.addObject("uspId", uspId);
-		mv.addObject("uspList", uspService.list());
+    	List<KnowledgeUsp> uspList = uspService.list();
+    	if (uspId == null) {
+    		mv.addObject("uspName", "全部UPS");
+    	}
+    	else {
+    		for (KnowledgeUsp usp : uspList) {
+    			if (uspId.intValue() == usp.getUspId()) {
+    				mv.addObject("uspName", usp.getKey());
+    				break;
+    			}
+    		}
+    	}
+    	
+		mv.addObject("uspList", uspList);
+		
+		
 		return mv;
 	}
     

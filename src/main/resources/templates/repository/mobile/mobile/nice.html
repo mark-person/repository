@@ -42,6 +42,7 @@ body {margin-top:2.75rem;margin-bottom:3rem}
 .top-div {position:fixed;top:0;background-color:#f0f0f0;padding:.2rem 0;width:25.875rem;display:flex;justify-content:space-between; padding-left:0.5rem;padding-right:0.5rem;}
 input::-webkit-input-placeholder {padding-top:0.175rem;}
 
+.dropdown-item {display: flex;justify-content:space-between;}
 </style>
 </head>
 
@@ -49,13 +50,13 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
 <div class="top-div">
     <div class="nav-item dropdown">
 		<input type="hidden" id="uspId">
-	    <a id="uspName" class="nav-link dropdown-toggle ellipsis" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color:#f40;max-width:12.1rem">全部USP</a>
+	    <a id="uspName" class="nav-link dropdown-toggle ellipsis" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color:#f40;max-width:12.1rem" th:text="${uspName}"></a>
 	    <div class="dropdown-menu" style="min-width:15rem;font-size:0.865rem;">
-	    	<a href="#" class="dropdown-item usp-item" style="display: flex;justify-content:space-between;color:#f40" onclick="uspSearch('', this)">
-	    		<span href="#" class="usp-name">全部USP</span><span class="usp-yes">✔</span>
+	    	<a href="#" class="dropdown-item usp-item" th:style="${uspId == null ? 'color:#f40' : ''}" onclick="uspSearch('', this)">
+	    		<span href="#" class="usp-name">全部UPS</span><span class="usp-yes" th:text="${uspId == null ? '✔' : ''}"></span>
 	    	</a>
-	    	<a th:each="item:${uspList}" href="#" class="dropdown-item usp-item" style="display: flex;justify-content:space-between;" th:onclick="'uspSearch(' + ${item.uspId} + ', this)'">
-	    		<span href="#" class="usp-name" th:text="${item.key}"></span><span class="usp-yes"></span>
+	    	<a th:each="item:${uspList}" href="#" class="dropdown-item usp-item" th:style="${item.uspId == uspId ? 'color:#f40' : ''}" th:onclick="'uspSearch(' + ${item.uspId} + ', this)'">
+	    		<span href="#" class="usp-name" th:text="${item.key}"></span><span class="usp-yes" th:text="${item.uspId == uspId ? '✔' : ''}"></span>
 	    	</a>
 	    </div>
     </div>
