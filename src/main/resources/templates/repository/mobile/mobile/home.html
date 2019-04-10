@@ -5,6 +5,7 @@
 <link th:replace="common/fragment::mobile"/>
 <script type="text/javascript" th:inline="javascript">
 var controllerPath = contextPath + "auto/mobile/";
+var searchMethod = "homeSearch";
 
 function getQueryString(pageNumber) {
 	return {pageNumber:pageNumber, catId:$("#catId").val(), word:$("#word").val(), orderBy:$("#orderBy").val()};
