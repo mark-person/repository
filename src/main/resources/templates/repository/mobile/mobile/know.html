@@ -35,7 +35,6 @@ img.fileChange = function(obj) {
 	$(obj).prop("outerHTML", $(obj).prop("outerHTML"));
 }
 
-
 function changeOrient(tmpImg, canvas, context, orientation) {
 	 var degree = 0;
 	 var drawWidth = tmpImg.width;
@@ -79,7 +78,6 @@ img.loadImg = function(f, n, encoder) {
 			canvas.width = this.width;
 		    canvas.height = this.height;
 		    var context = canvas.getContext("2d");
-		    
 		    
 		    //EXIF js 可以读取图片的元信息  https://github.com/exif-js/exif-js
 		    EXIF.getData(this, function() {
@@ -256,6 +254,11 @@ function insertOrUpdateKnowledge() {
 }
 
 function ok() {
+	if ($(".upload-img").length == 0) {
+		alertWarning("必须有图片");
+		return;
+	}
+	
 	var imgUploadLen = 0;
 	// 根据官方的建议：具有 true 和 false 两个属性的属性，如 checked, selected 或者 disabled 使用prop()，其他的使用 attr()
 	$(".upload-img").each(function() {
@@ -289,7 +292,6 @@ $(function() {
 	if (kTitle) {
 		$("#kTitle").val(getEmojiTitle(kTitle));
 	}
-	
 	
 	refreshRecommend();
 	initkContent = [[${initContent}]];
@@ -507,8 +509,8 @@ function textToImg() {
 	</li>
 	<li th:each="item,iterStat:${imgList}" class="list-group-item d-flex align-items-center" style="padding-top:0.265rem;padding-bottom:0.265rem">
 		<div style="width:3.75rem;height:3.75rem;text-align:center;"><img th:src="'/img/' + ${item}" th:attr="data-url=${item}" class="upload-img" style="display:none;cursor: pointer;" onload="img.resize(this)" onclick="img.click(this)"></div>
-		<span class="badge badge-dark btn" onclick="$(this).parent().find('img').click()">🔍放大</span>
-		<span class="badge badge-dark btn" onclick="img.remove(this)">❌删除</span>
+		<span class="iconfont icon-fangda img-action" onclick="$(this).parent().find('img').click()"></span>
+		<span class="iconfont icon-iconfontshanchu1 img-action" onclick="img.remove(this)"></span>
 	</li>
 	<li class="list-group-item" id="imgEndLi" style="display: none"></li>
 	<li id="kContentLi" class="list-group-item" style="padding: 0; margin-bottom: 2rem; height: 100%; visibility:hidden;">
