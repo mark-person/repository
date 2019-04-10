@@ -1,155 +1,47 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>个人知识管理</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
-
+<title>个人知识库</title>
 <link th:replace="common/fragment::mobile"/>
-
-<script th:src="@{/static/cdn/template-3.0.0.js}" type="text/javascript" ></script>
 <script type="text/javascript" th:inline="javascript">
 
 var controllerPath = contextPath + "auto/mobile/";
-$(function() {
-	var list = [[${list}]];
-	$("#knowDiv").append(template("itemTemplate", list));
-	if (list.page.totalRows <= list.page.pageSize) {
-		pageHasMore = false;
-		$("#pageEnd").show();
-	}
-	
-	$('#form').submit(function (e) {
-		queryPage(1) 
-	    e.preventDefault();
-	    e.stopPropagation();
-	 })
-
-});
-
-function queryPage(pageNumber) {
-	var para = {pageNumber:pageNumber, catId:$("#catId").val()}
-	$.post(controllerPath + "favoriteSearch", para, function(r) {
-		if (pageNumber == 1) {
-			currentPageNumber = 1;
-			$("#knowDiv").html(template("itemTemplate", r));
-		}
-		else {
-			$("#knowDiv").append(template("itemTemplate", r));
-		}
-		
-		$("#pageInfo div").hide();
-		if (r.page.pageSize * r.page.pageNumber < r.page.totalRows) {
-			pageHasMore = true;
-			$("#pageMore").show();
-		}
-		else {
-			$("#pageEnd").show();
-		}
-	});
+function getQueryString(pageNumber) {
+	return {pageNumber:pageNumber, catId:$("#catId").val()};
 }
-
-
-function catSearch() {
-	queryPage(1);
-}
-
-function view(kId) {
-	top.location.href = controllerPath + "view?id=" + kId;
-}
-
-var pageHasMore = true;
-var currentPageNumber = 1;
-$(window).scroll(function() {
-  	// 距离顶部+当前高度 >=文档总高度 即代表滑动到底部 注：-50 上拉加载更灵敏
-    if ($(this).scrollTop() + $(document).height() >= $(this).height() - 50) {   
-    	// 加载数据
-    	if (pageHasMore) {
-    		pageHasMore = false;
-    		currentPageNumber++;
-    		moreData();
-    	}
-    }
-});
-
-function moreData() {
-	$("#pageInfo div").hide();
-	$("#bottomLoading").show();
-	queryPage(currentPageNumber); 
-}
-
-template.config("escape", false);
-var uspList = [[${uspList}]];
-template.helper('getTitle', function(v) {
-	v = htmlEscape(v);
-	for (i in uspList) {
-		v = v.replace(new RegExp("\\$\\{" + uspList[i].uspId + "\\}", "g"), '<a href="/auto/mobile/nice?uspId=' + uspList[i].uspId + '">' + uspList[i].key + '</a>');
-	}
-	return v;
-})
 
 function back() {
 	location.href = "/auto/mobile/my";
+}
+
+function catSearch(val, obj) {
+	$(".cat-item").css("color", "black");
+	$(".cat-yes").text("");
+	
+	$(obj).css("color", "#f40");
+	$(obj).find(".cat-yes").text("✔");
+	$("#catId").val(val);
+	$("#catName").text($(obj).find(".cat-name").text());
+	queryPage(1);
 }
 
 </script>
 
 <style type="text/css">
 body {margin-top:2.75rem;margin-bottom:3rem}
-.top-div {position:fixed;top:0;background-color:#f0f0f0;padding:.2rem 0;width:25.875rem;}
-.top-div>div {display:flex;justify-content:space-between; padding-left:0.5rem;padding-right:0.5rem;}
-
+.top-div {position:fixed;top:0;background-color:#f0f0f0;padding:.2rem 0;width:25.875rem;display:flex;justify-content:space-between; padding-left:0.5rem;padding-right:0.5rem;}
 input::-webkit-input-placeholder {padding-top:0.175rem;}
-
-#knowDiv {display:flex;justify-content:space-between;flex-wrap:wrap;margin-left:0.3rem;margin-right:0.3rem;}
-.know-item-div {border:1px solid #DCDCDC;background-color:white;margin:0.2rem 0.2rem;border-radius:0.5rem;cursor: pointer;}
-.know-img {max-width:100%;max-height:100%;}
-.know-img-div {width:12rem;height:12rem;border-bottom:1px solid #DCDCDC;display:table-cell;vertical-align:middle;text-align:center;}
-.know-title {width:12rem;display:-webkit-box !important; overflow:hidden;-webkit-line-clamp:1;-webkit-box-orient:vertical;font-size: 0.825rem;padding:0.2rem;}
-
-#pageInfo div {display: none;}
-#pageInfo p {text-align: center;}
 
 </style>
 </head>
 
 <body>
-
-<script id="itemTemplate" type="text/html">
-{{each list as v i}}
-<div class="know-item-div" onclick="view({{v.kId}})">
-	<div class="know-img-div">
-		{{if v.mainImgSrc != null}}<img src="/img/{{v.mainImgSrc}}_100.jpg" class="know-img">{{else}}无图{{/if}}
-	</div>
-	<div class="know-title">{{getTitle(v.kTitle)}}</div>
-</div>
-{{/each}}
-</script>
 <div class="top-div">
-<div>
-	
-	<div style="position:fixed; z-index:99999999;opacity:0.5;margin-top:-0.4rem;margin-left:0.4rem;cursor:pointer;" id="backDiv">
+	<div style="position:fixed; z-index:9999;opacity:0.5;margin-top:-0.4rem;margin-left:0.4rem;cursor:pointer;" id="backDiv">
 		<div onclick="back();" style=""><span style="font-size: 2.2rem;" class="iconfont icon-fanhui5"></span></div>
 	</div>
-	
-	
-	<div>
-		
-	</div>
-	
+	<div></div>
 	<div class="nav-item dropdown">
-		<script>
-		function catSearch(val, obj) {
-			$(".cat-item").css("color", "black");
-			$(".cat-yes").text("");
-			
-			$(obj).css("color", "#f40");
-			$(obj).find(".cat-yes").text("✔");
-			$("#catId").val(val);
-			$("#catName").text($(obj).find(".cat-name").text());
-			queryPage(1);
-		}
-		</script>
 		<input type="hidden" id="catId" value="0">
 	    <a id="catName" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color:#f40;max-width:12.1rem">全部类目</a>
 	    <div class="dropdown-menu" style="min-width:15rem;font-size:0.865rem;">
@@ -162,14 +54,8 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
 	    </div>
     </div>
 </div>
-</div>
 <div id="knowDiv"></div>
-<div id="pageInfo">
-	<div id="pageMore"><p>-- 上拉加载更多 --</p></div>
-    <div id="bottomLoading"><p>-- 加载中... --</p></div>
-    <div id="pageEnd"><p>-- 暂时就这么多了 --</p></div>
-</div>
-
+<div th:replace="common/fragment::mobileKnowPage"></div>
 
 </body>
 </html>

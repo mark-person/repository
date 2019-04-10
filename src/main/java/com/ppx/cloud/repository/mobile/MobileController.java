@@ -111,6 +111,7 @@ public class MobileController {
 	}
     
     public Map<?, ?> insertOrUpdate(Knowledge pojo) {
+    	
     	if (pojo.getkId() == null) {
     		return impl.insert(pojo);
     	}

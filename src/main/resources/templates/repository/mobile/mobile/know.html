@@ -3,11 +3,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <title></title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
-
 <link th:replace="common/fragment::mobile"/>
-
 
 <link th:src="@{/static/markdown/tribute.css}" rel="stylesheet"/>
 <script th:src="@{/static/markdown/tribute.min.js}" type="text/javascript"></script>
@@ -23,6 +19,7 @@
 .tribute-container li span {font-weight:bold;}
 .tribute-container li.no-match {cursor:default;}
 .tribute-container .menu-highlighted {font-weight:bold;}
+  
 </style>
 
 <script type="text/javascript" th:inline="javascript">
@@ -200,7 +197,7 @@ function upload(files) {
 		}
 	});
 	
-	showLoading();
+	
 	$.ajax({url:[[@{/auto/uploadImg/uploadKnowledge}]], type:"POST", contentType:false, data:formData ,processData:false,
 		success:function(r) {
 			if (r.errcode === 0) {
@@ -265,6 +262,7 @@ function ok() {
 		imgUploadLen = $(this).attr("data-url") ? imgUploadLen : ++imgUploadLen;
 	})
 	
+	showLoading();
 	if (imgUploadLen != 0) {
 		upload();
 	}
@@ -413,12 +411,14 @@ function textToImg() {
 }
 
 
+
+
 </style>
 
 </head>
 <body>
 
-<div th:if="${action=='edit'}" style="position:fixed; z-index:99999999;opacity:0.5;margin-top:-0.245rem;margin-left:0.9rem;cursor:pointer;" id="backDiv">
+<div th:if="${action=='edit'}" style="position:fixed; z-index:9999;opacity:0.5;margin-top:-0.245rem;margin-left:0.9rem;cursor:pointer;" id="backDiv">
 	<div onclick="window.location.href = document.referrer;" style=""><span style="font-size: 2.2rem;" class="iconfont icon-fanhui5"></span></div>
 </div>
 	

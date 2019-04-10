@@ -1,19 +1,13 @@
 
-
-
-
 <div th:fragment="nav(menuId)">
-
-
-
 <style type="text/css">
-.main-menu {position:fixed;bottom: 0; background-color:#f0f0f0;width:25.875rem;;z-index:9999999}
+.main-menu {position:fixed;bottom: 0; background-color:#f0f0f0;width:25.875rem;;z-index:9999}
 .main-div {display:flex;justify-content:space-between; padding:0.3rem 0.8rem 0.1rem 0.8rem;}
 .main-item {text-align: center;color:gray;cursor:pointer;font-size: 0.815rem}
 .main-item div {padding:-0.2rem;margin:0rem}
 .main-activtiy {color:orange;}
 </style>
-<div class="main-menu" style="">
+<div class="main-menu">
 <div class="main-div">
 	<div class="main-item" id="homeMenu" onclick="gotoPage(this);">
 		<div th:class="${menuId} == 'homeMenu' ? 'iconfont icon-shouye1' : 'iconfont icon-shouye'"></div><div>首页</div>
@@ -31,7 +25,6 @@
 </div>
 <script type="text/javascript" th:inline="javascript">
 $("#" + [[${menuId}]]).addClass("main-activtiy");
-
 function gotoPage(obj) {
 	if (obj.id == "homeMenu") {
 		location.href = [[@{/auto/mobile/home}]];
