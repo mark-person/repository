@@ -402,7 +402,7 @@ function textToImg() {
 .star {border:1px solid rgba(0,0,0,.125);cursor: pointer;width:1.345rem;height:1.345rem}
 .star-show {visibility:visible}
 .star-hide {visibility:hidden}
-.badge-dark {margin-left:2rem;padding:0.5rem;}
+.img-action {margin-left:2rem;padding:0.5rem;color:blue;cursor: pointer;}
 
 .form-control {margin:-0.275rem 0rem}
 
@@ -410,11 +410,7 @@ function textToImg() {
 	display: flex;justify-content:space-between;
 }
 
-
-
-
 </style>
-
 </head>
 <body>
 
@@ -523,13 +519,11 @@ function textToImg() {
 <script id="imgTemplate" type="text/html">
 	<li class="list-group-item d-flex align-items-center" style="padding-top:0.265rem;padding-bottom:0.265rem">
 		<div style="width:3.75rem;height:3.75rem;text-align:center;"><img class="upload-img" style="display:none;cursor: pointer;" onload="img.resize(this)" onclick="img.click(this)"></div>
-		<span class="badge badge-dark btn iconfont icon-fangda" onclick="$(this).parent().find('img').click()"></span>
-		<span class="badge badge-dark btn" onclick="img.remove(this)">❌删除</span>
-		<span class="badge badge-dark btn to-top" style="display:none;" onclick="img.top(this)">🔝置顶</span>
+		<span class="iconfont icon-fangda img-action" onclick="$(this).parent().find('img').click()"></span>
+		<span class="iconfont icon-iconfontshanchu1 img-action" onclick="img.remove(this)"></span>
+		<span class="iconfont icon-icon_zhiding img-action to-top" style="display:none;" onclick="img.top(this)"></span>
 	</li>
 </script>
-
-<!-- icon-fangda .icon-zhiding .icon-iconfontshanchu1 -->
 </div>
 </div>
 

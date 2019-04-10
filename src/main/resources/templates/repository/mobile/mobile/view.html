@@ -129,7 +129,8 @@ $(function() {
 .view-image {max-width: 100%; max-height: 100%;}
 
 #bottomDiv {position: fixed; bottom: 0; width: 25.875rem; background-color: #f0f0f0;z-index:9999;padding: 0.2rem; display: flex; justify-content: space-around;align-items:center;}
-.edit-action {background-color: orange;color:white;padding:0.4rem 2.8rem;border-radius: 0.865rem;cursor: pointer;}
+
+.edit-action {background-color: orange;padding:0.4rem 2.8rem;border-radius: 0.865rem;cursor: pointer;}
 </style>
 </head>
 <body>
@@ -167,7 +168,7 @@ $(function() {
 </div>
 
 <div id="bottomDiv">
-	<div th:if="${action!='readonly'}"><a class="edit-action" onclick="edit()">修改</a></div>
+	<div th:if="${action!='readonly'}"><a class="edit-action" style="color:white;" onclick="edit()">修改</a></div>
 	<div style="text-align: center;cursor: pointer;" onclick="favorite()">
 		<div class="iconfont icon-shoucang" id="favoriteButton" th:if="${!isFavorite}"></div>
 		<div class="iconfont icon-shoucang1" id="favoriteButton" th:if="${isFavorite}"></div>
