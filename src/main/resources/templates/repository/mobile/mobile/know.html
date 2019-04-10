@@ -23,7 +23,6 @@
 </style>
 
 <script type="text/javascript" th:inline="javascript">
-
 var controllerPath = contextPath + "auto/mobile/";
 
 // >>>>>>>>>>>>>>>>>>>>>>img
@@ -372,27 +371,29 @@ function textToImg() {
 		}
 		
 		var html = marked(kContent);
+		alert(html)
 		var iframeBody = $('#kContentIframe').contents().find('body');
 		iframeBody.html(html);
 		iframeBody.css("padding", "0.5rem");
 		iframeBody.css("margin", "0rem");
 		
-		iframeBody.css("height", iframeBody.height());
-		
-		
 		var b = $("[name=background]:checked").val();
-		iframeBody.css("background", "url(/static/background/" + b + ")");
+		//iframeBody.css("background", "url(/static/background/" + b + ")");
 		if (b != "0.png") {
 			iframeBody.css("color", "white");
 		}
+		else {
+			iframeBody.css("color", "black");
+		}
 		iframeBody.css("font-size", "0.825rem");
 		
-		var iframeBody = $('#kContentIframe').contents().find('body');
+		
+		iframeBody.css("height", iframeBody.height());
 		html2canvas(iframeBody[0]).then(function(canvas) {
 			var url = canvas.toDataURL();
-			var f = [];
+			var f = []; 
 			f.push(dataURLtoFile(url));
-			img.loadImg(f, 1, 0.8);
+			img.loadImg(f, 1, 0.8); 
 	    });
 	}
 }
@@ -513,7 +514,7 @@ function textToImg() {
 		<span class="iconfont icon-iconfontshanchu1 img-action" onclick="img.remove(this)"></span>
 	</li>
 	<li class="list-group-item" id="imgEndLi" style="display: none"></li>
-	<li id="kContentLi" class="list-group-item" style="padding: 0; margin-bottom: 2rem; height: 100%; visibility:hidden;">
+	<li id="kContentLi" class="list-group-item" style="padding: 0; margin-bottom: 2rem; height: 100%; visibility:">
 		<iframe id="kContentIframe" style="border: 0; width: 100%; height: 100%;"></iframe>
 	</li>
 </ul>
