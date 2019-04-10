@@ -523,7 +523,7 @@ function textToImg() {
 <script id="imgTemplate" type="text/html">
 	<li class="list-group-item d-flex align-items-center" style="padding-top:0.265rem;padding-bottom:0.265rem">
 		<div style="width:3.75rem;height:3.75rem;text-align:center;"><img class="upload-img" style="display:none;cursor: pointer;" onload="img.resize(this)" onclick="img.click(this)"></div>
-		<span class="badge badge-dark btn" onclick="$(this).parent().find('img').click()">🔍放大</span>
+		<span class="badge badge-dark btn iconfont icon-fangda" onclick="$(this).parent().find('img').click()"></span>
 		<span class="badge badge-dark btn" onclick="img.remove(this)">❌删除</span>
 		<span class="badge badge-dark btn to-top" style="display:none;" onclick="img.top(this)">🔝置顶</span>
 	</li>
