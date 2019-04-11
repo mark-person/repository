@@ -143,6 +143,13 @@ public class MobileController {
 		// favorite
 		boolean isFavorite = impl.isFavorite(id);
 		mv.addObject("isFavorite", isFavorite);
+		
+		int userId = AuthContext.getLoginAccount().getUserId();
+		
+		if (userId != pojo.getModifiedBy()) {
+			mv.addObject("action", "readonly");
+		}
+		
 		return mv;
 	}
     
@@ -175,12 +182,12 @@ public class MobileController {
     	}
 	}
     
-    public Map<?, ?> confirmFavorite(Integer kId) {
+    public Map<?, ?> confirmFavorite(@RequestParam Integer kId) {
     	impl.confirmFavorite(kId);
     	return ReturnMap.of();
 	}
     
-    public Map<?, ?> cancelFavorite(Integer kId) {
+    public Map<?, ?> cancelFavorite(@RequestParam Integer kId) {
     	impl.cancelFavorite(kId);
     	return ReturnMap.of();
 	}

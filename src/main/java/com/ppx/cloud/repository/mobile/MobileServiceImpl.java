@@ -19,6 +19,7 @@ import com.hankcs.hanlp.seg.common.Term;
 import com.ppx.cloud.auth.common.AuthContext;
 import com.ppx.cloud.common.contoller.ReturnMap;
 import com.ppx.cloud.common.jdbc.MyDaoSupport;
+import com.ppx.cloud.common.page.LimitRecord;
 import com.ppx.cloud.common.page.MPage;
 import com.ppx.cloud.repository.knowledge.pojo.Knowledge;
 import com.ppx.cloud.repository.knowledge.pojo.KnowledgeImg;
@@ -133,11 +134,12 @@ public class MobileServiceImpl extends MyDaoSupport {
 			pojo.setMainImgSrc(imgSrc[0]);
 		}
 		
-		updateEntity(pojo);
+		// 只能修改自己创建的
+		updateEntity(pojo, LimitRecord.newInstance("modifiedBy", userId));
+		
 		int kId = pojo.getkId();
 		// delete附加图
-		String deleteImgSql = "delete from repo_knowledge_img where k_id = ?";
-		getJdbcTemplate().update(deleteImgSql, kId);
+		getJdbcTemplate().update("delete from repo_knowledge_img where k_id = ?", kId);
 		// 附加图(第二个开始)
 		for (int i = 1; i < imgSrc.length; i++) {
 			KnowledgeImg img = new KnowledgeImg();
@@ -148,8 +150,7 @@ public class MobileServiceImpl extends MyDaoSupport {
 		}
 		
 		// delete内容
-		String deleteContentSql = "delete from repo_knowledge_content where k_id = ?";
-		getJdbcTemplate().update(deleteContentSql, kId);
+		getJdbcTemplate().update("delete from repo_knowledge_content where k_id = ?", kId);
 		// 内容
 		if (Strings.isNotEmpty(pojo.getkContent())) {
 			String insertContentsSql = "insert into repo_knowledge_content(k_id, k_content) values(?, ?)";
@@ -157,8 +158,7 @@ public class MobileServiceImpl extends MyDaoSupport {
 		}
 		
 		// USP
-		String delUspSql = "delete from repo_knowledge_map_usp where k_id = ?";
-		getJdbcTemplate().update(delUspSql, kId);
+		getJdbcTemplate().update("delete from repo_knowledge_map_usp where k_id = ?", kId);
 		if (Strings.isNotEmpty(pojo.getUspIds())) {
 			String[] uspId = pojo.getUspIds().split(",");
 			String insertUspSql = "insert into repo_knowledge_map_usp(usp_id, k_id, recommend_prio) values(?, ?, ?)";
@@ -351,23 +351,15 @@ public class MobileServiceImpl extends MyDaoSupport {
 	@Transactional
 	public int confirmFavorite(int kId) {
 		int userId = AuthContext.getLoginAccount().getUserId();
-		
-		String updateSql = "update repo_user set favorite_n = favorite_n + 1 where repo_user_id = ?";
-		getJdbcTemplate().update(updateSql, userId);
-		
-		String sql = "insert into repo_favorite(repo_user_id, k_id) values(?, ?)";
-		return getJdbcTemplate().update(sql, userId, kId);
+		getJdbcTemplate().update("update repo_user set favorite_n = favorite_n + 1 where repo_user_id = ?", userId);
+		return getJdbcTemplate().update("insert into repo_favorite(repo_user_id, k_id) values(?, ?)", userId, kId);
 	}
 	
 	@Transactional
 	public int cancelFavorite(int kId) {
 		int userId = AuthContext.getLoginAccount().getUserId();
-		
-		String updateSql = "update repo_user set favorite_n = favorite_n - 1 where repo_user_id = ?";
-		getJdbcTemplate().update(updateSql, userId);
-		
-		String sql = "delete from repo_favorite where repo_user_id = ? and k_id = ?";
-		return getJdbcTemplate().update(sql, userId, kId);
+		getJdbcTemplate().update("update repo_user set favorite_n = favorite_n - 1 where repo_user_id = ?", userId);
+		return getJdbcTemplate().update("delete from repo_favorite where repo_user_id = ? and k_id = ?", userId, kId);
 	}
 	
 
