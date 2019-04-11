@@ -74,8 +74,7 @@ create table repo_knowledge_img
 ) comment='非主';
 
 
-create table repo_search_word
-(
+create table repo_search_word (
   word 				varchar(64),
   k_id 				int not null,
   cat_id			int not null,
@@ -85,8 +84,11 @@ create table repo_search_word
 ) comment='';
 ALTER TABLE `repo_search_word` ADD INDEX `idx_search_k_id` (`k_id` ASC) VISIBLE;
 
-
-
+create table repo_search_dict (
+  word			varchar(64),
+  cat_desc		varchar(64),
+  primary key (word)
+) comment='';
 
 create table repo_user (
   repo_user_id 		int(11) not null,
@@ -97,13 +99,13 @@ create table repo_user (
   primary key (repo_user_id)
 ) comment='知识用户';
 
-create table repo_favorite
-(
+create table repo_favorite (
 	repo_user_id	int(11) not null,
 	k_id			int(11) not null,
 	created 		timestamp not null default current_timestamp,
 	primary key (repo_user_id, k_id)
 ) comment='收藏';
+
 
 
 
