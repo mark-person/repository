@@ -85,8 +85,8 @@ create table repo_search_word (
 ALTER TABLE `repo_search_word` ADD INDEX `idx_search_k_id` (`k_id` ASC) VISIBLE;
 
 create table repo_search_dict (
-  word			varchar(64),
-  cat_desc		varchar(64),
+  word			int not null,
+  cat_id		int not null,
   primary key (word)
 ) comment='';
 
@@ -95,6 +95,7 @@ create table repo_user (
   repo_user_name 	varchar(32) not null,
   repo_user_status 	tinyint(1) not null default 1 comment '0:删除 1:正常',
   favorite_n		int(11) not null default 0 comment '收藏数量',
+  todo_n			int(11) not null default 0 comment '待办数量',
   created 			timestamp not null default current_timestamp,
   primary key (repo_user_id)
 ) comment='知识用户';
@@ -106,7 +107,17 @@ create table repo_favorite (
 	primary key (repo_user_id, k_id)
 ) comment='收藏';
 
-
+create table repo_todo (
+	todo_id 		int not null auto_increment,
+	todo_title 		varchar(64),
+	todo_status		tinyint(1) not null default 1 comment '0:删除 1:待办 2:已办',
+	todo_important	tinyint(1) not null default 1 comment '0:次要 1:一般 2:重要',
+	todo_emergent	tinyint(1) not null default 1 comment '0:缓慢 1:一般 2:紧急',
+	todo_prio		int not null default 0,
+	modified		timestamp not null default current_timestamp,
+ 	modified_by   	int not null,
+	primary key (todo_id)
+)
 
 
 
