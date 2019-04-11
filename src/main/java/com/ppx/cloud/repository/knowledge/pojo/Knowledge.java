@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.ppx.cloud.repository.knowledge;
+package com.ppx.cloud.repository.knowledge.pojo;
 
 import java.util.Date;
 

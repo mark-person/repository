@@ -15,8 +15,8 @@ import com.ppx.cloud.common.contoller.ReturnMap;
 import com.ppx.cloud.common.page.MPage;
 import com.ppx.cloud.repository.category.KnowledgeCategory;
 import com.ppx.cloud.repository.category.KnowledgeCategoryService;
-import com.ppx.cloud.repository.knowledge.Knowledge;
 import com.ppx.cloud.repository.knowledge.KnowledgeServiceImpl;
+import com.ppx.cloud.repository.knowledge.pojo.Knowledge;
 import com.ppx.cloud.repository.user.RepoUser;
 import com.ppx.cloud.repository.user.RepoUserService;
 import com.ppx.cloud.repository.usp.KnowledgeUsp;
@@ -26,7 +26,7 @@ import com.ppx.cloud.repository.usp.KnowledgeUspService;
 public class MobileController {
 	
 	@Autowired
-	private KnowledgeServiceImpl impl;
+	private MobileServiceImpl impl;
 	
     private final static String INIT_CONTENT = "# \n* \n* ";
    

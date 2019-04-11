@@ -1,4 +1,4 @@
-package com.ppx.cloud.repository.knowledge;
+package com.ppx.cloud.repository.knowledge.pojo;
 
 import com.ppx.cloud.common.jdbc.annotation.Table;
 

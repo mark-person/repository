@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ppx.cloud.common.contoller.ReturnMap;
 import com.ppx.cloud.common.page.Page;
 import com.ppx.cloud.repository.category.KnowledgeCategoryService;
-import com.ppx.cloud.repository.usp.KnowledgeUspService;
+import com.ppx.cloud.repository.knowledge.pojo.Knowledge;
 
 @Controller
 public class KnowledgeController {
@@ -18,6 +18,8 @@ public class KnowledgeController {
 	@Autowired
 	private KnowledgeServiceImpl impl;
 	
+	@Autowired
+    private KnowledgeCategoryService categoryService;
 
 	public ModelAndView knowledge(ModelAndView mv) {
 		mv.addObject("list", list(new Page(), new Knowledge()));
@@ -28,39 +30,13 @@ public class KnowledgeController {
 	public Map<?, ?> list(Page page, Knowledge pojo) {
 		return ReturnMap.of(page, impl.list(page, pojo));
 	}
-	 
-    public Map<?, ?> insertOrUpdate(Knowledge pojo) {
-    	if (pojo.getkId() == null) {
-    		return impl.insert(pojo);
-    	}
-    	else {
-    		return impl.update(pojo);
-    	}
-    }
-    
+	
     public Map<?, ?> changeCat(@RequestParam Integer id, @RequestParam Integer catId) {
     	return impl.changeCat(id, catId);
     }
-    
-    private final static String INIT_CONTENT = "# \n* \n* ";
-    
-    
-    public Map<?, ?> get(@RequestParam Integer id) {
-        return ReturnMap.of("pojo", impl.get(id));
-    }
-    
     
     public Map<?, ?> delete(@RequestParam Integer id) {
         return impl.delete(id);
     }
     
-    
-    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    
-    @Autowired
-    private KnowledgeCategoryService categoryService;
-    @Autowired
-    private KnowledgeUspService uspService;
-    
-   
 }
