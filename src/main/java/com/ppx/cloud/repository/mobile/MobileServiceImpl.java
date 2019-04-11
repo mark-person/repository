@@ -23,6 +23,7 @@ import com.ppx.cloud.common.page.LimitRecord;
 import com.ppx.cloud.common.page.MPage;
 import com.ppx.cloud.repository.knowledge.pojo.Knowledge;
 import com.ppx.cloud.repository.knowledge.pojo.KnowledgeImg;
+import com.ppx.cloud.repository.todo.pojo.Todo;
 
 @Service
 public class MobileServiceImpl extends MyDaoSupport {
@@ -124,7 +125,6 @@ public class MobileServiceImpl extends MyDaoSupport {
     public Map<String, Object> update(Knowledge pojo) {
     	int userId = AuthContext.getLoginAccount().getUserId();
     	pojo.setModified(new Date());
-		pojo.setModifiedBy(userId);
 		int recommendPrio = (int)(System.currentTimeMillis() / 1000) - NOW_SECOND + RECOMMEND_BASE_VALUE[pojo.getRecommend() - 1];
 		pojo.setRecommendPrio(recommendPrio);
 	
@@ -362,5 +362,40 @@ public class MobileServiceImpl extends MyDaoSupport {
 		return getJdbcTemplate().update("delete from repo_favorite where repo_user_id = ? and k_id = ?", userId, kId);
 	}
 	
-
+	
+	
+	// >>>>>>>>>>>>>todo>>>>>>>>>>>
+	
+	public List<Todo> todoList(MPage page, Todo todo) {
+		var c = createCriteria("where").addAnd("t.todo_title like", "%", todo.getTodoTitle(), "%");
+		
+		var cSql = new StringBuilder("select count(*) from repo_todo t").append(c);
+		var qSql = new StringBuilder("select t.* from repo_todo t order by t.modified desc");
+		List<Todo> resultList = queryMPage(Todo.class, page, cSql, qSql, c.getParaList());
+		
+		return resultList;
+	}
+	
+	public Todo getTodo(Integer id) {
+		Todo pojo = getJdbcTemplate().queryForObject("select * from repo_todo where todo_id = ?",
+                BeanPropertyRowMapper.newInstance(Todo.class), id);
+        return pojo;
+	}
+	
+	@Transactional
+	public Map<String, Object> insertOrUpdateTodo(Todo todo)  {
+		int userId = AuthContext.getLoginAccount().getUserId();
+		Integer todoId = null;
+		if (todo.getTodoId() == null) {
+			todo.setModifiedBy(userId);
+			insertEntity(todo);
+		}
+		else {
+			todoId = todo.getTodoId();
+			todo.setModified(new Date());
+			updateEntity(todo, LimitRecord.newInstance("modified_by", userId));
+		}
+		
+		return ReturnMap.of("todoId", todoId);
+	}
 }

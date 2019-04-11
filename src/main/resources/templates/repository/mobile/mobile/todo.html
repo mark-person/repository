@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title></title>
+<link th:replace="common/fragment::mobile"/>
+
+
+<script type="text/javascript" th:inline="javascript">
+var controllerPath = contextPath + "auto/mobile/";
+
+
+function ok() {
+	if ($("#todoTitle").val() == "") {
+		alertWarning("标题不能为空");
+		return;
+	}
+	
+	$.post(controllerPath + "insertOrUpdateTodo", $("#addForm").serialize(), function(r) {
+		if (r.errcode === 0) {
+			alertSuccess();
+			hideLoading();
+			
+			$("[name=todoId]").val(r.todoId);
+			$("#actionHint").html("修改");
+			$("#view").show();
+		}
+	});
+}
+
+
+
+</script>
+
+<style type="text/css">
+#backDiv {position:fixed; z-index:9999;opacity:0.5;margin-top:-0.245rem;margin-left:0.9rem;cursor:pointer;}
+</style>
+</head>
+<body>
+<div id="backDiv">
+	<div onclick="window.location.href = '/auto/mobile/todoList';"><span style="font-size: 2.2rem;" class="iconfont icon-fanhui5"></span></div>
+</div>
+	
+<div class="container" style="padding:0px">
+<div class="panel panel-default">
+<form id="addForm">
+<input type="hidden" name="todoId" th:value="${pojo.todoId}">
+
+<ul class="list-group">
+	<li class="list-group-item">
+    	<div class="row"><div style="text-align: center;width:100%">待办任务</div></div>
+    </li>
+    
+    <li class="list-group-item">
+    	<div class="row" style="display:flex;justify-content:space-around;">
+	    	<div class="custom-control custom-radio custom-control-inline">
+				<input type="radio" id="todoImportant1" name="todoImportant" class="custom-control-input" th:checked="${pojo.todoImportant == 0 ? 'checked' : 'false'}" value="0">
+				<label class="custom-control-label" for="todoImportant1">重要<span class="iconfont icon-zhongyaotixing_Pro" style="color:red"></span></label>
+			</div>
+			<div class="custom-control custom-radio custom-control-inline">
+				<input type="radio" id="todoImportant2" name="todoImportant" class="custom-control-input" th:checked="${pojo.todoImportant == 1 ? 'checked' : 'false'}" value="1">
+				<label class="custom-control-label" for="todoImportant2">一般<span class="iconfont icon-zhongyaotixing_Pro" style="color:orange;"></span></label>
+			</div>
+			<div class="custom-control custom-radio custom-control-inline">
+				<input type="radio" id="todoImportant3" name="todoImportant" class="custom-control-input" th:checked="${pojo.todoImportant == 2 ? 'checked' : 'false'}" value="2">
+				<label class="custom-control-label" for="todoImportant3">次要<span class="iconfont icon-zhongyaotixing_Pro" style="color:blue;"></span></label>
+			</div>
+    	</div>
+    </li>
+    
+    <li class="list-group-item">
+    	<div class="row">
+    		<textarea rows="2" style="width:25rem" class="form-control" id="todoTitle" name="todoTitle" placeholder="请输入标题" th:text="${pojo.todoTitle}"></textarea>
+    	</div>
+    </li>
+    
+    <li class="list-group-item">
+    	<div class="row" style="display:flex;justify-content:space-around;">
+			<div class="custom-control custom-radio custom-control-inline">
+				<input type="radio" id="todoEmergent1" name="todoEmergent" class="custom-control-input" th:checked="${pojo.todoEmergent == 0 ? 'checked' : 'false'}" value="0">
+				<label class="custom-control-label" for="todoEmergent1">紧急<span class="iconfont icon-weiwangguanicon-defuben-" style="color:red"></span></label>
+			</div>
+			<div class="custom-control custom-radio custom-control-inline">
+				<input type="radio" id="todoEmergent2" name="todoEmergent" class="custom-control-input" th:checked="${pojo.todoEmergent == 1 ? 'checked' : 'false'}" value="1">
+				<label class="custom-control-label" for="todoEmergent2">一般<span class="iconfont icon-weiwangguanicon-defuben-" style="color:orange"></span></label>
+			</div>
+			<div class="custom-control custom-radio custom-control-inline">
+				<input type="radio" id="todoEmergent3" name="todoEmergent" class="custom-control-input" th:checked="${pojo.todoEmergent == 2 ? 'checked' : 'false'}" value="2">
+				<label class="custom-control-label" for="todoEmergent3">缓慢<span class="iconfont icon-weiwangguanicon-defuben-" style="color:blue"></span></label>
+			</div>
+		</div>
+    </li>
+	<li class="list-group-item" id="imgLi" style="display:flex;justify-content:space-between;padding-top:.375rem;padding-bottom:.375rem">
+		<a style="background-color: orange;color:white;padding:0.3rem 0.6rem;border-radius: 0.865rem;cursor: pointer;" onclick="ok()">
+			确认<span id="actionHint" th:text="${pojo.todoId == null} ? '新增' : '修改'"></span>
+		</a>
+		<button th:if="${action=='add'}" type="button" class="btn btn-sm btn-link" onclick="resetForm()">重新新增</button>
+	</li>
+	
+</ul>
+</form>
+</div>
+</div>
+
+</body>
+</html>
+

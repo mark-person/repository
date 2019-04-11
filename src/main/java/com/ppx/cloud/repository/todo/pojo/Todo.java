@@ -2,7 +2,13 @@ package com.ppx.cloud.repository.todo.pojo;
 
 import java.util.Date;
 
+import com.ppx.cloud.common.jdbc.annotation.Id;
+import com.ppx.cloud.common.jdbc.annotation.Table;
+
+@Table("repo_todo")
 public class Todo {
+	
+	@Id
 	private Integer todoId;
 	private String todoTitle;
 	private Integer todoStatus;

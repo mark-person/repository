@@ -15,6 +15,7 @@ public class RepoUser {
 	private String repoUserName;
 	private Integer repoUserStatus;
 	private Integer favoriteN;
+	private Integer todoN;
 	private Date created;
 
 	public Integer getRepoUserId() {
@@ -47,6 +48,14 @@ public class RepoUser {
 
 	public void setFavoriteN(Integer favoriteN) {
 		this.favoriteN = favoriteN;
+	}
+
+	public Integer getTodoN() {
+		return todoN;
+	}
+
+	public void setTodoN(Integer todoN) {
+		this.todoN = todoN;
 	}
 
 	public Date getCreated() {

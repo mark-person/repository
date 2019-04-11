@@ -16,6 +16,7 @@ import com.ppx.cloud.common.page.MPage;
 import com.ppx.cloud.repository.category.KnowledgeCategory;
 import com.ppx.cloud.repository.category.KnowledgeCategoryService;
 import com.ppx.cloud.repository.knowledge.pojo.Knowledge;
+import com.ppx.cloud.repository.todo.pojo.Todo;
 import com.ppx.cloud.repository.user.RepoUser;
 import com.ppx.cloud.repository.user.RepoUserService;
 import com.ppx.cloud.repository.usp.KnowledgeUsp;
@@ -149,7 +150,6 @@ public class MobileController {
 		if (userId != pojo.getModifiedBy()) {
 			mv.addObject("action", "readonly");
 		}
-		
 		return mv;
 	}
     
@@ -221,4 +221,24 @@ public class MobileController {
 		return ReturnMap.of(page, impl.myKnowSearch(page, catId, recommend));
 	}
     
+    // >>>>>>>>>>>>>>>>todo>>>>>>>>>>>>>>
+    
+    public ModelAndView todoList(ModelAndView mv) {
+		mv.addObject("list", listTodo(new MPage(), new Todo()));
+		return mv;
+	}
+    
+    public Map<?, ?> listTodo(MPage page, Todo todo) {
+    	return ReturnMap.of(page, impl.todoList(page, todo));
+	}
+    
+    public ModelAndView todo(ModelAndView mv, Integer id) {
+    	Todo pojo = impl.getTodo(id);
+    	mv.addObject("pojo", pojo);
+    	return mv;
+    }
+    
+    public Map<?, ?> insertOrUpdateTodo(Todo todo) {
+    	return impl.insertOrUpdateTodo(todo);
+    }
 }
