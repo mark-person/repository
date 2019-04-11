@@ -160,9 +160,8 @@ img.click = function(obj) {
 	}
 	
 	$("#viewImg").attr("src", obj.src);
-	$("#imgBack").css("width", $(window).width());
-	$("#imgBack").css("height", $(window).height());
-	$("#imgBack").show();
+	$("#imgBackground").css({width:$(window).width(), height:$(window).height()});
+	$("#imgBackground").show();
 		
 }
 img.refreshTop = function() {
@@ -429,6 +428,7 @@ $(function() {
 	display: flex;justify-content:space-between;
 }
 
+.imgBackground {position:fixed;top:0;left:0;background-color:black;z-index:99999;display:none;text-align: center;cursor: pointer;}
 </style>
 </head>
 <body>
@@ -549,7 +549,7 @@ $(function() {
 
 <div th:if="${action=='add'}"><div th:replace="repository/mobile/mobile/menu::nav('add')"></div></div>
 
-<div style="position:fixed;top:0;left:0;background-color:black;z-index:99999;display:none;text-align: center;cursor: pointer;" id="imgBack" onclick='$("#imgBack").hide();'>
+<div id="imgBackground" onclick='$("#imgBackground").hide();'>
 	<img id="viewImg">
 </div> 
 
