@@ -135,7 +135,7 @@ public class MobileServiceImpl extends MyDaoSupport {
 		}
 		
 		// 只能修改自己创建的
-		updateEntity(pojo, LimitRecord.newInstance("modifiedBy", userId));
+		updateEntity(pojo, LimitRecord.newInstance("modified_by", userId));
 		
 		int kId = pojo.getkId();
 		// delete附加图
