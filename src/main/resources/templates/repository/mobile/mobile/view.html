@@ -15,7 +15,7 @@ $(function() {
 	var uspList = [[${uspList}]];
 	var title = $("#kTitleHidden").html();
 	for (i in uspList) {
-		title = title.replace(new RegExp("\\$\\{" + uspList[i].uspId + "\\}", "g"), '<a href="/auto/mobile/listByUsp?uspId=' + uspList[i].uspId + '">' + uspList[i].key + '</a>');
+		title = title.replace(new RegExp("\\$\\{" + uspList[i].uspId + "\\}", "g"), '<a href="/auto/mobile/nice?uspId=' + uspList[i].uspId + '">' + uspList[i].key + '</a>');
 	}
 	$("#kTitle").html(title);
 
