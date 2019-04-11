@@ -10,8 +10,9 @@
 <script th:src="@{/static/markdown/html2canvas.min.js}" type="text/javascript"></script>
 <script th:src="@{/static/markdown/marked.min.js}" type="text/javascript"></script>
 <script th:src="@{/static/mobile/exif.min.js}" type="text/javascript"></script>
+<script th:src="@{/static/repository/know/know-img.js?v1}" type="text/javascript"></script>
 
- <style>
+ <style type="text/css">
 .tribute-container {position:absolute;top 0;left:0;height auto;max-height:300px;max-width:500px;overflow:auto;display:block;z-index:999999;}
 .tribute-container ul {margin:0;margin-top:2px;padding:0;list-style:none;background: #efefef;}
 .tribute-container li {padding:5px 5px;cursor:pointer;}
@@ -19,165 +20,10 @@
 .tribute-container li span {font-weight:bold;}
 .tribute-container li.no-match {cursor:default;}
 .tribute-container .menu-highlighted {font-weight:bold;}
-  
 </style>
 
 <script type="text/javascript" th:inline="javascript">
 var controllerPath = contextPath + "auto/mobile/";
-
-// >>>>>>>>>>>>>>>>>>>>>>img
-var img = {};
-var IMG_SCALE_HEIGHT = 60;
-img.fileChange = function(obj) {
-	this.loadImg(obj.files, obj.files.length, 0.1);
-	// 重新生成一个，防失效
-	$(obj).prop("outerHTML", $(obj).prop("outerHTML"));
-}
-
-function changeOrient(tmpImg, canvas, context, orientation) {
-	 var degree = 0;
-	 var drawWidth = tmpImg.width;
-     var drawHeight = tmpImg.height;
-     switch(orientation){
-    	//iphone横屏拍摄，此时home键在左侧
-     	 case 3:
-          degree=180;
-          drawWidth=-tmpImg.width;
-          drawHeight=-tmpImg.height;
-          break;
-      //iphone竖屏拍摄，此时home键在下方(正常拿手机的方向)
-      case 6:
-          canvas.width=tmpImg.height;
-          canvas.height=tmpImg.width; 
-          degree=90;
-          drawWidth=tmpImg.width;
-          drawHeight=-tmpImg.height;
-          break;
-      //iphone竖屏拍摄，此时home键在上方
-      case 8:
-          canvas.width=tmpImg.height;
-          canvas.height=tmpImg.width; 
-          degree=270;
-          drawWidth=-tmpImg.width;
-          drawHeight=tmpImg.height;
-          break;
-  	}
-    context.rotate(degree*Math.PI/180);
-    return {drawWidth:drawWidth, drawHeight:drawHeight}
-}
-
-img.loadImg = function(f, n, encoder) {
-	n--;
-	var reader = new FileReader();
-	reader.onload = function() {
-		var tmpImg = new Image();
-		tmpImg.onload = function() {
-			
-			var canvas = document.createElement("canvas");
-			canvas.width = this.width;
-		    canvas.height = this.height;
-		    var context = canvas.getContext("2d");
-		    
-		    //EXIF js 可以读取图片的元信息  https://github.com/exif-js/exif-js
-		    EXIF.getData(this, function() {
-		        var orient = EXIF.getTag(this, 'Orientation');
-		        
-		        var drawWidth = tmpImg.width;
-		        var drawHeight = tmpImg.height;
-		        // iphone不同方向拍摄
-		        if (orient == 3 || orient == 6 || orient == 8) {
-		        	var o = changeOrient(tmpImg, canvas, context, orient)
-		        	drawWidth = o.drawWidth;
-		        	drawHeight = o.drawHeight;
-		        	context.drawImage(this, 0, 0, drawWidth, drawHeight);
-		        }
-		        else {
-		        	canvas.width = tmpImg.width;
-		            canvas.height = tmpImg.height;
-		            context.drawImage(this, 0, 0, drawWidth, drawHeight, 0, 0, drawWidth, drawHeight);
-		        }
-		       	
-		        
-			    var newSrc = canvas.toDataURL('image/jpeg', encoder);
-			    
-			    var jObj = $($("#imgTemplate").html());
-				var imgObj = jObj.find(".upload-img");
-			    imgObj.attr("src", newSrc);
-				imgObj.data("mFile", dataURLtoFile(newSrc));
-				$("#imgEndLi").before(jObj);
-				if (n > 0) {
-					img.loadImg(f, n, encoder);
-				}
-				else {
-					img.refreshTop();
-				}
-		    });
-		}
-		tmpImg.src = this.result;
-	}
-	reader.readAsDataURL(f[n]);
-}
-
-function dataURLtoFile(dataurl) {
-	var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-	bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-	while(n--){
-		u8arr[n] = bstr.charCodeAt(n);
-	}
-	return new Blob([u8arr], {type:mime});
-}
-img.resize = function(img) {
-	var initWidth = img.width;
-	var initHeight = img.height;
-	$(img).data("data-init-width", initWidth);
-	$(img).data("data-init-height", initHeight);
-	$(img).data("data-init-boolean", true);
-	
-	if (initWidth < initHeight) {
-		
-		$(img).css({width:IMG_SCALE_HEIGHT * initWidth / initHeight, height:IMG_SCALE_HEIGHT});
-	}
-	else {
-		var marginTop = (IMG_SCALE_HEIGHT - IMG_SCALE_HEIGHT * initHeight / initWidth) / 2;
-		$(img).css({width:IMG_SCALE_HEIGHT, height:IMG_SCALE_HEIGHT * initHeight / initWidth, marginTop:marginTop});
-	}
-	$(".upload-img").show();
-}
-
-img.click = function(obj) {
-	var initWidth = new Number($(obj).data("data-init-width"));
-	var initHeight = new Number($(obj).data("data-init-height"));
-	
-	if (initWidth/initHeight > $(document.body).width()/$(document.body).height()) {
-		$("#viewImg").css("margin-top", ($(window).height() - $(document.body).width()*initHeight/initWidth) / 2);
-		$("#viewImg").css("width", $(document.body).width());
-		$("#viewImg").css("height", $(document.body).width()*initHeight/initWidth);
-	}
-	else {
-		$("#viewImg").css("margin-top", 0);
-		$("#viewImg").css("width",  $(document.body).height()*initWidth/initHeight);
-		$("#viewImg").css("height", $(document.body).height());
-	}
-	
-	$("#viewImg").attr("src", obj.src);
-	$("#imgBackground").css({width:$(window).width(), height:$(window).height()});
-	$("#imgBackground").show();
-		
-}
-img.refreshTop = function() {
-	$(".to-top").show();
-	if ($(".to-top:eq(0)").parent().prev().attr("id") == "imgLi") {
-		$(".to-top:eq(0)").hide();
-	}
-}
-img.remove = function(obj) {
-	$(obj).parent().remove();
-	this.refreshTop();
-}
-img.top = function(obj) {
-	$("#imgLi").after($(obj).parent());
-	this.refreshTop();
-}
 
 function upload(files) {
 	var formData = new FormData();
@@ -192,7 +38,6 @@ function upload(files) {
 			}
 		}
 	});
-	
 	
 	$.ajax({url:[[@{/auto/uploadImg/uploadKnowledge}]], type:"POST", contentType:false, data:formData ,processData:false,
 		success:function(r) {
@@ -215,31 +60,17 @@ function upload(files) {
 }
 
 function insertOrUpdateKnowledge() {
-	if ($("#kTitle").val() == "") {
-		$("[name=kTitle]").val("无");
-	}
-	else {
-		$("[name=kTitle]").val(getUspTitle());
-	}
+	($("#kTitle").val() == "") ? $("[name=kTitle]").val("无") : $("[name=kTitle]").val(getUspTitle());
 	$("[name=recommend]").val($("#recommend .star-show").length);
-	
 	
 	var srcList = [];
 	$(".upload-img").each(function(i, o) {
 		srcList.push($(this).attr("data-url"));
 	})
-	var imgSrc = "&imgSrc=" + srcList.join(",");
-	
-	if (initkContent == $("#kContent").val()) {
-		$("[name=kContent]").val("");
-	}
-	else {
-		$("[name=kContent]").val($("#kContent").val());
-	}
-	
+	$("[name=imgSrc]").val(srcList.join(","));
+	(initkContent == $("#kContent").val()) ? $("[name=kContent]").val("") : $("[name=kContent]").val($("#kContent").val());
 	$("[name=uspIds]").val(getUspIdArray().join(","));
-	
-	$.post(controllerPath + "insertOrUpdate", $("#addForm").serialize() + imgSrc, function(r) {
+	$.post(controllerPath + "insertOrUpdate", $("#addForm").serialize(), function(r) {
 		if (r.errcode === 0) {
 			alertSuccess();
 			hideLoading();
@@ -258,7 +89,6 @@ function ok() {
 	}
 	
 	var imgUploadLen = 0;
-	// 根据官方的建议：具有 true 和 false 两个属性的属性，如 checked, selected 或者 disabled 使用prop()，其他的使用 attr()
 	$(".upload-img").each(function() {
 		imgUploadLen = $(this).attr("data-url") ? imgUploadLen : ++imgUploadLen;
 	})
@@ -342,6 +172,7 @@ function getUspTitle() {
 	}
 	return title;
 }
+
 function getEmojiTitle(title) {
 	for (i in uspList) {
 		title = title.replace(new RegExp("\\$\\{" + uspList[i].uspId + "\\}", "g"), uspList[i].key);
@@ -349,70 +180,15 @@ function getEmojiTitle(title) {
 	return title;
 }
 
-function textToImg() {
-	var kContent = $("#kContent").val();
-	if (kContent) {
-		var isTitleCenter = $("#titleCenter").prop("checked");
-		
+function catSelect(val, obj) {
+	$(".cat-item").css("color", "black");
+	$(".cat-yes").text("");
+	$(obj).css("color", "#f40");
+	$(obj).find(".cat-yes").text("✔");
 	
-		var line = kContent.split("\n");
-		var newKContent = [];
-		for (var i = 0; i < line.length; i++) {
-			var str = $.trim(line[i]);
-			if (str.indexOf("#") == 0) {
-				// marked的一个bug少了个li
-				if (i != 0 ) {
-					str = '\n' + str;
-				}
-				
-				if (isTitleCenter) {
-					var last = str.lastIndexOf("#");
-					newKContent.push(str.substring(0, last + 1) + " <center>" + str.substring(last + 2, str.length) + "</center>");
-				}
-				else {
-					newKContent.push(str);
-				}
-			}
-			else {
-				newKContent.push(str);
-			}
-		}
-		kContent = newKContent.join("\n");
-		
-		
-		var html = marked(kContent);
-		//alert(html)
-		var iframeBody = $('#kContentIframe').contents().find('body');
-		iframeBody.html(html);
-		iframeBody.css("padding", "0.5rem");
-		iframeBody.css("margin", "0rem");
-		
-		var b = $("[name=background]:checked").val();
-		iframeBody.css("background", "url(/static/background/" + b + ")");
-		if (b != "0.png") {
-			iframeBody.css("color", "white");
-		}
-		else {
-			iframeBody.css("color", "black");
-		}
-		
-		iframeBody.css("font-size", "0.825rem");
-		
-		
-		//iframeBody.css("width", "25rem");
-		
-		iframeBody.css("height", iframeBody[0].scrollHeight);
-		html2canvas(iframeBody[0]).then(function(canvas) {
-			var url = canvas.toDataURL();
-			var f = []; 
-			f.push(dataURLtoFile(url));
-			img.loadImg(f, 1, 0.8); 
-	    });
-	}
+	$("#catId").val(val);
+	$("#catName").text($(obj).find(".cat-name").text());
 }
-
-$(function() {
-})
 
 </script>
 
@@ -421,20 +197,18 @@ $(function() {
 .star-show {visibility:visible}
 .star-hide {visibility:hidden}
 .img-action {margin-left:2rem;padding:0.5rem;color:blue;cursor: pointer;}
-
 .form-control {margin:-0.275rem 0rem}
+.select-class {display: flex;justify-content:space-between;}
 
-.select-class {
-	display: flex;justify-content:space-between;
-}
-
-.imgBackground {position:fixed;top:0;left:0;background-color:black;z-index:99999;display:none;text-align: center;cursor: pointer;}
+#imgBackground {position:fixed;top:0;left:0;background-color:black;z-index:99999;display:none;text-align:center;cursor:pointer;}
+.contentToImgAction {display:flex;justify-content:space-between;width:100%;margin:1rem 1rem -.2rem 1rem;}
+#recommend {display:flex;justify-content:space-between;padding:0 0.375rem;}
+#backDiv {position:fixed; z-index:9999;opacity:0.5;margin-top:-0.245rem;margin-left:0.9rem;cursor:pointer;}
 </style>
 </head>
 <body>
-
-<div th:if="${action=='edit'}" style="position:fixed; z-index:9999;opacity:0.5;margin-top:-0.245rem;margin-left:0.9rem;cursor:pointer;" id="backDiv">
-	<div onclick="window.location.href = document.referrer;" style=""><span style="font-size: 2.2rem;" class="iconfont icon-fanhui5"></span></div>
+<div th:if="${action=='edit'}" id="backDiv">
+	<div onclick="window.location.href = document.referrer;"><span style="font-size: 2.2rem;" class="iconfont icon-fanhui5"></span></div>
 </div>
 	
 <div class="container" style="padding:0px">
@@ -445,30 +219,17 @@ $(function() {
 <input type="hidden" name="recommend">
 <input type="hidden" name="kContent">
 <input type="hidden" name="uspIds">
+<input type="hidden" name="imgSrc">
+
 <ul class="list-group" id="imgUL">
 	 <li class="list-group-item">
-    	<div class="row">
-    		<div style="text-align: center;width:100%">提示:输入空格@后，自动带出USP</div>
-    	</div>
+    	<div class="row"><div style="text-align: center;width:100%">提示:输入空格@后，自动带出USP</div></div>
     </li>
     <li class="list-group-item">
-    	<div class="row">
-    		<input class="form-control" type="text" id="kTitle" placeholder="请输入标题" th:value="${pojo.kTitle}" maxlength="64">
-    	</div>
+    	<div class="row"><input class="form-control" type="text" id="kTitle" placeholder="请输入标题" th:value="${pojo.kTitle}" maxlength="64"></div>
     </li>
     <li class="list-group-item" style="padding:0.265rem;">
    		<div class="row col-12">
-   			<script>
-			function catSelect(val, obj) {
-				$(".cat-item").css("color", "black");
-				$(".cat-yes").text("");
-				$(obj).css("color", "#f40");
-				$(obj).find(".cat-yes").text("✔");
-				
-				$("#catId").val(val);
-				$("#catName").text($(obj).find(".cat-name").text());
-			}
-			</script>
 			<input type="hidden" id="catId" name="catId" th:value="${pojo.catId}">
 		    <a id="catName" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color:#f40" th:text="${pojo.catName}">选择类目</a>
 		    <div class="dropdown-menu" style="min-width:15rem;font-size:0.865rem;">
@@ -481,7 +242,7 @@ $(function() {
     </li>
     <li class="list-group-item">
     	<div class="row">
-	    	<div id="recommend" class="col-form-label col-12" style="display:flex;justify-content:space-between;padding:0 0.375rem;">
+	    	<div id="recommend" class="col-form-label col-12">
 		    	<span class="star" th:each="item:${starList}"><b class="star-show">⭐</b></span>
 		    	<span class="star" th:each="item:${noStarList}"><b class="star-hide">⭐</b></span>
 	    	</div>
@@ -490,26 +251,24 @@ $(function() {
     <li class="list-group-item">
     	<div class="row">
 			<textarea id="kContent" rows="4" class="form-control" th:text="${pojo.kContent}"></textarea>
-			<div style="display:flex;justify-content:space-between;width:100%;margin:1rem 1rem 0 1rem">
+			<div class="contentToImgAction">
 				<a href="#" onclick="textToImg()">转成图片</a>
-				
 				<div class="custom-control custom-checkbox">
 					<input type="checkbox" class="custom-control-input" id="titleCenter" checked="checked">
 					<label class="custom-control-label" for="titleCenter">标题居中</label>
 				</div>
 				<div>
 					<div class="custom-control custom-radio custom-control-inline">
-						<input type="radio" id="background1" name="background" class="custom-control-input" checked="checked" value="0.png">
-						<label class="custom-control-label" for="background1"><img src="/static/background/0.png" style="width:1rem;height:1rem"></label>
+						<input type="radio" id="background1" name="background" class="custom-control-input" checked="checked" value="black">
+						<label class="custom-control-label" for="background1"><img src="/static/repository/background/0.png" style="width:1rem;height:1rem"></label>
 					</div>
 					<div class="custom-control custom-radio custom-control-inline">
-						<input type="radio" id="background2" name="background" class="custom-control-input" value="1.png">
-						<label class="custom-control-label" for="background2"><img src="/static/background/1.png" style="width:1rem;height:1rem"></label>
+						<input type="radio" id="background2" name="background" class="custom-control-input" value="white">
+						<label class="custom-control-label" for="background2"><img src="/static/repository/background/1.png" style="width:1rem;height:1rem"></label>
 					</div>
-					
 					<div class="custom-control custom-radio custom-control-inline">
-						<input type="radio" id="background3" name="background" class="custom-control-input" value="2.png">
-						<label class="custom-control-label" for="background3"><img src="/static/background/2.png" style="width:1rem;height:1rem"></label>
+						<input type="radio" id="background3" name="background" class="custom-control-input" value="white">
+						<label class="custom-control-label" for="background3"><img src="/static/repository/background/2.png" style="width:1rem;height:1rem"></label>
 					</div>
 				</div>
 			</div>
@@ -546,12 +305,8 @@ $(function() {
 </div>
 </div>
 
-
 <div th:if="${action=='add'}"><div th:replace="repository/mobile/mobile/menu::nav('add')"></div></div>
-
-<div id="imgBackground" onclick='$("#imgBackground").hide();'>
-	<img id="viewImg">
-</div> 
+<div id="imgBackground" onclick='$("#imgBackground").hide();'><img id="viewImg"></div> 
 
 </body>
 </html>
