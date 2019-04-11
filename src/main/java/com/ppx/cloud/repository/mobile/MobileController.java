@@ -15,7 +15,6 @@ import com.ppx.cloud.common.contoller.ReturnMap;
 import com.ppx.cloud.common.page.MPage;
 import com.ppx.cloud.repository.category.KnowledgeCategory;
 import com.ppx.cloud.repository.category.KnowledgeCategoryService;
-import com.ppx.cloud.repository.knowledge.KnowledgeServiceImpl;
 import com.ppx.cloud.repository.knowledge.pojo.Knowledge;
 import com.ppx.cloud.repository.user.RepoUser;
 import com.ppx.cloud.repository.user.RepoUserService;
@@ -25,11 +24,12 @@ import com.ppx.cloud.repository.usp.KnowledgeUspService;
 @Controller
 public class MobileController {
 	
+	private final static String INIT_CONTENT = "# \n* \n* ";
+	
 	@Autowired
 	private MobileServiceImpl impl;
-	
-    private final static String INIT_CONTENT = "# \n* \n* ";
-   
+	@Autowired
+    private RepoUserService repoUserService;
     @Autowired
     private KnowledgeCategoryService categoryService;
     @Autowired
@@ -39,12 +39,10 @@ public class MobileController {
 		mv.addObject("list", homeSearch(new MPage(), null, null, null));
 		mv.addObject("catList", categoryService.list());
 		mv.addObject("uspList", uspService.list());
-	
 		return mv;
 	}
     
     public Map<?, ?> homeSearch(MPage page, String word, Integer catId, Integer orderBy) {
-    	
     	if (Strings.isBlank(word)) {
     		return ReturnMap.of(page, impl.byCatSearch(page, catId, orderBy));
     	}
@@ -107,12 +105,10 @@ public class MobileController {
 		
 		
 		mv.addObject("action", "edit");
-		
 		return mv;
 	}
     
     public Map<?, ?> insertOrUpdate(Knowledge pojo) {
-    	
     	if (pojo.getkId() == null) {
     		return impl.insert(pojo);
     	}
@@ -167,8 +163,6 @@ public class MobileController {
     	}
     	
 		mv.addObject("uspList", uspList);
-		
-		
 		return mv;
 	}
     
@@ -190,22 +184,16 @@ public class MobileController {
     	impl.cancelFavorite(kId);
     	return ReturnMap.of();
 	}
-     
-    @Autowired
-    private RepoUserService repoUserService;
+    
     public ModelAndView my(ModelAndView mv) {
-    	
     	int userId = AuthContext.getLoginAccount().getUserId();
     	RepoUser u = repoUserService.get(userId);
     	mv.addObject("u", u);
-    	
 		return mv;
 	}
     
     public ModelAndView favorite(ModelAndView mv) {
-    	
     	mv.addObject("uspList", uspService.list());
-    	
     	mv.addObject("list", favoriteSearch(new MPage(), null));
 		mv.addObject("catList", categoryService.list());
 		return mv;
