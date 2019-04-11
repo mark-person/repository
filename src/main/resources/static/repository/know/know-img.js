@@ -142,7 +142,6 @@ img.refreshTop = function() {
 	}
 }
 img.remove = function(obj) {
-	alert(1)
 	$(obj).parent().remove();
 	this.refreshTop();
 }
