@@ -367,10 +367,14 @@ public class MobileServiceImpl extends MyDaoSupport {
 	// >>>>>>>>>>>>>todo>>>>>>>>>>>
 	
 	public List<Todo> todoList(MPage page, Todo todo) {
-		var c = createCriteria("where").addAnd("t.todo_title like", "%", todo.getTodoTitle(), "%");
+		int userId = AuthContext.getLoginAccount().getUserId();
+		var c = createCriteria("and").addAnd("t.todo_title like", "%", todo.getTodoTitle(), "%");
+		c.addPrePara(userId);
+		// 1:待办
+		c.addPrePara(1);
 		
-		var cSql = new StringBuilder("select count(*) from repo_todo t").append(c);
-		var qSql = new StringBuilder("select t.* from repo_todo t order by t.modified desc");
+		var cSql = new StringBuilder("select count(*) from repo_todo t where modified_by = ? and t.todo_status = ?").append(c);
+		var qSql = new StringBuilder("select t.* from repo_todo t  where modified_by = ? and t.todo_status = ? order by t.modified desc");
 		List<Todo> resultList = queryMPage(Todo.class, page, cSql, qSql, c.getParaList());
 		
 		return resultList;
@@ -390,9 +394,18 @@ public class MobileServiceImpl extends MyDaoSupport {
 			todo.setModifiedBy(userId);
 			insertEntity(todo);
 			todoId = super.getLastInsertId();
+			getJdbcTemplate().update("update repo_user set todo_n = todo_n + 1 where repo_user_id = ?", userId);
 		}
 		else {
 			todoId = todo.getTodoId();
+			Todo oldTodo = getTodo(todoId);
+			if (oldTodo.getTodoStatus() == 1 && todo.getTodoStatus() == 2) {
+				getJdbcTemplate().update("update repo_user set todo_n = todo_n + 1 where repo_user_id = ?", userId);
+			}
+			else if (oldTodo.getTodoStatus() == 2 && todo.getTodoStatus() == 1) {
+				getJdbcTemplate().update("update repo_user set todo_n = todo_n - 1 where repo_user_id = ?", userId);
+			}
+			
 			todo.setModified(new Date());
 			updateEntity(todo, LimitRecord.newInstance("modified_by", userId));
 		}
@@ -402,8 +415,12 @@ public class MobileServiceImpl extends MyDaoSupport {
 	
 	@Transactional
 	public Map<String, Object> deleteTodo(Integer id) {
-		String sql = "delete from repo_todo where todo_id = ?";
-		getJdbcTemplate().update(sql, id);
+		int userId = AuthContext.getLoginAccount().getUserId();
+		Todo todo = getTodo(id);
+		if (todo.getTodoStatus() == 1) {
+			getJdbcTemplate().update("update repo_user set todo_n = todo_n - 1 where repo_user_id = ?", userId);
+		}
+		getJdbcTemplate().update("delete from repo_todo where todo_id = ?", id);
 		return ReturnMap.of();
 	}
 }
