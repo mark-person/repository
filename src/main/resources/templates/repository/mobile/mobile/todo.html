@@ -90,7 +90,7 @@ function cancelDelete(obj) {
     	<div class="row"><div style="text-align: center;width:100%"><!-- 待办任务 -->发版系统</div></div>
     </li>
     
-    <li class="list-group-item" style="display: none">
+    <li class="list-group-item">
     	<div class="row" style="display:flex;justify-content:space-around;">
 	    	<div class="custom-control custom-radio custom-control-inline">
 				<input type="radio" id="todoImportant1" name="todoImportant" class="custom-control-input" th:checked="${pojo.todoImportant == 0 ? 'checked' : 'false'}" value="0">
@@ -130,6 +130,20 @@ function cancelDelete(obj) {
 			</div>
 		</div>
     </li>
+    
+    <li class="list-group-item" th:if="${action=='edit'}">
+    	<div class="row" style="display:flex;justify-content:space-around;">
+			<div class="custom-control custom-radio custom-control-inline">
+				<input type="radio" id="todoStatus1" name="todoStatus" class="custom-control-input" th:checked="${pojo.todoStatus == 1 ? 'checked' : 'false'}" value="0">
+				<label class="custom-control-label" for="todoStatus1">待办<span class="iconfont icon-daiban-moren" style="color:red"></span></label>
+			</div>
+			<div class="custom-control custom-radio custom-control-inline">
+				<input type="radio" id="todoStatus2" name="todoStatus" class="custom-control-input" th:checked="${pojo.todoStatus == 2 ? 'checked' : 'false'}" value="1">
+				<label class="custom-control-label" for="todoStatus2">已办<span class="iconfont icon-yiban-moren" style="color:orange"></span></label>
+			</div>
+		</div>
+    </li>
+    
 	<li class="list-group-item" id="imgLi" style="display:flex;justify-content:space-between;padding-top:.375rem;padding-bottom:.375rem">
 		<a style="background-color: orange;color:white;padding:0.3rem 0.6rem;border-radius: 0.865rem;cursor: pointer;" onclick="ok()">
 			确认<span id="actionHint" th:text="${pojo.todoId == null} ? '新增' : '修改'"></span>
@@ -141,9 +155,9 @@ function cancelDelete(obj) {
 		<div id="deleteAction" th:if="${action=='edit'}" style="display: none;">
 			<button type="button"  onclick="doDelete(this)" class="btn btn-sm btn-link" style="color:red">确定删除</button>|<button type="button" onclick="cancelDelete(this)" class="btn btn-sm btn-link">取消删除</button>
 		</div>
-		
-		
 	</li>
+	
+	
 	
 </ul>
 </form>
