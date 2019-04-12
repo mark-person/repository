@@ -108,13 +108,6 @@ function cancelDelete(obj) {
     </li>
     
     <li class="list-group-item">
-    	<div class="row">
-    		<textarea maxlength="64" rows="2" style="width:25.2rem" class="form-control" id="todoTitle" name="todoTitle" placeholder="请输入标题" th:text="${pojo.todoTitle}"></textarea>
-    		<div style="text-align: right;width:100%;font-size:0.865rem">你还可以输入<var style="color: #C00" id="inputNumber">--</var>个字符。</div>
-    	</div>
-    </li>
-    
-    <li class="list-group-item" style="display: none">
     	<div class="row" style="display:flex;justify-content:space-around;">
 			<div class="custom-control custom-radio custom-control-inline">
 				<input type="radio" id="todoEmergent1" name="todoEmergent" class="custom-control-input" th:checked="${pojo.todoEmergent == 0 ? 'checked' : 'false'}" value="0">
@@ -131,14 +124,23 @@ function cancelDelete(obj) {
 		</div>
     </li>
     
+    <li class="list-group-item">
+    	<div class="row">
+    		<textarea maxlength="64" rows="2" style="width:25.2rem" class="form-control" id="todoTitle" name="todoTitle" placeholder="请输入标题" th:text="${pojo.todoTitle}"></textarea>
+    		<div style="text-align: right;width:100%;font-size:0.865rem">你还可以输入<var style="color: #C00" id="inputNumber">--</var>个字符。</div>
+    	</div>
+    </li>
+    
+    
+    
     <li class="list-group-item" th:if="${action=='edit'}">
     	<div class="row" style="display:flex;justify-content:space-around;">
 			<div class="custom-control custom-radio custom-control-inline">
-				<input type="radio" id="todoStatus1" name="todoStatus" class="custom-control-input" th:checked="${pojo.todoStatus == 1 ? 'checked' : 'false'}" value="0">
+				<input type="radio" id="todoStatus1" name="todoStatus" class="custom-control-input" th:checked="${pojo.todoStatus == 1 ? 'checked' : 'false'}" value="1">
 				<label class="custom-control-label" for="todoStatus1">待办<span class="iconfont icon-daiban-moren" style="color:red"></span></label>
 			</div>
 			<div class="custom-control custom-radio custom-control-inline">
-				<input type="radio" id="todoStatus2" name="todoStatus" class="custom-control-input" th:checked="${pojo.todoStatus == 2 ? 'checked' : 'false'}" value="1">
+				<input type="radio" id="todoStatus2" name="todoStatus" class="custom-control-input" th:checked="${pojo.todoStatus == 2 ? 'checked' : 'false'}" value="2">
 				<label class="custom-control-label" for="todoStatus2">已办<span class="iconfont icon-yiban-moren" style="color:orange"></span></label>
 			</div>
 		</div>

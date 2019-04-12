@@ -400,16 +400,15 @@ public class MobileServiceImpl extends MyDaoSupport {
 			todoId = todo.getTodoId();
 			Todo oldTodo = getTodo(todoId);
 			if (oldTodo.getTodoStatus() == 1 && todo.getTodoStatus() == 2) {
-				getJdbcTemplate().update("update repo_user set todo_n = todo_n + 1 where repo_user_id = ?", userId);
+				getJdbcTemplate().update("update repo_user set todo_n = todo_n - 1 where repo_user_id = ?", userId);
 			}
 			else if (oldTodo.getTodoStatus() == 2 && todo.getTodoStatus() == 1) {
-				getJdbcTemplate().update("update repo_user set todo_n = todo_n - 1 where repo_user_id = ?", userId);
+				getJdbcTemplate().update("update repo_user set todo_n = todo_n + 1 where repo_user_id = ?", userId);
 			}
 			
 			todo.setModified(new Date());
 			updateEntity(todo, LimitRecord.newInstance("modified_by", userId));
 		}
-		
 		return ReturnMap.of("todoId", todoId);
 	}
 	

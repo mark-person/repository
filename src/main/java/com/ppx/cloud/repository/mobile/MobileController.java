@@ -240,6 +240,8 @@ public class MobileController {
     	}
     	else {
     		pojo = new Todo();
+    		pojo.setTodoImportant(1);
+    		pojo.setTodoEmergent(1);
     		mv.addObject("action", "add");
     	}
     	mv.addObject("pojo", pojo);
