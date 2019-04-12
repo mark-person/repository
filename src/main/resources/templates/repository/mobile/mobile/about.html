@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title></title>
+<link th:replace="common/fragment::mobile"/>
+
+
+<script type="text/javascript" th:inline="javascript">
+var controllerPath = contextPath + "auto/mobile/";
+
+function back() {
+	history.go(-1);
+}
+
+</script>
+
+<style type="text/css">
+
+#backDiv {position:fixed; z-index:9999;opacity:0.5;margin-top:-0.245rem;margin-left:0.9rem;cursor:pointer;}
+
+</style>
+</head>
+<body>
+<div id="backDiv">
+	<div onclick="back()"><span style="font-size: 2.2rem;" class="iconfont icon-fanhui5"></span></div>
+</div>
+	
+<div class="container" style="padding:0px">
+<div class="panel panel-default">
+<ul class="list-group" id="imgUL">
+	<li class="list-group-item">
+    	<div class="row"><div style="text-align: center;width:100%">关于系统</div></div>
+    </li>
+	<li class="list-group-item">
+    	<div class="row" style="height:10rem;">
+    		<div style="display: flex;align-items:center;">
+    			<div style="margin-left:0.5rem">
+    				目标：<span style="color:red">交易</span>
+    			</div>
+    		</div>
+    	</div>
+    </li>
+</ul>
+</div>
+</div>
+
+</body>
+</html>
+

@@ -262,4 +262,9 @@ public class MobileController {
     	return impl.deleteTodo(id);
     }
     
+    // >>>>>>>>>>>>>>>>>about>>>>>>>>>>>>>>>>
+    public ModelAndView about(ModelAndView mv) {
+		return mv;
+	}
+    
 }
