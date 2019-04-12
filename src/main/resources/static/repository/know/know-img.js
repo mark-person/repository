@@ -191,7 +191,7 @@ function textToImg() {
 			var url = canvas.toDataURL();
 			var f = []; 
 			f.push(dataURLtoFile(url));
-			img.loadImg(f, 1, 0.8); 
+			img.loadImg(f, 1, 1); 
 	    });
 	}
 }
