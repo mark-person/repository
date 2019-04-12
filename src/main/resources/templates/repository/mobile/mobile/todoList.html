@@ -7,8 +7,17 @@
 <script type="text/javascript" th:inline="javascript">
 var controllerPath = contextPath + "auto/mobile/";
 var searchMethod = "listTodo";
+
+$(function() {
+	$('#form').submit(function (e) {
+		queryPage(1);
+	    e.preventDefault();
+	    e.stopPropagation();
+	})
+});
+
 function getQueryString(pageNumber) {
-	return {pageNumber:pageNumber};
+	return {pageSize:16,pageNumber:pageNumber,todoStatus:$("#todoStatus").val(),todoTitle:$("#todoTitle").val()};
 }
 
 function back() {
@@ -31,38 +40,66 @@ template.helper('getEmergentColor', function(v) {
 	if (v == 2) return "blue";
 })
 
+
+function statusSearch(val, obj) {
+	$(".status-item").css("color", "black");
+	$(".status-yes").text("");
+	
+	$(obj).css("color", "#f40");
+	$(obj).find(".status-yes").text("✔");
+	$("#todoStatus").val(val);
+	$("#todoStatusName").text($(obj).find(".status-name").text());
+	queryPage(1);
+}
 </script>
 
 <style type="text/css">
-body {margin-top:2.75rem;margin-bottom:3rem}
+body {margin-top:2.9rem;margin-bottom:3rem}
 .top-div {position:fixed;top:0;background-color:#f0f0f0;padding:.2rem 0;width:25.875rem;display:flex;justify-content:space-between; padding-left:0.5rem;padding-right:0.5rem;}
 input::-webkit-input-placeholder {padding-top:0.175rem;}
 
+.list-group-item {position:inherit;}
 .row {padding-left:0.8rem;padding-right:0.8rem}
+
+.dropdown-item {display: flex;justify-content:space-between;}
 </style>
 </head>
 
 <body>
+<div class="container" style="padding:0px;">
 
 <div class="top-div">
 	<div style="position:fixed; z-index:9999;opacity:0.5;margin-top:-0.4rem;margin-left:0.4rem;cursor:pointer;" id="backDiv">
 		<div onclick="back();" style=""><span style="font-size: 2.2rem;" class="iconfont icon-fanhui5"></span></div>
 	</div>
 	
-	<div style="text-align: right; width:10rem">
-		<span class="iconfont icon-tianjia" onclick="add()" style="font-size:1.6rem;cursor: pointer;"></span>
-	</div>
+	<div class="nav-item dropdown" style="margin-left:3rem">
+		<input type="hidden" id="todoStatus" value="1">
+	    <a id="todoStatusName" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color:#f40;">待办</a>
+	    <div class="dropdown-menu" style="min-width: 10rem">
+	    	<a href="#" class="dropdown-item status-item" onclick="statusSearch('', this)">
+	    		<span class="status-name">全部</span><span class="status-yes"></span>
+	    	</a>
+	    	<a href="#" class="dropdown-item status-item" style="color:#f40;" onclick="statusSearch(1, this)">
+	    		<span class="status-name">待办</span><span class="status-yes">✔</span>
+	    	</a>
+	    	<a href="#" class="dropdown-item status-item" onclick="statusSearch(2, this)">
+	    		<span class="status-name">已办</span><span class="status-yes"></span>
+	    	</a>
+	    </div>
+    </div>
+	
 	<div>
-		<form id="form" style="width:10rem;" action="javascript:;">
-			<input type="search" id="word" class="form-control" placeholder="🔍">
+		<form id="form" style="width:10rem;margin-left:0rem" action="javascript:;">
+			<input type="search" id="todoTitle" class="form-control" placeholder="🔍">
 		</form>
+	</div>
+	<div style="">
+		<span class="iconfont icon-tianjia" onclick="add()" style="font-size:1.6rem;cursor: pointer;margin-right:0.5rem"></span>
 	</div>
 </div>
 
-<div class="container" style="padding:0px;">
-<div class="panel panel-default">
-	<ul class="list-group" id="knowDiv"></ul>
-</div>
+<ul class="list-group" id="knowDiv"></ul>
 </div>
 
 
@@ -79,7 +116,7 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
 		<div>
 			<div>
 				{{if v.todoStatus == 1}}<div style="font-size:0.865rem; color:blue" class="iconfont icon-daiban-moren"></div>{{/if}}
-				{{if v.todoStatus == 2}}<div style="font-size:0.865rem; color:blue" class="iconfont icon-yiban-moren"></div>{{/if}}
+				{{if v.todoStatus == 2}}<div style="font-size:0.865rem; color:green" class="iconfont icon-yiban-moren"></div>{{/if}}
 				<div style="font-size:0.865rem;color:gray;" class="iconfont icon-xiangyou"></div>
 			</div>
 		</div>

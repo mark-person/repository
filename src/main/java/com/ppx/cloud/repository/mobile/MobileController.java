@@ -224,7 +224,13 @@ public class MobileController {
     // >>>>>>>>>>>>>>>>todo>>>>>>>>>>>>>>
     
     public ModelAndView todoList(ModelAndView mv) {
-		mv.addObject("list", listTodo(new MPage(), new Todo()));
+    	Todo todo = new Todo();
+    	MPage page = new MPage();
+    	page.setPageSize(16);
+    	
+    	// 1:待办
+    	todo.setTodoStatus(1);
+		mv.addObject("list", listTodo(page, todo));
 		return mv;
 	}
     

@@ -368,13 +368,13 @@ public class MobileServiceImpl extends MyDaoSupport {
 	
 	public List<Todo> todoList(MPage page, Todo todo) {
 		int userId = AuthContext.getLoginAccount().getUserId();
-		var c = createCriteria("and").addAnd("t.todo_title like", "%", todo.getTodoTitle(), "%");
-		c.addPrePara(userId);
 		// 1:待办
-		c.addPrePara(1);
+		var c = createCriteria("and").addAnd("t.todo_title like ?", "%", todo.getTodoTitle(), "%")
+				.addAnd("t.todo_status = ?", todo.getTodoStatus());
+		c.addPrePara(userId);
 		
-		var cSql = new StringBuilder("select count(*) from repo_todo t where modified_by = ? and t.todo_status = ?").append(c);
-		var qSql = new StringBuilder("select t.* from repo_todo t  where modified_by = ? and t.todo_status = ? order by t.modified desc");
+		var cSql = new StringBuilder("select count(*) from repo_todo t where t.modified_by = ?").append(c);
+		var qSql = new StringBuilder("select t.* from repo_todo t where t.modified_by = ?").append(c).append("order by t.modified desc");
 		List<Todo> resultList = queryMPage(Todo.class, page, cSql, qSql, c.getParaList());
 		
 		return resultList;
@@ -399,13 +399,15 @@ public class MobileServiceImpl extends MyDaoSupport {
 		else {
 			todoId = todo.getTodoId();
 			Todo oldTodo = getTodo(todoId);
-			if (oldTodo.getTodoStatus() == 1 && todo.getTodoStatus() == 2) {
-				getJdbcTemplate().update("update repo_user set todo_n = todo_n - 1 where repo_user_id = ?", userId);
+			System.out.println("cccc:" + todoId + "||" + oldTodo.getTodoStatus());
+			if (todo.getTodoStatus() != null) {
+				if (oldTodo.getTodoStatus() == 1 && todo.getTodoStatus() == 2) {
+					getJdbcTemplate().update("update repo_user set todo_n = todo_n - 1 where repo_user_id = ?", userId);
+				}
+				else if (oldTodo.getTodoStatus() == 2 && todo.getTodoStatus() == 1) {
+					getJdbcTemplate().update("update repo_user set todo_n = todo_n + 1 where repo_user_id = ?", userId);
+				}
 			}
-			else if (oldTodo.getTodoStatus() == 2 && todo.getTodoStatus() == 1) {
-				getJdbcTemplate().update("update repo_user set todo_n = todo_n + 1 where repo_user_id = ?", userId);
-			}
-			
 			todo.setModified(new Date());
 			updateEntity(todo, LimitRecord.newInstance("modified_by", userId));
 		}

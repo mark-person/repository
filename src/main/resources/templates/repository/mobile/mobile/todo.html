@@ -20,11 +20,9 @@ function ok() {
 	$.post(controllerPath + "insertOrUpdateTodo", $("#addForm").serialize(), function(r) {
 		if (r.errcode === 0) {
 			alertSuccess();
-			hideLoading();
-			
 			$("[name=todoId]").val(r.todoId);
 			$("#actionHint").html("修改");
-			$("#view").show();
+			hideLoading();
 		}
 	});
 }
@@ -42,6 +40,7 @@ $(function () {
 function resetForm() {
 	$("[name=todoId]").val("");
 	$("[name=todoTitle]").val("");
+	$("#actionHint").text("新增");
 }
 
 function preDelete(obj) {
@@ -87,7 +86,7 @@ function cancelDelete(obj) {
 
 <ul class="list-group">
 	<li class="list-group-item">
-    	<div class="row"><div style="text-align: center;width:100%"><!-- 待办任务 -->发版系统</div></div>
+    	<div class="row"><div style="text-align: center;width:100%">待办任务</div></div>
     </li>
     
     <li class="list-group-item">
@@ -126,28 +125,26 @@ function cancelDelete(obj) {
     
     <li class="list-group-item">
     	<div class="row">
-    		<textarea maxlength="64" rows="2" style="width:25.2rem" class="form-control" id="todoTitle" name="todoTitle" placeholder="请输入标题" th:text="${pojo.todoTitle}"></textarea>
+    		<textarea maxlength="64" rows="3" style="width:25.2rem" class="form-control" id="todoTitle" name="todoTitle" placeholder="请输入标题" th:text="${pojo.todoTitle}"></textarea>
     		<div style="text-align: right;width:100%;font-size:0.865rem">你还可以输入<var style="color: #C00" id="inputNumber">--</var>个字符。</div>
     	</div>
     </li>
-    
-    
     
     <li class="list-group-item" th:if="${action=='edit'}">
     	<div class="row" style="display:flex;justify-content:space-around;">
 			<div class="custom-control custom-radio custom-control-inline">
 				<input type="radio" id="todoStatus1" name="todoStatus" class="custom-control-input" th:checked="${pojo.todoStatus == 1 ? 'checked' : 'false'}" value="1">
-				<label class="custom-control-label" for="todoStatus1">待办<span class="iconfont icon-daiban-moren" style="color:red"></span></label>
+				<label class="custom-control-label" for="todoStatus1">待办<span class="iconfont icon-daiban-moren" style="color:blue"></span></label>
 			</div>
 			<div class="custom-control custom-radio custom-control-inline">
 				<input type="radio" id="todoStatus2" name="todoStatus" class="custom-control-input" th:checked="${pojo.todoStatus == 2 ? 'checked' : 'false'}" value="2">
-				<label class="custom-control-label" for="todoStatus2">已办<span class="iconfont icon-yiban-moren" style="color:orange"></span></label>
+				<label class="custom-control-label" for="todoStatus2">已办<span class="iconfont icon-yiban-moren" style="color:green"></span></label>
 			</div>
 		</div>
     </li>
     
 	<li class="list-group-item" id="imgLi" style="display:flex;justify-content:space-between;padding-top:.375rem;padding-bottom:.375rem">
-		<a style="background-color: orange;color:white;padding:0.3rem 0.6rem;border-radius: 0.865rem;cursor: pointer;" onclick="ok()">
+		<a style="background-color: orange;color:white;padding:0.45rem 1rem;border-radius: 0.865rem;cursor: pointer;" onclick="ok()">
 			确认<span id="actionHint" th:text="${pojo.todoId == null} ? '新增' : '修改'"></span>
 		</a>
 		<button type="button" th:if="${action=='add'}" class="btn btn-sm btn-link" onclick="resetForm()">重新新增</button>
