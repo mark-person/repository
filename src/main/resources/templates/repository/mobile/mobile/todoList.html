@@ -14,6 +14,9 @@ function back() {
 	location.href = "/auto/mobile/my";
 }
 
+function add() {
+	location.href = "/auto/mobile/todo";
+}
 
 
 </script>
@@ -35,7 +38,7 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
 	</div>
 	
 	<div style="text-align: right; width:10rem">
-		<span class="iconfont icon-tianjia" style="font-size:1.6rem;cursor: pointer;"></span>
+		<span class="iconfont icon-tianjia" onclick="add()" style="font-size:1.6rem;cursor: pointer;"></span>
 	</div>
 	<div>
 		<form id="form" style="width:10rem;" action="javascript:;">
@@ -56,14 +59,20 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
 {{each list as v i}}
 <li class="list-group-item" onclick="location.href='/auto/mobile/todo?id={{v.todoId}}'" style="cursor: pointer;">
 	<div class="row" style="display: flex;justify-content:space-between;">
-		<div><span class="iconfont icon-zhongyaotixing_Pro" style="color:orange;font-size:1.8rem"></div>
-		<div style="width:16.5rem;height:2.6rem;" class="ellipsis2">{{v.todoTitle}}
-			我们是中国人 我们是中国人 我们是中国人 我们是中国人 结束了 1111 结束了  222
+		<div>
+			<div class="iconfont icon-zhongyaotixing_Pro" style="color:orange;font-size:0.865rem"></div>
+			<div class="iconfont icon-weiwangguanicon-defuben-" style="color:blue;font-size:0.865rem;"></div>
+		</div>
+		<div style="width:20rem;height:2.6rem;" class="ellipsis2">{{v.todoTitle}}
+			我是红海云蛟龙系统 我是红海云蛟龙系统 我是红海云蛟龙系统
 		</div>
 		<div style="color:gray;font-size:0.815rem;">
-			
-			<span class="iconfont icon-weiwangguanicon-defuben-" style="color:blue;font-size:1.8rem;"></span>
-			<span style="font-size:0.815rem;" class="iconfont icon-xiangyou"></span>
+			<!-- icon-daiban-moren -->
+			<!-- icon-yiban-moren -->
+			<div>
+				<div style="font-size:0.865rem; color:blue" class="iconfont icon-daiban-moren"></div>
+				<div style="font-size:0.865rem;" class="iconfont icon-xiangyou"></div>
+			</div>
 		</div>
   	</div>
 </li>

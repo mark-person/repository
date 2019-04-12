@@ -389,6 +389,7 @@ public class MobileServiceImpl extends MyDaoSupport {
 		if (todo.getTodoId() == null) {
 			todo.setModifiedBy(userId);
 			insertEntity(todo);
+			todoId = super.getLastInsertId();
 		}
 		else {
 			todoId = todo.getTodoId();
@@ -397,5 +398,12 @@ public class MobileServiceImpl extends MyDaoSupport {
 		}
 		
 		return ReturnMap.of("todoId", todoId);
+	}
+	
+	@Transactional
+	public Map<String, Object> deleteTodo(Integer id) {
+		String sql = "delete from repo_todo where todo_id = ?";
+		getJdbcTemplate().update(sql, id);
+		return ReturnMap.of();
 	}
 }

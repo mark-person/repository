@@ -233,7 +233,15 @@ public class MobileController {
 	}
     
     public ModelAndView todo(ModelAndView mv, Integer id) {
-    	Todo pojo = impl.getTodo(id);
+    	Todo pojo = null; 
+    	if (id != null) {
+    		pojo = impl.getTodo(id);
+    		mv.addObject("action", "edit");
+    	}
+    	else {
+    		pojo = new Todo();
+    		mv.addObject("action", "add");
+    	}
     	mv.addObject("pojo", pojo);
     	return mv;
     }
@@ -241,4 +249,9 @@ public class MobileController {
     public Map<?, ?> insertOrUpdateTodo(Todo todo) {
     	return impl.insertOrUpdateTodo(todo);
     }
+    
+    public Map<?, ?> deleteTodo(@RequestParam Integer id) {
+    	return impl.deleteTodo(id);
+    }
+    
 }
