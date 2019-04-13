@@ -190,6 +190,58 @@ function catSelect(val, obj) {
 	$("#catName").text($(obj).find(".cat-name").text());
 }
 
+
+/**
+* 替换选择的文本用于input 和 textarea
+*/
+function replaceSelection(id, text, type) {
+    var editor = document.getElementById(id);
+    if (!editor) {
+        var editors = document.getElementsByName(id);
+        if (editors && editors.length>0) {
+            editor = editors[0];
+        }
+    }
+    if (!text) {
+        editor.focus();
+        return false;
+    }
+    if (editor.setSelectionRange) {
+        var selectionStart;
+        var selectionEnd;
+        selectionStart = editor.selectionStart;
+        selectionEnd = editor.selectionEnd;
+        var selectStr = editor.value.substring(selectionStart, selectionEnd);
+        if (selectStr && selectStr.substring(selectStr.length - 1)==" ") {
+            text += " ";
+        }
+        var leftStr = editor.value.substring(0, selectionStart);
+        var rightStr = editor.value.substring(selectionEnd, editor.value.length);
+		
+		var selectStr = editor.value.substring(selectionStart, selectionEnd);
+		
+		if (type == 0) {
+			editor.value = leftStr + '<span style="color:' + text +'">' + selectStr + '</span>' + rightStr;
+		}
+		else {
+			editor.value = leftStr + text + rightStr;
+		}
+        
+        //重新选中新文本
+        selectionEnd = selectionStart + text.length;
+        var len = ('<span style="color:' + text +'">').length;
+        editor.setSelectionRange(selectionStart + len, selectionStart + len);
+        editor.focus();
+    }
+}
+
+function textToColor(color) {
+	replaceSelection("kContent", color, 0);
+}
+
+function insertEmoji(obj) {
+	replaceSelection("kContent", $(obj).text(), 1);
+}
 </script>
 
 <style type="text/css">
@@ -204,6 +256,8 @@ function catSelect(val, obj) {
 .contentToImgAction {display:flex;justify-content:space-between;width:100%;margin:1rem 1rem -.2rem 1rem;}
 #recommend {display:flex;justify-content:space-between;padding:0 0.375rem;}
 #backDiv {position:fixed; z-index:9999;opacity:0.5;margin-top:-0.245rem;margin-left:0.9rem;cursor:pointer;}
+
+.contentAction  {display:flex;justify-content:space-between;width:100%;margin:0rem 1rem 1rem 1rem;}
 </style>
 </head>
 <body>
@@ -228,28 +282,33 @@ function catSelect(val, obj) {
     <li class="list-group-item">
     	<div class="row"><input class="form-control" type="text" id="kTitle" placeholder="请输入标题" th:value="${pojo.kTitle}" maxlength="64"></div>
     </li>
-    <li class="list-group-item" style="padding:0.265rem;">
-   		<div class="row col-12">
-			<input type="hidden" id="catId" name="catId" th:value="${pojo.catId}">
-		    <a id="catName" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color:#f40" th:text="${pojo.catName}">选择类目</a>
-		    <div class="dropdown-menu" style="min-width:15rem;font-size:0.865rem;">
-		    	<a th:each="item:${catList}" href="#" class="dropdown-item cat-item select-class" th:style="${item.catId == pojo.catId ? 'color:#f40' : ''}" th:onclick="'catSelect(' + ${item.catId} + ', this)'">
-		    		<span class="cat-name" th:text="${item.catName}"></span>
-		    		<span class="cat-yes" th:text="${item.catId == pojo.catId ? '✔' : ''}"></span>
-		    	</a>
-		    </div>
-		</div>
-    </li>
-    <li class="list-group-item">
-    	<div class="row">
-	    	<div id="recommend" class="col-form-label col-12">
-		    	<span class="star" th:each="item:${starList}"><b class="star-show">⭐</b></span>
-		    	<span class="star" th:each="item:${noStarList}"><b class="star-hide">⭐</b></span>
-	    	</div>
+    <li class="list-group-item" style="padding:0.265rem;display: flex;justify-content: space-between;">
+		<input type="hidden" id="catId" name="catId" th:value="${pojo.catId}">
+	    <a id="catName" class="nav-link dropdown-toggle ellipsis" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color:#f40;width:11rem" th:text="${pojo.catName}">选择类目</a>
+	    <div class="dropdown-menu" style="min-width:15rem;font-size:0.865rem;">
+	    	<a th:each="item:${catList}" href="#" class="dropdown-item cat-item select-class" th:style="${item.catId == pojo.catId ? 'color:#f40' : ''}" th:onclick="'catSelect(' + ${item.catId} + ', this)'">
+	    		<span class="cat-name" th:text="${item.catName}"></span>
+	    		<span class="cat-yes" th:text="${item.catId == pojo.catId ? '✔' : ''}"></span>
+	    	</a>
+	    </div>
+	    <div id="recommend" style="width:12rem;margin-top:0.4rem">
+	    	<span class="star" th:each="item:${starList}"><b class="star-show">⭐</b></span>
+	    	<span class="star" th:each="item:${noStarList}"><b class="star-hide">⭐</b></span>
     	</div>
     </li>
     <li class="list-group-item">
     	<div class="row">
+    		<div class="contentAction">
+    			<a href="#" onclick="textToColor('red')" style="color:red">字体红色</a>
+    			<a href="#" onclick="textToColor('orange')" style="color:orange">字体橙色</a>
+    			<a href="#" onclick="textToColor('green')" style="color:green">字体绿色</a>
+    			
+    			<a href="#" onclick="insertEmoji(this)">💡</a>
+    			<a href="#" onclick="insertEmoji(this)">👍</a>
+    			<a href="#" onclick="insertEmoji(this)">😊</a>
+    			<a href="#" onclick="insertEmoji(this)">😲</a>
+    		</div>
+    		
 			<textarea id="kContent" rows="4" class="form-control" th:text="${pojo.kContent}"></textarea>
 			<div class="contentToImgAction">
 				<a href="#" onclick="textToImg()">转成图片</a>
