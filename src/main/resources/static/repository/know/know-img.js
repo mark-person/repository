@@ -137,9 +137,7 @@ img.click = function(obj) {
 }
 img.refreshTop = function() {
 	$(".to-top").show();
-	if ($(".to-top:eq(0)").parent().prev().attr("id") == "imgLi") {
-		$(".to-top:eq(0)").hide();
-	}
+	$(".to-top:eq(0)").hide();
 }
 img.remove = function(obj) {
 	$(obj).parent().remove();

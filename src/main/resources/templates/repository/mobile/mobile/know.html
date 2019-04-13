@@ -47,7 +47,6 @@ function upload(files) {
 					var dataUrl = $(this).attr("data-url");
 					if (!dataUrl) {
 						$(this).attr("data-url", r.list[imgIndex++]);
-						$(this).parent().parent().find(".to-top").remove();
 					}
 				})
 				insertOrUpdateKnowledge();
@@ -78,6 +77,9 @@ function insertOrUpdateKnowledge() {
 			$("[name=kId]").val(r.kId);
 			$("#actionHint").html("修改");
 			$("#view").show();
+		}
+		else {
+			alertDanger(r.errmsg);
 		}
 	});
 }
@@ -116,6 +118,8 @@ function refreshRecommend() {
 var initkContent;
 var uspList = [[${uspList}]];
 $(function() {
+	img.refreshTop();
+	
 	var kTitle = [[${pojo.kTitle}]];
 	if (kTitle) {
 		$("#kTitle").val(getEmojiTitle(kTitle));
@@ -347,9 +351,10 @@ function insertEmoji(obj) {
 		<button th:if="${action=='add'}" type="button" class="btn btn-sm btn-link" onclick="gotoView()" id="view" th:style="${pojo.kId == null} ? 'display:none' : ''">查看</button>
 	</li>
 	<li th:each="item,iterStat:${imgList}" class="list-group-item d-flex align-items-center" style="padding-top:0.265rem;padding-bottom:0.265rem">
-		<div style="width:3.75rem;height:3.75rem;text-align:center;"><img th:src="'/img/' + ${item}" th:attr="data-url=${item}" class="upload-img" style="display:none;cursor: pointer;" onload="img.resize(this)" onclick="img.click(this)"></div>
+		<div style="width:3.75rem;height:3.75rem;text-align:center;"><img th:src="'/img/knowledge/' + ${item}" th:attr="data-url=${item}" class="upload-img" style="display:none;cursor: pointer;" onload="img.resize(this)" onclick="img.click(this)"></div>
 		<span class="iconfont icon-fangda img-action" onclick="$(this).parent().find('img').click()"></span>
 		<span class="iconfont icon-iconfontshanchu1 img-action" onclick="img.remove(this)"></span>
+		<span class="iconfont icon-icon_zhiding img-action to-top" style="display:none;" onclick="img.top(this)"></span>
 	</li>
 	<li class="list-group-item" id="imgEndLi" style="display: none"></li>
 	

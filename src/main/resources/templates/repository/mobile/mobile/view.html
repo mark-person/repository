@@ -143,7 +143,7 @@ $(function() {
 		<div class="swiper-container">
 			<div class="swiper-wrapper">
 				<div class="swiper-slide" th:each="item,iterStat:${imgList}" onclick="showImg()">
-					<img class="view-image" th:src="'/img/' + ${item}" onload="imgOnload(this)">
+					<img class="view-image" th:src="'/img/knowledge/' + ${item}" onload="imgOnload(this)">
 				</div>
 			</div>
 			<div class="swiper-pagination" id="view-swiper-pagination2"></div>

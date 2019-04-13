@@ -34,7 +34,7 @@ create table repo_knowledge
   recommend_prio	int not null comment '星级排序',
   modified			timestamp not null default current_timestamp,
   modified_by   	int not null,
-  main_img_src		varchar(255) comment '主图src',
+  main_img_src		varchar(255) not null comment '主图src',
   primary key (k_id)
 ) comment='';
 

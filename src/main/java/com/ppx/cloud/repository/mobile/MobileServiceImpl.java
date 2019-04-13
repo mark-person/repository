@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.logging.log4j.util.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -21,12 +22,16 @@ import com.ppx.cloud.common.contoller.ReturnMap;
 import com.ppx.cloud.common.jdbc.MyDaoSupport;
 import com.ppx.cloud.common.page.LimitRecord;
 import com.ppx.cloud.common.page.MPage;
+import com.ppx.cloud.demo.upload.UploadImgService;
 import com.ppx.cloud.repository.knowledge.pojo.Knowledge;
 import com.ppx.cloud.repository.knowledge.pojo.KnowledgeImg;
 import com.ppx.cloud.repository.todo.pojo.Todo;
 
 @Service
 public class MobileServiceImpl extends MyDaoSupport {
+	
+	@Autowired
+	private UploadImgService UploadImgService;
 	
 	private int[] RECOMMEND_BASE_VALUE = {500000000, 600000000, 700000000, 800000000, 900000000};
 	private int NOW_SECOND = 1554386286;
@@ -129,15 +134,41 @@ public class MobileServiceImpl extends MyDaoSupport {
 		pojo.setRecommendPrio(recommendPrio);
 	
 		String[] imgSrc = new String[]{};
-		if (Strings.isNotEmpty(pojo.getImgSrc())) {
-			imgSrc = pojo.getImgSrc().split(",");
-			pojo.setMainImgSrc(imgSrc[0]);
+		imgSrc = pojo.getImgSrc().split(",");
+		pojo.setMainImgSrc(imgSrc[0]);
+		
+		try {
+			UploadImgService.convertToMini(imgSrc[0]);
+		} catch (Exception e) {
+			return ReturnMap.of(4002, "缩小图片出错:" + e.getMessage());
 		}
 		
 		// 只能修改自己创建的
-		updateEntity(pojo, LimitRecord.newInstance("modified_by", userId));
-		
+		int updateR = updateEntity(pojo, LimitRecord.newInstance("modified_by", userId));
+		if (updateR == 0) {
+			return ReturnMap.of(4001, "更新失败");
+		}
 		int kId = pojo.getkId();
+		
+		// 图片处理
+		String imgSql = "select main_img_src from repo_knowledge where k_id = ? union all select k_img_src from repo_knowledge_img where k_id = ?";
+		List<String> imgList = getJdbcTemplate().queryForList(imgSql, String.class, kId, kId);
+		for (String oldImgSrc : imgList) {
+			boolean canDel = true;
+			for (int i = 0; i < imgSrc.length; i++) {
+				System.out.println("0000000000:" + oldImgSrc + "|" + imgSrc[i]);
+				if (oldImgSrc.equals(imgSrc[i])) {
+					canDel = false;
+				}
+			}
+			if (canDel) {
+				System.out.println("111111111111:" + oldImgSrc);
+				UploadImgService.deleteKnowledgeImg(oldImgSrc);
+			}
+		}
+		
+		
+		
 		// delete附加图
 		getJdbcTemplate().update("delete from repo_knowledge_img where k_id = ?", kId);
 		// 附加图(第二个开始)
@@ -399,7 +430,6 @@ public class MobileServiceImpl extends MyDaoSupport {
 		else {
 			todoId = todo.getTodoId();
 			Todo oldTodo = getTodo(todoId);
-			System.out.println("cccc:" + todoId + "||" + oldTodo.getTodoStatus());
 			if (todo.getTodoStatus() != null) {
 				if (oldTodo.getTodoStatus() == 1 && todo.getTodoStatus() == 2) {
 					getJdbcTemplate().update("update repo_user set todo_n = todo_n - 1 where repo_user_id = ?", userId);
