@@ -181,12 +181,14 @@ function textToImg() {
 		
 		var html = marked(kContent);
 		var iframeBody = $('#kContentIframe').contents().find('body');
+		
 		iframeBody.html(html);
 		iframeBody.css({padding:"0.5rem",margin:"0rem"});
 		
 		var color = $("[name=background]:checked").val();
-		iframeBody.css("background", "url(" + $("[name=background]:checked").parent().find("img").attr("src") + ")");
 		iframeBody.css({color:color, fontSize:"0.825rem", height:iframeBody[0].scrollHeight});
+		iframeBody.css("background", "url(" + $("[name=background]:checked").parent().find("img").attr("src") + ")");
+		
 		html2canvas(iframeBody[0]).then(function(canvas) {
 			var url = canvas.toDataURL();
 			var f = []; 
