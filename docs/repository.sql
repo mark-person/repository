@@ -113,7 +113,6 @@ create table repo_todo (
 	todo_status		tinyint(1) not null default 1 comment '1:待办 2:已办',
 	todo_important	tinyint(1) not null default 1 comment '0:次要 1:一般 2:重要',
 	todo_emergent	tinyint(1) not null default 1 comment '0:缓慢 1:一般 2:紧急',
-	todo_prio		int not null default 0,
 	modified		timestamp not null default current_timestamp,
  	modified_by   	int not null,
 	primary key (todo_id)

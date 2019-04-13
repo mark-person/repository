@@ -14,7 +14,6 @@ public class Todo {
 	private Integer todoStatus;
 	private Integer todoImportant;
 	private Integer todoEmergent;
-	private Integer todoPrio;
 	private Date modified;
 	private Integer modifiedBy;
 
@@ -56,14 +55,6 @@ public class Todo {
 
 	public void setTodoEmergent(Integer todoEmergent) {
 		this.todoEmergent = todoEmergent;
-	}
-
-	public Integer getTodoPrio() {
-		return todoPrio;
-	}
-
-	public void setTodoPrio(Integer todoPrio) {
-		this.todoPrio = todoPrio;
 	}
 
 	public Date getModified() {
