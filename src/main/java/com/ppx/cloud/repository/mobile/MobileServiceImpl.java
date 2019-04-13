@@ -156,13 +156,11 @@ public class MobileServiceImpl extends MyDaoSupport {
 		for (String oldImgSrc : imgList) {
 			boolean canDel = true;
 			for (int i = 0; i < imgSrc.length; i++) {
-				System.out.println("0000000000:" + oldImgSrc + "|" + imgSrc[i]);
 				if (oldImgSrc.equals(imgSrc[i])) {
 					canDel = false;
 				}
 			}
 			if (canDel) {
-				System.out.println("111111111111:" + oldImgSrc);
 				UploadImgService.deleteKnowledgeImg(oldImgSrc);
 			}
 		}
@@ -173,6 +171,7 @@ public class MobileServiceImpl extends MyDaoSupport {
 		getJdbcTemplate().update("delete from repo_knowledge_img where k_id = ?", kId);
 		// 附加图(第二个开始)
 		for (int i = 1; i < imgSrc.length; i++) {
+			UploadImgService.deleteKnowledgeMiniImg(imgSrc[i]);
 			KnowledgeImg img = new KnowledgeImg();
 			img.setkId(kId);
 			img.setkImgSrc(imgSrc[i]);

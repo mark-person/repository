@@ -5,5 +5,7 @@ import java.util.Map;
 public interface UploadImgService {
 	Map<?, ?> deleteKnowledgeImg(String path);
 	
+	Map<?, ?> deleteKnowledgeMiniImg(String path);
+	
 	Map<?, ?> convertToMini(String imgPath) throws Exception;
 }

@@ -32,6 +32,17 @@ public class UploadImgServiceImpl extends MyDaoSupport implements UploadImgServi
 		return ReturnMap.of();
 	}
 	
+	public Map<?, ?> deleteKnowledgeMiniImg(String path) {
+		
+		String imgPath = UploadImgController.KNOWLEDGE_MODULE_PATH + path;
+		File miniF = new File(imgPath + "_360.jpg");
+		if (miniF.exists()) {
+			miniF.delete();
+		}
+		
+		return ReturnMap.of();
+	}
+	
 	
 	public Map<?, ?> convertToMini(String path) throws Exception {
 		String imgPath = UploadImgController.KNOWLEDGE_MODULE_PATH + path;
