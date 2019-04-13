@@ -21,7 +21,9 @@ $(function() {
 
 	var kContent = $("#kContentHidden").html();
 	if (kContent) {
-		$('#kContent').contents().find('body').html(marked(kContent));
+		var html = marked(kContent);
+		html = html.replace(new RegExp("&lt;span style=&quot;color:(.*)&quot;&gt;(.*)&lt;/span&gt;","gi"), '<span style="color:$1">$2</span>');
+		$('#kContent').contents().find('body').html(html);
 		$('#kContent').contents().find('body').css("font-size", "0.825rem");
 	}
 	else {
