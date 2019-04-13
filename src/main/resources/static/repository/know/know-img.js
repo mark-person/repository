@@ -181,17 +181,13 @@ function textToImg() {
 		var iframeBody = $('#kContentIframe').contents().find('body');
 		
 		iframeBody.html(html);
-		iframeBody.css({paddingTop:"1rem",paddingRight:"1.5rem",margin:"0rem"});
+		iframeBody.css({paddingTop:"0.001rem",paddingRight:"1.5rem",margin:"0rem"});
 		
 		var color = $("[name=background]:checked").val();
 		var url = $("[name=background]:checked").parent().find("img").attr("src");
 		
-		if (url.indexOf("trade.jpg") > 0) {
-			iframeBody.css({color:color, fontSize:"0.825rem", height:380});
-		}
-		else {
-			iframeBody.css({color:color, fontSize:"0.825rem", height:iframeBody[0].scrollHeight});
-		}
+		iframeBody.css({color:color, fontSize:"0.825rem", height:iframeBody[0].scrollHeight});
+	
 		
 		iframeBody.css("background", "url(" + url + ")");
 		
