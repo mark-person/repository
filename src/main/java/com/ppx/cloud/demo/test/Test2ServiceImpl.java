@@ -3,14 +3,6 @@
  */
 package com.ppx.cloud.demo.test;
 
-import java.util.Arrays;
-import java.util.HashMap;
-
-import org.slf4j.MarkerFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Marker;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import com.ppx.cloud.common.jdbc.MyDaoSupport;
@@ -22,7 +14,7 @@ import com.ppx.cloud.common.jdbc.MyDaoSupport;
 @Service
 public class Test2ServiceImpl extends MyDaoSupport {
 	
-	private Logger logger = LoggerFactory.getLogger(Test2ServiceImpl.class);
+	// private Logger logger = LoggerFactory.getLogger(Test2ServiceImpl.class);
 	// logger.debug(MarkerFactory.getMarker("123"), "xxxxx");
 
 	public void test() {
@@ -37,23 +29,23 @@ public class Test2ServiceImpl extends MyDaoSupport {
 //		
 				
 		
-		int c1 = getJdbcTemplate().queryForObject("select ?", Integer.class, 108);
-		
-		
-		getJdbcTemplate().update("update test set test_name = 'xxxx' where test_id = 12");
-		
-		int i =  1 / 0;
-		
-		NamedParameterJdbcTemplate nameTemplate = new NamedParameterJdbcTemplate(getJdbcTemplate());
-		
-		
-		var para = new HashMap<String, Object>();
-		para.put("test_name", "name");
-		para.put("xxxx", 2222);
-		
-		int c = nameTemplate.queryForObject("select count(*) a from test where test_name like :test_name '%'", para, Integer.class);
-		
-		int cc = nameTemplate.queryForObject("select count(*) from test where test_name like :test_name '%'", para, Integer.class);
+//		int c1 = getJdbcTemplate().queryForObject("select ?", Integer.class, 108);
+//		
+//		
+//		getJdbcTemplate().update("update test set test_name = 'xxxx' where test_id = 12");
+//		
+//		int i =  1 / 0;
+//		
+//		NamedParameterJdbcTemplate nameTemplate = new NamedParameterJdbcTemplate(getJdbcTemplate());
+//		
+//		
+//		var para = new HashMap<String, Object>();
+//		para.put("test_name", "name");
+//		para.put("xxxx", 2222);
+//		
+//		int c = nameTemplate.queryForObject("select count(*) a from test where test_name like :test_name '%'", para, Integer.class);
+//		
+//		int cc = nameTemplate.queryForObject("select count(*) from test where test_name like :test_name '%'", para, Integer.class);
 		
 		
 		 

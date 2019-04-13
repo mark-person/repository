@@ -1,6 +1,5 @@
 package com.ppx.cloud.demo.upload;
 
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
@@ -10,8 +9,6 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import javax.imageio.ImageIO;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -35,8 +32,8 @@ public class UploadImgController {
 	private final static String IMG_UPLOAD_PATH = "img/";
 	
 	private final static String KNOWLEDGE_MODULE = "knowledge/";
-	private final static String KNOWLEDGE_MAIN = "main/";
-	private final static String KNOWLEDGE_ADDITIONAL = "additional/";
+	private final static String KNOWLEDGE_MAIN = "m/";
+	private final static String KNOWLEDGE_ADDITIONAL = "a/";
 	
 	
 	public Map<?, ?> uploadKnowledge(MultipartFile[] mFile, Integer isMain[]) throws Exception {
@@ -80,7 +77,7 @@ public class UploadImgController {
 				
 				// 缩放
 				// convert -resize 200x100 src.jpg dest.jpg 200×100(等比缩放)
-				String miniPath = mainPath + imgFileName + "_100.jpg";
+				String miniPath = mainPath + imgFileName + "_360.jpg";
 				String command = "convert -resize 360x360> " + mainPath + imgFileName + " " + miniPath;
 				Process process = Runtime.getRuntime().exec(command);
 				try (InputStream inputStream = process.getErrorStream();) {
@@ -92,12 +89,12 @@ public class UploadImgController {
 				} catch (Exception e) {
 					return ReturnMap.of(4002, "转换命令出错:" + e.getMessage());
 				}
-				returnList.add(KNOWLEDGE_MODULE + dateFolder + KNOWLEDGE_MAIN + imgFileName);
+				returnList.add(dateFolder + KNOWLEDGE_MAIN + imgFileName);
 			}
 			else {
 				// >>>>>>>>>>>>>>>>>附加
 				file.transferTo(new File(additionalPath + imgFileName));
-				returnList.add(KNOWLEDGE_MODULE + dateFolder + KNOWLEDGE_ADDITIONAL + imgFileName);
+				returnList.add(dateFolder + KNOWLEDGE_ADDITIONAL + imgFileName);
 			}
 		}
 		
@@ -106,25 +103,25 @@ public class UploadImgController {
 
 	
 
-/**
-     * 判断文件是否是图片
-     * @param file
-     * @return
-     */
-    private boolean isImage(File file) {
-        if (!file.exists()) {
-            return false;
-        }
-        BufferedImage image = null;
-        try {
-            image = ImageIO.read(file);
-            if (image == null || image.getWidth() <= 0 || image.getHeight() <= 0) {
-                return false;
-            }
-             return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+//	/**
+//	 * 判断文件是否是图片
+//     * @param file
+//     * @return
+//     */
+//    private boolean isImage(File file) {
+//        if (!file.exists()) {
+//            return false;
+//        }
+//        BufferedImage image = null;
+//        try {
+//            image = ImageIO.read(file);
+//            if (image == null || image.getWidth() <= 0 || image.getHeight() <= 0) {
+//                return false;
+//            }
+//             return true;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
 }

@@ -1,14 +1,11 @@
 package com.ppx.cloud.repository.category;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Service;
 
-import com.ppx.cloud.common.contoller.ReturnMap;
 import com.ppx.cloud.common.jdbc.MyDaoSupport;
-import com.ppx.cloud.common.page.Page;
 
 @Service
 public class KnowledgeCategoryServiceImpl extends MyDaoSupport implements KnowledgeCategoryService {

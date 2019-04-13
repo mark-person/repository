@@ -1,26 +1,20 @@
 package com.ppx.cloud.demo.test;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ppx.cloud.common.config.ObjectMapperCustomer;
 import com.ppx.cloud.common.contoller.ReturnMap;
 import com.ppx.cloud.common.page.Page;
-import com.ppx.cloud.monitor.config.MonitorSwitchConfig;
 
 @Controller
 public class TestController {
 	
-	private Logger logger = LoggerFactory.getLogger(TestController.class);
+	// private Logger logger = LoggerFactory.getLogger(TestController.class);
 
 	@Autowired
 	private TestServiceImpl impl;
