@@ -125,6 +125,35 @@ public class MobileServiceImpl extends MyDaoSupport {
 		}
         return pojo;
     }
+	
+	@Transactional
+    public Map<String, Object> delete(Integer kId) {
+		String imgSql = "select main_img_src from repo_knowledge where k_id = ? union all select k_img_src from repo_knowledge_img where k_id = ?";
+		List<String> imgList = getJdbcTemplate().queryForList(imgSql, String.class, kId, kId);
+		
+		int userId = AuthContext.getLoginAccount().getUserId();
+		String delSql = "delete from repo_knowledge where k_id = ? and modified_by = ?";
+		int delR = getJdbcTemplate().update(delSql, kId, userId);
+		if (delR == 0) {
+			return ReturnMap.of(4001, "删除失败");
+		}
+		
+		// delete附加图
+		getJdbcTemplate().update("delete from repo_knowledge_img where k_id = ?", kId);
+		// delete内容
+		getJdbcTemplate().update("delete from repo_knowledge_content where k_id = ?", kId);
+		// deleteUSP
+		getJdbcTemplate().update("delete from repo_knowledge_map_usp where k_id = ?", kId);
+		// delete索引
+		getJdbcTemplate().update("delete from repo_search_word where k_id = ?", kId);
+		
+		// 图片处理	
+		for (String oldImgSrc : imgList) {
+			UploadImgService.deleteKnowledgeImg(oldImgSrc);
+		}
+		
+		return ReturnMap.of();
+	}
     
 	@Transactional
     public Map<String, Object> update(Knowledge pojo) {
@@ -197,7 +226,8 @@ public class MobileServiceImpl extends MyDaoSupport {
 			}
 		}
 		
-		getJdbcTemplate().update("delete from repo_search_word where k_id = ?", pojo.getkId());
+		// 索引
+		getJdbcTemplate().update("delete from repo_search_word where k_id = ?", kId);
 		insertSearchWord(pojo.getkTitle(), pojo.getkId(), pojo.getCatId(), recommendPrio);
 		
 		return ReturnMap.of("kId", kId);

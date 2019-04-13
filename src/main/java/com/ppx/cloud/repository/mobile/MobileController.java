@@ -118,6 +118,10 @@ public class MobileController {
     	}
     }
     
+    public Map<?, ?> delete(Integer id) {
+    	return impl.delete(id);
+    }
+    
     public ModelAndView addView(ModelAndView mv, @RequestParam Integer id) {
     	mv.setViewName("repository/mobile/mobile/view");
     	mv.addObject("action", "readonly");

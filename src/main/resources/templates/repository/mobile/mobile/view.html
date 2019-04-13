@@ -106,6 +106,7 @@ function imgOnload(img) {
 }
 
 function back() {
+	// 有BUG,首页点击后收藏
 	if (document.referrer.indexOf("edit") > 0 || localStorage.getItem("execFavorite") == "true") {
 		location.href = localStorage.getItem("lastViewReferrer");
 	}
@@ -130,7 +131,7 @@ $(function() {
 .icon-fanhui5 {font-size: 2.2rem;}
 .view-image {max-width: 100%; max-height: 100%;}
 
-#bottomDiv {position: fixed; bottom: 0; width: 25.875rem; background-color: #f0f0f0;z-index:9999;padding: 0.2rem; display: flex; justify-content: space-around;align-items:center;}
+#bottomDiv {position: fixed; bottom: 0; width: 25.875rem; background-color: #f0f0f0;z-index:9999;padding: 0.2rem 1rem; display: flex; justify-content: space-around;align-items:center;}
 
 .edit-action {background-color: orange;padding:0.4rem 2.8rem;border-radius: 0.865rem;cursor: pointer;}
 </style>
@@ -169,8 +170,41 @@ $(function() {
 	</div>
 </div>
 
+
+<script>
+
+function doDelete() {
+	showLoading();
+	$.post(controllerPath + "delete", {id:[[${pojo.kId}]]}, function(r) {
+		if (r.errcode === 0) {
+			location.href = localStorage.getItem("lastViewReferrer");
+		}
+		else {
+			alertDanger(r.errmsg);
+		}
+	});
+}
+
+function cancelDelete(obj) {
+	$("#preDeleteButton").show();
+	$("#deleteAction").hide();
+}
+
+function preDelete(obj) {
+	$("#preDeleteButton").hide();
+	$("#deleteAction").show();
+}
+</script>
+
 <div id="bottomDiv">
 	<div th:if="${action!='readonly'}"><a class="edit-action" style="color:white;" onclick="edit()">修改</a></div>
+	
+	
+	<button type="button" id="preDeleteButton" th:if="${action!='readonly'}" style="width:10rem" class="btn btn-sm btn-link iconfont icon-iconfontshanchu1" onclick="preDelete(this)"></button>
+	<div id="deleteAction" th:if="${action!='readonly'}" style="display: none;width:10rem">
+			<button type="button"  onclick="doDelete(this)" class="btn btn-sm btn-link" style="color:red">确定删除</button>|<button type="button" onclick="cancelDelete(this)" class="btn btn-sm btn-link">取消删除</button>
+	</div>
+	
 	<div style="text-align: center;cursor: pointer;" onclick="favorite()">
 		<div class="iconfont icon-shoucang" id="favoriteButton" th:if="${!isFavorite}"></div>
 		<div class="iconfont icon-shoucang1" id="favoriteButton" th:if="${isFavorite}"></div>
