@@ -136,19 +136,23 @@ create table repo_todo (
 INSERT INTO `repo_user` (`repo_user_id`,`repo_user_name`,`repo_user_status`,`favorite_n`,`created`) VALUES (-1,'我是小丑',1,0,now());
 INSERT INTO `repo_user` (`repo_user_id`,`repo_user_name`,`repo_user_status`,`favorite_n`,`created`) VALUES (-2,'我是游客',1,0,now());
 
-insert into repo_knowledge_category values(1,0,'brand',1,1);
-insert into repo_knowledge_category values(2,0,'customer',2,1);
-insert into repo_knowledge_category values(3,0,'channel',3,1);
-insert into repo_knowledge_category values(4,1,'brain',4,1);
-insert into repo_knowledge_category values(5,1,'product',5,1);
-insert into repo_knowledge_category values(6,1,'tech',6,1);
-insert into repo_knowledge_category values(7,3,'operation',7,1);
-insert into repo_knowledge_category values(8,2,'competitor',8,1);
-insert into repo_knowledge_category values(9,1,'common',9,1);
+
+insert into repo_knowledge_category values(1,0,'品牌',1,1);
+insert into repo_knowledge_category values(2,0,'客户',2,1);
+insert into repo_knowledge_category values(3,0,'渠道',3,1);
+
+insert into repo_knowledge_category values(4,1,'头脑风暴',4,1);
+insert into repo_knowledge_category values(5,1,'产品',5,1);
+insert into repo_knowledge_category values(6,1,'常识',6,1);
+insert into repo_knowledge_category values(7,1,'技术',7,1);
+
+insert into repo_knowledge_category values(8,2,'竞争对手',8,1);
+insert into repo_knowledge_category values(9,3,'运营',9,1);
 
 
+INSERT INTO `repo_knowledge_usp` VALUES (1,'创新💡',1,1),(2,'营销💹',2,1),(3,'省钱💰',3,1),(4,'速度💥',4,1),(5,'好奇😲',5,1),(6,'玩乐😊',6,1);
 
-INSERT INTO `repo_knowledge_usp` VALUES (1,'好奇😲',1,1),(2,'速度💥',2,1),(3,'节日🍞',3,1);
+
 
 
 

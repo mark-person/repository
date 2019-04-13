@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.hankcs.hanlp.HanLP;
+import com.hankcs.hanlp.seg.common.Term;
 import com.ppx.cloud.auth.common.AuthContext;
 import com.ppx.cloud.common.contoller.ReturnMap;
 import com.ppx.cloud.common.page.MPage;
@@ -37,6 +39,7 @@ public class MobileController {
     private KnowledgeUspService uspService;
     
     public ModelAndView home(ModelAndView mv) {
+    	
 		mv.addObject("list", homeSearch(new MPage(), null, null, null));
 		mv.addObject("catList", categoryService.list());
 		mv.addObject("uspList", uspService.list());
