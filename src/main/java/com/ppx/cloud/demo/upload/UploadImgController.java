@@ -30,11 +30,9 @@ import com.ppx.cloud.common.util.ApplicationUtils;
 @Controller
 public class UploadImgController {
 	
-	private final static String IMG_UPLOAD_PATH = "img/";
+	protected final static String IMG_UPLOAD_PATH = "img/";
 	
-	private final static String KNOWLEDGE_MODULE = "knowledge/";
-	
-	protected static String KNOWLEDGE_MODULE_PATH = ApplicationUtils.JAR_PARENT_HOME + IMG_UPLOAD_PATH + KNOWLEDGE_MODULE;
+	protected final static String KNOWLEDGE_MODULE = "knowledge/";
 	
 	@Autowired
 	private UploadImgServiceImpl impl;
@@ -44,7 +42,7 @@ public class UploadImgController {
 		var returnList = new ArrayList<String>();
 		
 		// 不存就创建文件夹 >>>>>>>>>>>>>>>>>>>>>
-		String modulePath = KNOWLEDGE_MODULE_PATH;
+		String modulePath = ApplicationUtils.JAR_PARENT_HOME + IMG_UPLOAD_PATH + KNOWLEDGE_MODULE;
 		// 7天一个文件夹2019w11
 		Date today = new Date();
 		// String.format("%tj", d)一年的第几天

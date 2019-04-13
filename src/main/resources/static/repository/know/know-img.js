@@ -3,9 +3,16 @@
 var img = {};
 var IMG_SCALE_HEIGHT = 60;
 img.fileChange = function(obj) {
-	this.loadImg(obj.files, obj.files.length, 0.1);
 	// 重新生成一个，防change失效
 	$(obj).prop("outerHTML", $(obj).prop("outerHTML"));
+	
+	var len = $(".upload-img").length + obj.files.length;
+	if (len > 5) {
+		alertWarning("最多五张图片");
+		return;
+	}
+	
+	this.loadImg(obj.files, obj.files.length, 0.1);
 }
 
 function changeOrient(tmpImg, canvas, context, orientation) {
@@ -149,6 +156,12 @@ img.top = function(obj) {
 }
 
 function textToImg() {
+	var len = $(".upload-img").length + 1;
+	if (len > 5) {
+		alertWarning("最多五张图片");
+		return;
+	}
+	
 	var kContent = $("#kContent").val();
 	if (kContent) {
 		var isTitleCenter = $("#titleCenter").prop("checked");
@@ -165,7 +178,7 @@ function textToImg() {
 				
 				if (isTitleCenter) {
 					var last = str.lastIndexOf("#");
-					newKContent.push(str.substring(0, last + 1) + " <center>" + str.substring(last + 2, str.length) + "</center>");
+					newKContent.push(str.substring(0, last + 1) + " <center style='margin-right:1rem'>" + str.substring(last + 2, str.length) + "</center>");
 				}
 				else {
 					newKContent.push(str);
@@ -181,15 +194,16 @@ function textToImg() {
 		var iframeBody = $('#kContentIframe').contents().find('body');
 		
 		iframeBody.html(html);
-		iframeBody.css({paddingTop:"0.001rem",paddingRight:"1.5rem",margin:"0rem"});
+		
 		
 		var color = $("[name=background]:checked").val();
 		var url = $("[name=background]:checked").parent().find("img").attr("src");
-		
+		iframeBody.css("background", "url(" + url + ")");
+		iframeBody.css({width:"100%", height:"100%", margin:"0rem", padding:"0.001rem", paddingBottom:"1rem"});
 		iframeBody.css({color:color, fontSize:"0.825rem", height:iframeBody[0].scrollHeight});
 	
 		
-		iframeBody.css("background", "url(" + url + ")");
+		
 		
 		html2canvas(iframeBody[0]).then(function(canvas) {
 			var url = canvas.toDataURL();

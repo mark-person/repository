@@ -12,13 +12,14 @@ import org.springframework.util.StringUtils;
 
 import com.ppx.cloud.common.contoller.ReturnMap;
 import com.ppx.cloud.common.jdbc.MyDaoSupport;
+import com.ppx.cloud.common.util.ApplicationUtils;
 
 @Service
 public class UploadImgServiceImpl extends MyDaoSupport implements UploadImgService {
 	
 	public Map<?, ?> deleteKnowledgeImg(String path) {
 		
-		String imgPath = UploadImgController.KNOWLEDGE_MODULE_PATH + path;
+		String imgPath = ApplicationUtils.JAR_PARENT_HOME + UploadImgController.IMG_UPLOAD_PATH + UploadImgController.KNOWLEDGE_MODULE + path;
 		File f = new File(imgPath);
 		if (f.exists()) {
 			f.delete();
@@ -34,7 +35,7 @@ public class UploadImgServiceImpl extends MyDaoSupport implements UploadImgServi
 	
 	public Map<?, ?> deleteKnowledgeMiniImg(String path) {
 		
-		String imgPath = UploadImgController.KNOWLEDGE_MODULE_PATH + path;
+		String imgPath = ApplicationUtils.JAR_PARENT_HOME + UploadImgController.IMG_UPLOAD_PATH + UploadImgController.KNOWLEDGE_MODULE + path;
 		File miniF = new File(imgPath + "_360.jpg");
 		if (miniF.exists()) {
 			miniF.delete();
@@ -45,7 +46,7 @@ public class UploadImgServiceImpl extends MyDaoSupport implements UploadImgServi
 	
 	
 	public Map<?, ?> convertToMini(String path) throws Exception {
-		String imgPath = UploadImgController.KNOWLEDGE_MODULE_PATH + path;
+		String imgPath = ApplicationUtils.JAR_PARENT_HOME + UploadImgController.IMG_UPLOAD_PATH + UploadImgController.KNOWLEDGE_MODULE + path;
 		// 缩放
 		// convert -resize 200x100 src.jpg dest.jpg 200×100(等比缩放)
 		String miniPath = imgPath + "_360.jpg";
