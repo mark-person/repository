@@ -134,6 +134,7 @@ create table repo_todo (
  */
 
 INSERT INTO `repo_user` (`repo_user_id`,`repo_user_name`,`repo_user_status`,`favorite_n`,`created`) VALUES (-1,'我是小丑',1,0,now());
+INSERT INTO `repo_user` (`repo_user_id`,`repo_user_name`,`repo_user_status`,`favorite_n`,`created`) VALUES (-2,'我是游客',1,0,now());
 
 insert into repo_knowledge_category values(1,0,'brand',1,1);
 insert into repo_knowledge_category values(2,0,'customer',2,1);

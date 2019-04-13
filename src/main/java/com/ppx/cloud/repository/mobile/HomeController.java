@@ -24,6 +24,21 @@ public class HomeController {
 	public ModelAndView mIndex(ModelAndView mv, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		Algorithm algorithm = Algorithm.HMAC256(AuthUtils.getJwtPassword());
+		String token = JWT.create().withIssuedAt(new Date()).withClaim("accountId", -2)
+				.withClaim("loginAccount", "admin").withClaim("userId", -2)
+				.withClaim("userName", "admin").withClaim("modified", new Date().getTime())
+				.sign(algorithm);
+		CookieUtils.setCookie(response, AuthUtils.PPXTOKEN, token);
+		
+		response.setHeader("Content-Type", "text/html; charset=utf-8");
+		request.getRequestDispatcher("auto/mobile/home").include(request, response);
+		return null;
+	}
+	
+	@GetMapping("/admin")
+	public ModelAndView adminIndex(ModelAndView mv, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		Algorithm algorithm = Algorithm.HMAC256(AuthUtils.getJwtPassword());
 		String token = JWT.create().withIssuedAt(new Date()).withClaim("accountId", -1)
 				.withClaim("loginAccount", "admin").withClaim("userId", -1)
 				.withClaim("userName", "admin").withClaim("modified", new Date().getTime())
