@@ -313,7 +313,7 @@ function insertEmoji(obj) {
     			<a href="#" onclick="insertEmoji(this)">😲</a>
     		</div>
     		
-			<textarea id="kContent" rows="4" class="form-control" th:text="${pojo.kContent}"></textarea>
+			<textarea id="kContent" rows="4" class="form-control" th:text="${pojo.kContent}" maxlength="512"></textarea>
 			<div class="contentToImgAction">
 				<a href="#" onclick="textToImg()">转成图片</a>
 				<div class="custom-control custom-checkbox">
