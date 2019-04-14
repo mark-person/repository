@@ -61,29 +61,44 @@ img.loadImg = function(f, n, encoder) {
 		    
 		    //EXIF js 可以读取图片的元信息  https://github.com/exif-js/exif-js
 		    EXIF.getData(this, function() {
-		        var orient = EXIF.getTag(this, 'Orientation');
-		        
-		        var drawWidth = tmpImg.width;
-		        var drawHeight = tmpImg.height;
-		        // iphone不同方向拍摄
-		        if (orient == 3 || orient == 6 || orient == 8) {
-		        	var o = changeOrient(tmpImg, canvas, context, orient)
-		        	drawWidth = o.drawWidth;
-		        	drawHeight = o.drawHeight;
-		        	context.drawImage(this, 0, 0, drawWidth, drawHeight);
-		        }
-		        else {
-		        	canvas.width = tmpImg.width;
-		            canvas.height = tmpImg.height;
-		            context.drawImage(this, 0, 0, drawWidth, drawHeight, 0, 0, drawWidth, drawHeight);
-		        }
-		       	
-			    var newSrc = canvas.toDataURL('image/jpeg', encoder);
-			    
-			    var jObj = $($("#imgTemplate").html());
-				var imgObj = jObj.find(".upload-img");
-			    imgObj.attr("src", newSrc);
-				imgObj.data("mFile", dataURLtoFile(newSrc));
+		    	var jObj = $($("#imgTemplate").html());
+		    	var imgObj = jObj.find(".upload-img");
+		    	if (f[n] && f[n].name.indexOf(".gif") > 0) {
+		    		if (f[n].size > 2*1024*1024) {
+		    			alertWarning("gif图片不能大于2M");
+		    			return
+		    		}
+		    		imgObj.attr("src", tmpImg.src);
+					imgObj.data("mFile", f[n]);
+		    	}
+		    	else {
+		    		var orient = EXIF.getTag(this, 'Orientation');
+			        var drawWidth = tmpImg.width;
+			        var drawHeight = tmpImg.height;
+			        // iphone不同方向拍摄
+			        if (orient == 3 || orient == 6 || orient == 8) {
+			        	var o = changeOrient(tmpImg, canvas, context, orient)
+			        	drawWidth = o.drawWidth;
+			        	drawHeight = o.drawHeight;
+			        	context.drawImage(this, 0, 0, drawWidth, drawHeight);
+			        }
+			        else {
+			        	canvas.width = tmpImg.width;
+			            canvas.height = tmpImg.height;
+			            context.drawImage(this, 0, 0, drawWidth, drawHeight, 0, 0, drawWidth, drawHeight);
+			        }
+				    var newSrc = canvas.toDataURL('image/jpeg', encoder);
+				    
+				    var blob = dataURLtoFile(newSrc);
+				    if (blob.size > 1*1024*1024) {
+		    			alertWarning("压缩后图片不能大于1M");
+		    			return
+		    		}
+				    
+				    imgObj.attr("src", newSrc);
+					imgObj.data("mFile", blob);
+		    	}
+		    	
 				$("#imgEndLi").before(jObj);
 				if (n > 0) {
 					img.loadImg(f, n, encoder);

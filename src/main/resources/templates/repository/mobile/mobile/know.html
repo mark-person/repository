@@ -141,6 +141,7 @@ $(function() {
 })
 
 function resetForm() {
+	$("[name=kId]").val("");
 	$("[name=kTitle]").val("");
 	$("#kContent").val(initkContent);
 	$(".upload-img").parent().parent().remove();

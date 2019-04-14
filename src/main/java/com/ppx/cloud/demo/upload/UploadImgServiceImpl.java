@@ -51,6 +51,9 @@ public class UploadImgServiceImpl extends MyDaoSupport implements UploadImgServi
 		// convert -resize 200x100 src.jpg dest.jpg 200×100(等比缩放)
 		String miniPath = imgPath + "_360.jpg";
 		if (!new File(miniPath).exists()) {
+			if (imgPath.endsWith(".gif")) {
+				imgPath += "[0]";
+			}
 			String command = "convert -resize 360x360> " + imgPath + " " + miniPath;
 			Process process = Runtime.getRuntime().exec(command);
 			try (InputStream inputStream = process.getErrorStream();) {
