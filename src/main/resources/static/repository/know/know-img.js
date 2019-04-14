@@ -63,7 +63,7 @@ img.loadImg = function(f, n, encoder) {
 		    EXIF.getData(this, function() {
 		    	var jObj = $($("#imgTemplate").html());
 		    	var imgObj = jObj.find(".upload-img");
-		    	if (f[n] && f[n].name.indexOf(".gif") > 0) {
+		    	if (f[n].name && f[n].name.indexOf(".gif") > 0) {
 		    		if (f[n].size > 2*1024*1024) {
 		    			alertWarning("gif图片不能大于2M");
 		    			return
