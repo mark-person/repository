@@ -46,7 +46,7 @@ create table repo_knowledge_usp
 	usp_status	tinyint not null default 1 comment '1:正常,0:作废',
 	primary key (usp_id)
 ) comment='独特销售主张,好奇、速度';
-ALTER TABLE `repository`.`repo_knowledge_usp` ADD UNIQUE INDEX `idx_usp_name` (`usp_name` ASC) VISIBLE;
+ALTER TABLE `repo_knowledge_usp` ADD UNIQUE INDEX `idx_usp_name` (`usp_name` ASC) VISIBLE;
 
 create table repo_knowledge_map_usp
 (
@@ -120,8 +120,20 @@ create table repo_todo (
 
 
 
+create table repo_knowledge_subject (
+	subject_id		int not null auto_increment,
+	subject_name 	varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci not null,
+	subject_prio	smallint not null comment '显示优先级',
+	subject_status	tinyint not null default 1 comment '1:正常,0:作废',
+	primary key (usp_id)
+) comment='专题';
+ALTER TABLE `repo_knowledge_subject` ADD UNIQUE INDEX `idx_subject_name` (`subject_name` ASC) VISIBLE;
 
-
+create table repo_knowledge_map_subject (
+	subject_id		int not null,
+	k_id			int not null,
+	primary key (subject_id, k_id)
+) comment='';
 
 
 
@@ -153,6 +165,8 @@ insert into repo_knowledge_category values(10,3,'广告',10,1);
 
 INSERT INTO `repo_knowledge_usp` VALUES (1,'创意💡',1,1),(2,'营销💹',2,1),(3,'省钱💰',3,1),(4,'速度💥',4,1),
 (5,'好奇😲',5,1),(6,'玩乐😊',6,1),(7,'简单🔺',7,1),(8,'展示🔮',8,1);
+
+
 
 
 
