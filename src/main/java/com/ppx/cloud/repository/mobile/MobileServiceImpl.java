@@ -379,6 +379,7 @@ public class MobileServiceImpl extends MyDaoSupport {
 	 * @return
 	 */
 	public List<Knowledge> myKnowSearch(MPage page, Integer catId, Integer recommend) {
+		
 		var c = createCriteria("and").addAnd("cat_id = ?", catId);
 		
 		if (recommend != null) {

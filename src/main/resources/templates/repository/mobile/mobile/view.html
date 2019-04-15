@@ -106,8 +106,12 @@ function imgOnload(img) {
 }
 
 function back() {
-	// 有BUG,首页点击后收藏
-	if (document.referrer.indexOf("edit") > 0 || localStorage.getItem("execFavorite") == "true") {
+	if (document.referrer.indexOf("edit") > 0) {
+		// 编辑页返回要刷新
+		location.href = localStorage.getItem("lastViewReferrer");
+	}
+	else if (document.referrer.indexOf("favorite") > 0 && localStorage.getItem("execFavorite") == "true") {
+		// 收藏页并且点击的收藏或取消收藏要刷新
 		location.href = localStorage.getItem("lastViewReferrer");
 	}
 	else {
