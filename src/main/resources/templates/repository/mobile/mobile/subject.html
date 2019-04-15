@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>个人知识库</title>
+<link th:replace="common/fragment::mobile"/>
+<script type="text/javascript" th:inline="javascript">
+var controllerPath = contextPath + "auto/mobile/";
+var searchMethod = "niceSearch";
+function getQueryString(pageNumber) {
+	return {pageNumber:pageNumber, subjectId:$("#subjectId").val()};
+}
+
+function subjectSearch(val, obj) {
+	$(".subject-item").css("color", "black");
+	$(".subject-yes").text("");
+	
+	$(obj).css("color", "#f40");
+	$(obj).find(".subject-yes").text("✔");
+	$("#subject").val(val);
+	$("#subjectName").text($(obj).find(".subject-name").text());
+	queryPage(1);
+}
+
+</script>
+
+<style type="text/css">
+body {margin-top:2.75rem;margin-bottom:3rem}
+.top-div {position:fixed;top:0;background-color:#f0f0f0;padding:.2rem 0;width:25.875rem;display:flex;justify-content:space-between; padding-left:0.5rem;padding-right:0.5rem;}
+input::-webkit-input-placeholder {padding-top:0.175rem;}
+
+.dropdown-item {display: flex;justify-content:space-between;}
+</style>
+</head>
+
+<body>
+<div class="top-div">
+    <div class="nav-item dropdown">
+		<input type="hidden" id="subjectId">
+	    <a id="subjectName" class="nav-link dropdown-toggle ellipsis" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color:#f40;max-width:12.1rem" th:text="${subjectName}"></a>
+	    <div class="dropdown-menu" style="min-width:15rem;font-size:0.865rem;">
+	    	<a th:each="item:${subjectList}" href="#" class="dropdown-item subject-item" th:style="${item.subjectId == subjectId ? 'color:#f40' : ''}" th:onclick="'subjectSearch(' + ${item.subjectId} + ', this)'">
+	    		<span href="#" class="subject-name" th:text="${item.key}"></span><span class="subject-yes" th:text="${item.subjectId == subjectId ? '✔' : ''}"></span>
+	    	</a>
+	    </div>
+    </div>
+</div>
+<div id="knowDiv"></div>
+<div th:replace="common/fragment::mobileKnowPage"></div>
+<div th:replace="repository/mobile/mobile/menu::nav('subject')"></div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -16,6 +16,8 @@ import com.ppx.cloud.common.page.MPage;
 import com.ppx.cloud.repository.category.KnowledgeCategory;
 import com.ppx.cloud.repository.category.KnowledgeCategoryService;
 import com.ppx.cloud.repository.knowledge.pojo.Knowledge;
+import com.ppx.cloud.repository.subject.KnowledgeSubject;
+import com.ppx.cloud.repository.subject.KnowledgeSubjectService;
 import com.ppx.cloud.repository.todo.pojo.Todo;
 import com.ppx.cloud.repository.user.RepoUser;
 import com.ppx.cloud.repository.user.RepoUserService;
@@ -35,6 +37,8 @@ public class MobileController {
     private KnowledgeCategoryService categoryService;
     @Autowired
     private KnowledgeUspService uspService;
+    @Autowired
+    private KnowledgeSubjectService subjectService;
     
     public ModelAndView home(ModelAndView mv) {
     	
@@ -187,6 +191,22 @@ public class MobileController {
     	}
 	}
     
+    public ModelAndView subject(ModelAndView mv) {
+    	List<KnowledgeSubject> listSubject = subjectService.list();
+    	
+    	// 默认第1个
+    	mv.addObject("list", subjectSearch(new MPage(), listSubject.get(0).getSubjectId()));
+    	
+    	mv.addObject("subjectId", listSubject.get(0).getSubjectId());
+    	mv.addObject("subjectName", listSubject.get(0).getSubjectId());
+		mv.addObject("uspList", listSubject);
+		return mv;
+	}
+    
+    public Map<?, ?> subjectSearch(MPage page, @RequestParam Integer subjectId) {
+    	return ReturnMap.of(page, impl.bySubjectSearch(page, subjectId));
+	}
+    
     public Map<?, ?> confirmFavorite(@RequestParam Integer kId) {
     	impl.confirmFavorite(kId);
     	return ReturnMap.of();
@@ -271,5 +291,8 @@ public class MobileController {
     public ModelAndView about(ModelAndView mv) {
 		return mv;
 	}
+    
+    
+    
     
 }

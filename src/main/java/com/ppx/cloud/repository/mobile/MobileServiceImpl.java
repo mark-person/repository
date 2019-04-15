@@ -356,6 +356,24 @@ public class MobileServiceImpl extends MyDaoSupport {
 	}
 	
 	/**
+	 * subject页:subject查找
+	 * @param page
+	 * @return
+	 */
+	public List<Knowledge> bySubjectSearch(MPage page, Integer subjectId) {
+		var c = createCriteria("");
+		c.addPrePara(subjectId);
+		
+		var cSql = new StringBuilder("select count(*) from repo_knowledge_map_subject m where m.subject_id = ?").append(c);
+		var qSql = new StringBuilder("select k.* from repo_knowledge k join repo_knowledge_map_subject m on k.k_id = m.k_id"
+				+ " and m.subject_id = ?").append(c).append("order by order by k.modified desc");
+		List<Knowledge> list = queryMPage(Knowledge.class, page, cSql, qSql, c.getParaList());
+		
+		
+		return list;
+	}
+	
+	/**
 	 * 我的知识页
 	 * @param page
 	 * @return
