@@ -167,7 +167,6 @@ public class MobileController {
 		
 		for (KnowledgeSubject knowledgeSubject : listSubject) {
 			for (Integer subjectId : subjectIdList) {
-				System.out.println("9999999" + subjectId.intValue() + "|" + knowledgeSubject.getSubjectId());
 				if (subjectId.intValue() == knowledgeSubject.getSubjectId()) {
 					knowledgeSubject.setChecked(true);
 				}

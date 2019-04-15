@@ -114,6 +114,9 @@ function back() {
 		// 收藏页并且点击的收藏或取消收藏要刷新
 		location.href = localStorage.getItem("lastViewReferrer");
 	}
+	else if (document.referrer.indexOf("subject") > 0 && localStorage.getItem("execSubject") == "true") {r
+		location.href = localStorage.getItem("lastViewReferrer");
+	}
 	else {
 		history.go(-1);
 	}
@@ -124,6 +127,7 @@ $(function() {
 		localStorage.setItem("lastViewReferrer", document.referrer);
 	}
 	localStorage.setItem("execFavorite", "false");
+	localStorage.setItem("execSubject", "false");
 })
 </script>
 
@@ -216,6 +220,7 @@ function preDelete(obj) {
 
 
 function subjectSelect(val, obj) {
+	localStorage.setItem("execSubject", "true");
 	var yes = $(obj).find(".subject-yes").text();
 	if ("✔" == yes) {
 		showLoading();

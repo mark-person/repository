@@ -16,7 +16,7 @@ function subjectSearch(val, obj) {
 	
 	$(obj).css("color", "#f40");
 	$(obj).find(".subject-yes").text("✔");
-	$("#subject").val(val);
+	$("#subjectId").val(val);
 	$("#subjectName").text($(obj).find(".subject-name").text());
 	queryPage(1);
 }
