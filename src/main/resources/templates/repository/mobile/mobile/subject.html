@@ -39,7 +39,7 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
 	    <a id="subjectName" class="nav-link dropdown-toggle ellipsis" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color:#f40;max-width:12.1rem" th:text="${subjectName}"></a>
 	    <div class="dropdown-menu" style="min-width:15rem;font-size:0.865rem;">
 	    	<a th:each="item:${subjectList}" href="#" class="dropdown-item subject-item" th:style="${item.subjectId == subjectId ? 'color:#f40' : ''}" th:onclick="'subjectSearch(' + ${item.subjectId} + ', this)'">
-	    		<span href="#" class="subject-name" th:text="${item.key}"></span><span class="subject-yes" th:text="${item.subjectId == subjectId ? '✔' : ''}"></span>
+	    		<span href="#" class="subject-name" th:text="${item.subjectName}"></span><span class="subject-yes" th:text="${item.subjectId == subjectId ? '✔' : ''}"></span>
 	    	</a>
 	    </div>
     </div>

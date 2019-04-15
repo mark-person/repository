@@ -203,10 +203,11 @@ public class MobileController {
     		// 默认第1个
     		mv.addObject("list", subjectSearch(new MPage(), listSubject.get(0).getSubjectId()));
     		mv.addObject("subjectId", listSubject.get(0).getSubjectId());
-        	mv.addObject("subjectName", listSubject.get(0).getSubjectId());
+        	mv.addObject("subjectName", listSubject.get(0).getSubjectName());
     	}
     	
-		mv.addObject("uspList", listSubject);
+    	mv.addObject("uspList", uspService.list());
+		mv.addObject("subjectList", listSubject);
 		return mv;
 	}
     

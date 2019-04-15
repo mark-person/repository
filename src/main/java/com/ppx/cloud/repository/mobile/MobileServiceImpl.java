@@ -366,7 +366,7 @@ public class MobileServiceImpl extends MyDaoSupport {
 		
 		var cSql = new StringBuilder("select count(*) from repo_knowledge_map_subject m where m.subject_id = ?").append(c);
 		var qSql = new StringBuilder("select k.* from repo_knowledge k join repo_knowledge_map_subject m on k.k_id = m.k_id"
-				+ " and m.subject_id = ?").append(c).append("order by order by k.modified desc");
+				+ " and m.subject_id = ?").append(c).append("order by k.modified desc");
 		List<Knowledge> list = queryMPage(Knowledge.class, page, cSql, qSql, c.getParaList());
 		
 		
