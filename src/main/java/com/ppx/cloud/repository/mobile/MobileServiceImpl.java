@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +81,19 @@ public class MobileServiceImpl extends MyDaoSupport {
 		return ReturnMap.of("kId", kId);
 	}
 	
+	
+	private boolean hasEmoji(String content) {
+		if (Strings.isBlank(content)) {
+			return false;
+		}
+        Pattern pattern = Pattern.compile("[\ud83c\udc00-\ud83c\udfff]|[\ud83d\udc00-\ud83d\udfff]|[\u2600-\u27ff]");
+        Matcher matcher = pattern.matcher(content);
+        if (matcher .find()) {
+            return true;    
+        }
+        return false;
+    }
+	
 	private void insertSearchWord(String kTitle, int kId, int catId, int recommendPrio) {
 		// 分词，可能要做成二次分词
 		// https://github.com/hankcs/HanLP
@@ -91,6 +106,9 @@ public class MobileServiceImpl extends MyDaoSupport {
 		List<Term> termList = HanLP.segment(kTitle);
 		for (Term term : termList) {
 			if (!"w".equals(term.nature.toString())) {
+				wordSet.add(term.word);
+			}
+			else if (hasEmoji(term.word)) {
 				wordSet.add(term.word);
 			}
 		}
