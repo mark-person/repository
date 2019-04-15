@@ -135,6 +135,7 @@ create table repo_knowledge_map_subject (
 	primary key (subject_id, k_id)
 ) comment='';
 
+ALTER TABLE `repository`.`repo_knowledge_map_subject` ADD INDEX `idx_map_subject_k_id` (`k_id` ASC) VISIBLE;
 
 
 

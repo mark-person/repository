@@ -159,8 +159,36 @@ public class MobileController {
 		if (userId != pojo.getModifiedBy()) {
 			mv.addObject("action", "readonly");
 		}
+		
+		
+		List<KnowledgeSubject> listSubject = subjectService.list();
+		List<Integer> subjectIdList = subjectService.listSubjectId(id);
+		
+		
+		for (KnowledgeSubject knowledgeSubject : listSubject) {
+			for (Integer subjectId : subjectIdList) {
+				System.out.println("9999999" + subjectId.intValue() + "|" + knowledgeSubject.getSubjectId());
+				if (subjectId.intValue() == knowledgeSubject.getSubjectId()) {
+					knowledgeSubject.setChecked(true);
+				}
+			}
+		}
+		
+		mv.addObject("subjectList", listSubject);
 		return mv;
 	}
+    
+    
+    public Map<?, ?> insertSubjectMap(@RequestParam Integer subjectId, @RequestParam Integer kId) {
+    	subjectService.insertSubjectMap(subjectId, kId);
+    	return ReturnMap.of();
+	}
+    
+    public Map<?, ?> deleteSubjectMap(@RequestParam Integer subjectId, @RequestParam Integer kId) {
+    	subjectService.deleteSubjectMap(subjectId, kId);
+    	return ReturnMap.of();
+	}
+    
     
     public ModelAndView nice(ModelAndView mv, Integer uspId) {
     	mv.addObject("list", niceSearch(new MPage(), uspId, null));
