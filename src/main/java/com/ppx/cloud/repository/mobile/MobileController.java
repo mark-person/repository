@@ -194,11 +194,18 @@ public class MobileController {
     public ModelAndView subject(ModelAndView mv) {
     	List<KnowledgeSubject> listSubject = subjectService.list();
     	
-    	// 默认第1个
-    	mv.addObject("list", subjectSearch(new MPage(), listSubject.get(0).getSubjectId()));
+    	if (listSubject.isEmpty()) {
+    		mv.addObject("list", new ArrayList<KnowledgeSubject>());
+    		mv.addObject("subjectId", -1);
+        	mv.addObject("subjectName", "");
+    	}
+    	else {
+    		// 默认第1个
+    		mv.addObject("list", subjectSearch(new MPage(), listSubject.get(0).getSubjectId()));
+    		mv.addObject("subjectId", listSubject.get(0).getSubjectId());
+        	mv.addObject("subjectName", listSubject.get(0).getSubjectId());
+    	}
     	
-    	mv.addObject("subjectId", listSubject.get(0).getSubjectId());
-    	mv.addObject("subjectName", listSubject.get(0).getSubjectId());
 		mv.addObject("uspList", listSubject);
 		return mv;
 	}
