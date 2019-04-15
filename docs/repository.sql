@@ -125,7 +125,7 @@ create table repo_knowledge_subject (
 	subject_name 	varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci not null,
 	subject_prio	smallint not null comment '显示优先级',
 	subject_status	tinyint not null default 1 comment '1:正常,0:作废',
-	primary key (usp_id)
+	primary key (subject_id)
 ) comment='专题';
 ALTER TABLE `repo_knowledge_subject` ADD UNIQUE INDEX `idx_subject_name` (`subject_name` ASC) VISIBLE;
 
