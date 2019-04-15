@@ -75,7 +75,7 @@ create table repo_knowledge_img
 
 
 create table repo_search_word (
-  word 				varchar(64),
+  word 				varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci not null,
   k_id 				int not null,
   cat_id			int not null,
   recommend_prio	int not null,
