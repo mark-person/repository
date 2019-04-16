@@ -166,7 +166,8 @@ insert into repo_knowledge_category values(10,3,'广告',10,1);
 INSERT INTO `repo_knowledge_usp` VALUES (1,'创意💡',1,1),(2,'营销💹',2,1),(3,'省钱💰',3,1),(4,'速度💥',4,1),
 (5,'好奇😲',5,1),(6,'玩乐😊',6,1),(7,'简单🔺',7,1),(8,'展示🔮',8,1);
 
-INSERT INTO `repo_knowledge_subject` (`subject_id`,`subject_name`,`subject_prio`,`subject_status`) VALUES (1,'必备小物品',1,1);
+INSERT INTO `repo_knowledge_subject` (`subject_id`,`subject_name`,`subject_prio`,`subject_status`) 
+VALUES (1,'有设计的商品',1,1),(2,'必备小商品',2,1),(3,'国民用品',3,1);
 
 
 
