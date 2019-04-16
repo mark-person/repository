@@ -26,6 +26,21 @@
 <script type="text/javascript" th:inline="javascript">
 var controllerPath = contextPath + "auto/mobile/";
 
+$(function() {
+	// 截图，用control+v
+	document.body.addEventListener('paste', function(e) {
+		if (e.clipboardData) {
+			for(var i = 0; i < e.clipboardData.items.length; i++) {
+				var c = e.clipboardData.items[i];
+	          	var f = c.getAsFile();
+	          	if (f) {
+					img.loadImg([f], 1, 1);
+	          	}
+	        }
+		}
+	})
+});
+
 function upload(files) {
 	var formData = new FormData();
 	 $(".upload-img").each(function() {
