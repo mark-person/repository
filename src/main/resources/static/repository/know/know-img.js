@@ -193,7 +193,7 @@ function textToImg() {
 				
 				if (isTitleCenter) {
 					var last = str.lastIndexOf("#");
-					newKContent.push(str.substring(0, last + 1) + " <center style='margin-right:1rem'>" + str.substring(last + 2, str.length) + "</center>");
+					newKContent.push(str.substring(0, last + 1) + " <center style=''>" + str.substring(last + 2, str.length) + "</center>");
 				}
 				else {
 					newKContent.push(str);
@@ -206,7 +206,7 @@ function textToImg() {
 		kContent = newKContent.join("\n");
 		
 		var html = marked(kContent);
-		var iframeBody = $('#kContentIframe').contents().find('body');
+		var iframeBody = $('#kContentIframe');// $('#kContentIframe').contents().find('body');
 		
 		iframeBody.html(html);
 		
@@ -214,17 +214,13 @@ function textToImg() {
 		var color = $("[name=background]:checked").val();
 		var url = $("[name=background]:checked").parent().find("img").attr("src");
 		iframeBody.css("background", "url(" + url + ")");
-		iframeBody.css({width:"100%", height:"100%", margin:"0rem", padding:"0.001rem", paddingBottom:"1rem"});
-		iframeBody.css({color:color, fontSize:"0.825rem", height:iframeBody[0].scrollHeight});
-	
-		
-		
+		iframeBody.css({color:color, padding:"0.5rem", margin:0});
 		
 		html2canvas(iframeBody[0]).then(function(canvas) {
 			var url = canvas.toDataURL();
 			var f = []; 
 			f.push(dataURLtoFile(url));
-			img.loadImg(f, 1, 1); 
+			img.loadImg(f, 1, 1);
 	    });
 	}
 }

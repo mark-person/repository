@@ -23,8 +23,11 @@ $(function() {
 	if (kContent) {
 		var html = marked(kContent);
 		html = html.replace(new RegExp("&lt;span style=&quot;color:(.*)&quot;&gt;(.*)&lt;/span&gt;","gi"), '<span style="color:$1">$2</span>');
-		$('#kContent').contents().find('body').html(html);
-		$('#kContent').contents().find('body').css("font-size", "0.825rem");
+		
+		$('#kContent').html(html);
+		$('#kContent').css("font-size", "0.825rem");
+		//$('#kContent').contents().find('body').html(html);
+		//$('#kContent').contents().find('body').css("font-size", "0.825rem");
 	}
 	else {
 		$('#kContent').parent().hide();
@@ -168,7 +171,10 @@ $(function() {
 			</li>
 			<li class="list-group-item" style="padding: 0.265rem; margin-bottom: 2.85rem;">
 				<div th:text="${pojo.kContent}" id="kContentHidden" style="display:none;"></div>
+				<!--  
 				<iframe id="kContent" style="border: 0; width: 100%;"></iframe>
+				-->
+				<div id="kContent"></div>
 			</li>
 		</ul>
 	</div>
