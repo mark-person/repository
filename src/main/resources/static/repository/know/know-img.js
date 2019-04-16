@@ -193,7 +193,7 @@ function textToImg() {
 				
 				if (isTitleCenter) {
 					var last = str.lastIndexOf("#");
-					newKContent.push(str.substring(0, last + 1) + " <center style=''>" + str.substring(last + 2, str.length) + "</center>");
+					newKContent.push(str.substring(0, last + 1) + " <center>" + str.substring(last + 2, str.length) + "</center>");
 				}
 				else {
 					newKContent.push(str);

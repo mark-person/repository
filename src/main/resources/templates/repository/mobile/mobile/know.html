@@ -200,8 +200,9 @@ function catSelect(val, obj) {
 /**
 * 替换选择的文本用于input 和 textarea
 */
-function replaceSelection(id, text, type) {
-    var editor = document.getElementById(id);
+
+var currentEmojiInput = null;
+function replaceSelection(editor, text, type) {
     if (!editor) {
         var editors = document.getElementsByName(id);
         if (editors && editors.length>0) {
@@ -242,11 +243,15 @@ function replaceSelection(id, text, type) {
 }
 
 function textToColor(color) {
-	replaceSelection("kContent", color, 0);
+	replaceSelection(document.getElementById("kContent"), color, 0);
 }
 
 function insertEmoji(obj) {
-	replaceSelection("kContent", $(obj).text(), 1);
+	var editor = document.getElementById("kContent");
+	if (currentEmojiInput != null) {
+		editor = currentEmojiInput;
+	}
+	replaceSelection(editor, $(obj).text(), 1);
 }
 </script>
 
@@ -289,7 +294,7 @@ function insertEmoji(obj) {
     	<div class="row"><div style="text-align: center;width:100%">提示:输入空格@后，自动带出USP</div></div>
     </li>
     <li class="list-group-item">
-    	<div class="row"><input class="form-control" type="text" id="kTitle" placeholder="请输入标题" th:value="${pojo.kTitle}" maxlength="64"></div>
+    	<div class="row"><input class="form-control" type="text" id="kTitle" placeholder="请输入标题" th:value="${pojo.kTitle}" maxlength="64" onfocus="currentEmojiInput=this;"></div>
     </li>
     <li class="list-group-item" style="padding:0.265rem;display: flex;justify-content: space-between;">
 		<input type="hidden" id="catId" name="catId" th:value="${pojo.catId}">
@@ -318,7 +323,7 @@ function insertEmoji(obj) {
     			<a href="#" onclick="insertEmoji(this)">😲</a>
     		</div>
     		
-			<textarea id="kContent" rows="4" class="form-control" th:text="${pojo.kContent}" maxlength="512"></textarea>
+			<textarea id="kContent" rows="4" class="form-control" th:text="${pojo.kContent}" maxlength="512" onfocus="currentEmojiInput=this;"></textarea>
 			<div class="contentToImgAction">
 				<a href="#" onclick="textToImg()">转成图片</a>
 				<div class="custom-control custom-checkbox">
