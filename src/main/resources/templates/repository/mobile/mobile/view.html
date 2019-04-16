@@ -117,7 +117,7 @@ function back() {
 		// 收藏页并且点击的收藏或取消收藏要刷新
 		location.href = localStorage.getItem("lastViewReferrer");
 	}
-	else if (document.referrer.indexOf("subject") > 0 && localStorage.getItem("execSubject") == "true") {r
+	else if (document.referrer.indexOf("subject") > 0 && localStorage.getItem("execSubject") == "true") {
 		location.href = localStorage.getItem("lastViewReferrer");
 	}
 	else {
@@ -253,8 +253,7 @@ function subjectSelect(val, obj) {
 
 <div id="bottomDiv">
 	
-	
-	<a id="subjectName" class="edit-action edit-subject-action" data-toggle="dropdown" role="button" style="color:white;">修改专题 </a>
+	<a id="subjectName" th:if="${action!='readonly'}" class="edit-action edit-subject-action" data-toggle="dropdown" role="button" style="color:white;">修改专题 </a>
     <div class="dropdown-menu" style="min-width:15rem;font-size:0.865rem;">
     	<a th:each="item:${subjectList}" href="#" class="dropdown-item subject-item select-class" th:style="${item.checked ? 'color:#f40' : ''}" th:onclick="'subjectSelect(' + ${item.subjectId} + ', this)'">
     		<span class="subject-name" th:text="${item.subjectName}"></span>
