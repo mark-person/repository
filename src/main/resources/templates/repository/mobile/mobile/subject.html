@@ -7,7 +7,7 @@
 var controllerPath = contextPath + "auto/mobile/";
 var searchMethod = "subjectSearch";
 function getQueryString(pageNumber) {
-	return {pageNumber:pageNumber, subjectId:$("#subjectId").val()};
+	return {pageNumber:pageNumber, subjectId:$("#subjectId").val(), orderBy:$("#orderBy").val()};
 }
 
 function subjectSearch(val, obj) {
@@ -21,6 +21,16 @@ function subjectSearch(val, obj) {
 	queryPage(1);
 }
 
+function orderBy(val, obj) {
+	$(".order-item").css("color", "black");
+	$(".order-yes").text("");
+	
+	$(obj).css("color", "#f40");
+	$(obj).find(".order-yes").text("✔");
+	$("#orderBy").val(val);
+	$("#orderName").text($(obj).find(".order-name").text());
+	queryPage(1);
+}
 </script>
 
 <style type="text/css">
@@ -34,8 +44,22 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
 
 <body>
 <div class="top-div">
+	
+	<div class="nav-item dropdown">
+		<input type="hidden" id="orderBy" value="0">
+	    <a id="orderName" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color:#f40;">最新加入</a>
+	    <div class="dropdown-menu" style="min-width:24.875rem;">
+	    	<a href="#" class="dropdown-item order-item" style="color:#f40;" onclick="orderBy(0, this)">
+	    		<span href="#" class="order-name">最新加入</span><span class="order-yes">✔</span>
+	    	</a>
+	    	<a href="#" class="dropdown-item order-item" onclick="orderBy(1, this)">
+	    		<span href="#" class="order-name">推荐</span><span class="order-yes"></span>
+	    	</a>
+	    </div>
+    </div>
+    
     <div class="nav-item dropdown">
-		<input type="hidden" id="subjectId">
+		<input type="hidden" id="subjectId" th:value="${subjectId}">
 	    <a id="subjectName" class="nav-link dropdown-toggle ellipsis" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color:#f40;max-width:12.1rem" th:text="${subjectName}"></a>
 	    <div class="dropdown-menu" style="min-width:15rem;font-size:0.865rem;">
 	    	<a th:each="item:${subjectList}" href="#" class="dropdown-item subject-item" th:style="${item.subjectId == subjectId ? 'color:#f40' : ''}" th:onclick="'subjectSearch(' + ${item.subjectId} + ', this)'">

@@ -132,6 +132,7 @@ ALTER TABLE `repo_knowledge_subject` ADD UNIQUE INDEX `idx_subject_name` (`subje
 create table repo_knowledge_map_subject (
 	subject_id		int not null,
 	k_id			int not null,
+	created 		timestamp not null default current_timestamp,
 	primary key (subject_id, k_id)
 ) comment='';
 

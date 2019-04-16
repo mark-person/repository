@@ -378,7 +378,12 @@ public class MobileServiceImpl extends MyDaoSupport {
 	 * @param page
 	 * @return
 	 */
-	public List<Knowledge> bySubjectSearch(MPage page, Integer subjectId) {
+	public List<Knowledge> bySubjectSearch(MPage page, Integer subjectId, Integer orderBy) {
+		String orderStr = "order by m.created desc";
+		if (orderBy != null && orderBy == 1) {
+			orderStr = "order by k.recommend_prio desc";
+		}
+		
 		var c = createCriteria("");
 		c.addPrePara(subjectId);
 		

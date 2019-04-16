@@ -228,7 +228,7 @@ public class MobileController {
     	}
     	else {
     		// 默认第1个
-    		mv.addObject("list", subjectSearch(new MPage(), listSubject.get(0).getSubjectId()));
+    		mv.addObject("list", subjectSearch(new MPage(), listSubject.get(0).getSubjectId(), null));
     		mv.addObject("subjectId", listSubject.get(0).getSubjectId());
         	mv.addObject("subjectName", listSubject.get(0).getSubjectName());
     	}
@@ -238,8 +238,8 @@ public class MobileController {
 		return mv;
 	}
     
-    public Map<?, ?> subjectSearch(MPage page, @RequestParam Integer subjectId) {
-    	return ReturnMap.of(page, impl.bySubjectSearch(page, subjectId));
+    public Map<?, ?> subjectSearch(MPage page, @RequestParam Integer subjectId, Integer orderBy) {
+    	return ReturnMap.of(page, impl.bySubjectSearch(page, subjectId, orderBy));
 	}
     
     public Map<?, ?> confirmFavorite(@RequestParam Integer kId) {
