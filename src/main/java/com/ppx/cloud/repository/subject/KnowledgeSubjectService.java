@@ -12,4 +12,10 @@ import java.util.List;
 public interface KnowledgeSubjectService {
 	
 	List<KnowledgeSubject> list();
+	
+	public List<Integer> listSubjectId(int kId);
+	
+	void insertSubjectMap(int subjectId, int kId);
+	
+	void deleteSubjectMap(int subjectId, int kId);
 }

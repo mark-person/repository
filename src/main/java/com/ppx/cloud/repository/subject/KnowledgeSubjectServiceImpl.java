@@ -19,6 +19,21 @@ public class KnowledgeSubjectServiceImpl extends MyDaoSupport implements Knowled
 		return list;
 	}
 	
+	public List<Integer> listSubjectId(int kId) {
+		String sql = "select subject_id from repo_knowledge_map_subject where k_id = ?";
+		return getJdbcTemplate().queryForList(sql, Integer.class, kId);
+	}
+	
+	public void insertSubjectMap(int subjectId, int kId) {
+		String insertSql = "insert ignore into repo_knowledge_map_subject(subject_id, k_id) values(?, ?)";
+		getJdbcTemplate().update(insertSql, subjectId, kId);
+	}
+	
+	public void deleteSubjectMap(int subjectId, int kId) {
+		String insertSql = "delete from  repo_knowledge_map_subject where subject_id = ? and k_id = ?";
+		getJdbcTemplate().update(insertSql, subjectId, kId);
+	}
+	
 	
 
 }

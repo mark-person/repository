@@ -11,6 +11,18 @@ public class KnowledgeSubject {
 	private String subjectName;
 	private Integer subjectPrio;
 	private Integer subjectStatus;
+	
+	private Boolean checked = false;
+	
+	
+
+	public Boolean getChecked() {
+		return checked;
+	}
+
+	public void setChecked(Boolean checked) {
+		this.checked = checked;
+	}
 
 	public Integer getSubjectId() {
 		return subjectId;

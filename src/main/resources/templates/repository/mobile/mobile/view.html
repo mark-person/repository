@@ -117,6 +117,9 @@ function back() {
 		// 收藏页并且点击的收藏或取消收藏要刷新
 		location.href = localStorage.getItem("lastViewReferrer");
 	}
+	else if (document.referrer.indexOf("subject") > 0 && localStorage.getItem("execSubject") == "true") {r
+		location.href = localStorage.getItem("lastViewReferrer");
+	}
 	else {
 		history.go(-1);
 	}
@@ -127,6 +130,7 @@ $(function() {
 		localStorage.setItem("lastViewReferrer", document.referrer);
 	}
 	localStorage.setItem("execFavorite", "false");
+	localStorage.setItem("execSubject", "false");
 })
 </script>
 
@@ -140,7 +144,22 @@ $(function() {
 
 #bottomDiv {position: fixed; bottom: 0; width: 25.875rem; background-color: #f0f0f0;z-index:9999;padding: 0.2rem 1rem; display: flex; justify-content: space-around;align-items:center;}
 
-.edit-action {background-color: orange;padding:0.4rem 2.8rem;border-radius: 0.865rem;cursor: pointer;}
+.edit-action {background-color: orange;padding:0.4rem 1.5rem;border-radius: 0.865rem;cursor: pointer;}
+.select-class {display: flex;justify-content:space-between;}
+
+.edit-subject-action::after {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: .255em;
+    vertical-align: .255em;
+    content: "";
+    border-bottom: .3em solid;
+    border-right: .3em solid transparent;
+    border-top: 0;
+    border-left: .3em solid transparent;
+}
+
 </style>
 </head>
 <body>
@@ -204,15 +223,48 @@ function preDelete(obj) {
 	$("#preDeleteButton").hide();
 	$("#deleteAction").show();
 }
+
+
+function subjectSelect(val, obj) {
+	localStorage.setItem("execSubject", "true");
+	var yes = $(obj).find(".subject-yes").text();
+	if ("✔" == yes) {
+		showLoading();
+		$.post(controllerPath + "deleteSubjectMap", {subjectId:val, kId:[[${pojo.kId}]]}, function(r) {
+			hideLoading();
+			$(obj).css("color", "black");
+			$(obj).find(".subject-yes").text("");
+			alertSuccess("操作成功");
+		});
+	}
+	else {
+		showLoading();
+		$.post(controllerPath + "insertSubjectMap", {subjectId:val, kId:[[${pojo.kId}]]}, function(r) {
+			hideLoading();
+			$(obj).css("color", "#f40");
+			$(obj).find(".subject-yes").text("✔");
+			alertSuccess("操作成功");
+		});
+	}
+	
+}
+
 </script>
 
 <div id="bottomDiv">
-	<div th:if="${action!='readonly'}"><a class="edit-action" style="color:white;" onclick="edit()">修改</a></div>
 	
 	
-	<button type="button" id="preDeleteButton" th:if="${action!='readonly'}" style="width:10rem" class="btn btn-sm btn-link iconfont icon-iconfontshanchu1" onclick="preDelete(this)"></button>
-	<div id="deleteAction" th:if="${action!='readonly'}" style="display: none;width:10rem">
-			<button type="button"  onclick="doDelete(this)" class="btn btn-sm btn-link" style="color:red">确定删除</button>|<button type="button" onclick="cancelDelete(this)" class="btn btn-sm btn-link">取消删除</button>
+	<a id="subjectName" class="edit-action edit-subject-action" data-toggle="dropdown" role="button" style="color:white;">修改专题 </a>
+    <div class="dropdown-menu" style="min-width:15rem;font-size:0.865rem;">
+    	<a th:each="item:${subjectList}" href="#" class="dropdown-item subject-item select-class" th:style="${item.checked ? 'color:#f40' : ''}" th:onclick="'subjectSelect(' + ${item.subjectId} + ', this)'">
+    		<span class="subject-name" th:text="${item.subjectName}"></span>
+    		<span class="subject-yes" th:text="${item.checked ? '✔' : ''}"></span>
+    	</a>
+    </div>
+	
+	<button type="button" id="preDeleteButton" th:if="${action!='readonly'}" style="width:6rem" class="btn btn-sm btn-link iconfont icon-iconfontshanchu1" onclick="preDelete(this)"></button>
+	<div id="deleteAction" th:if="${action!='readonly'}" style="display: none;width:6rem">
+			<button type="button"  onclick="doDelete(this)" class="btn btn-sm btn-link" style="color:red">确定</button>|<button type="button" onclick="cancelDelete(this)" class="btn btn-sm btn-link">取消</button>
 	</div>
 	
 	<div style="text-align: center;cursor: pointer;" onclick="favorite()">
@@ -220,6 +272,8 @@ function preDelete(obj) {
 		<div class="iconfont icon-shoucang1" id="favoriteButton" th:if="${isFavorite}"></div>
 		<div style="font-size:0.6rem">收藏</div>
 	</div>
+	
+	<div th:if="${action!='readonly'}"><a class="edit-action" style="color:white;" onclick="edit()">修改</a></div>
 </div>
 
 </body>

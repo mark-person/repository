@@ -135,6 +135,7 @@ create table repo_knowledge_map_subject (
 	primary key (subject_id, k_id)
 ) comment='';
 
+ALTER TABLE `repository`.`repo_knowledge_map_subject` ADD INDEX `idx_map_subject_k_id` (`k_id` ASC) VISIBLE;
 
 
 
@@ -168,6 +169,7 @@ INSERT INTO `repo_knowledge_usp` VALUES (1,'创意💡',1,1),(2,'营销💹',2,1
 
 INSERT INTO `repo_knowledge_subject` (`subject_id`,`subject_name`,`subject_prio`,`subject_status`) 
 VALUES (1,'有设计的商品',1,1),(2,'必备小商品',2,1),(3,'国民用品',3,1);
+
 
 
 
