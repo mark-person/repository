@@ -173,6 +173,8 @@ insert into repo_knowledge_category values(8,2,'竞争对手',8,1);
 insert into repo_knowledge_category values(9,3,'运营',9,1);
 insert into repo_knowledge_category values(10,3,'广告',10,1);
 
+insert into repo_knowledge_category values(11,2,'需求',11,1);
+
 
 INSERT INTO `repo_knowledge_usp` VALUES (1,'创意💡',1,1),(2,'营销💹',2,1),(3,'省钱💰',3,1),(4,'速度💥',4,1),
 (5,'好奇😲',5,1),(6,'玩乐😊',6,1),(7,'简单🔺',7,1);
