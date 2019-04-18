@@ -152,6 +152,8 @@ ALTER TABLE `repository`.`repo_knowledge_map_subject` ADD INDEX `idx_map_subject
  * /home/ppx/mysql/mysql.sock
  * --socket
  * 
+ * 
+ * tar -zcvf img.tar.gz /home/ppx/img
  **/
 
 
