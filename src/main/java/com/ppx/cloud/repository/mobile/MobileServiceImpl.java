@@ -106,7 +106,8 @@ public class MobileServiceImpl extends MyDaoSupport {
 		List<Term> termList = HanLP.segment(kTitle);
 		for (Term term : termList) {
 			if (!"w".equals(term.nature.toString())) {
-				wordSet.add(term.word);
+				// mysql不分大小写，用小写存储
+				wordSet.add(term.word.toLowerCase());
 			}
 			else if (hasEmoji(term.word)) {
 				wordSet.add(term.word);
