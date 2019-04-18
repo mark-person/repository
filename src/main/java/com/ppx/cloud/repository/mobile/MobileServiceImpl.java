@@ -163,8 +163,12 @@ public class MobileServiceImpl extends MyDaoSupport {
 		getJdbcTemplate().update("delete from repo_knowledge_content where k_id = ?", kId);
 		// deleteUSP
 		getJdbcTemplate().update("delete from repo_knowledge_map_usp where k_id = ?", kId);
+		// delete专题
+		getJdbcTemplate().update("delete from repo_knowledge_map_subject where k_id = ?", kId);
 		// delete索引
 		getJdbcTemplate().update("delete from repo_search_word where k_id = ?", kId);
+		
+		
 		
 		// 图片处理	
 		for (String oldImgSrc : imgList) {
