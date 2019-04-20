@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title></title>
+<link th:replace="common/fragment::mobile"/>
+
+
+<script type="text/javascript" th:src="@{/static/repository/common/jsqrcode-combined.min.js}"></script>
+
+
+<script type="text/javascript" th:inline="javascript">
+var controllerPath = contextPath + "auto/example/";
+
+
+function read(code) {
+	alert(code);
+}	
+
+
+$(function () {
+	//qrcode.callback = read;
+	//var r = qrcode.decode("http://localhost/static/repository/common/img-qrcode.jpg");
+
+});
+
+fileChange = function(obj) {
+	// 重新生成一个，防change失效
+	$(obj).prop("outerHTML", $(obj).prop("outerHTML"));
+	loadImg(obj.files[0]);
+}
+
+loadImg = function(f) {
+	var reader = new FileReader();
+	reader.onload = function() {
+		document.write(this.result)
+	}
+	reader.readAsDataURL(f);
+}
+
+
+</script>
+
+<style type="text/css">
+
+</style>
+</head>
+<body>
+<body>
+<div class="container" style="padding:0px">
+<div class="panel panel-default">
+
+<ul class="list-group" id="imgUL">
+    <li class="list-group-item">
+    	<input type="file" accept="image/*" capture="camera" style="display: none" onchange="fileChange(this)">
+    	<button type="button" class="btn btn-sm btn-link" onclick="$(this).prev().click()">扫一扫</button>
+    <li class="list-group-item">
+    <div id="reader" style="width:300px;height:250px">
+ </div>
+   </li>
+</ul>
+
+
+
+
+</div>
+</div>
+</body>
+</html>
+
+
+
+
