@@ -7,7 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class ExampleController {
 
 	
-	public ModelAndView example(ModelAndView mv) {
+	public ModelAndView qrcode(ModelAndView mv) {
 		return mv;
 	}
 
