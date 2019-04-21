@@ -16,8 +16,8 @@ function read(code) {
 }	
 
 $(function () {
-	//qrcode.callback = read;
-	//var r = qrcode.decode("http://localhost/static/repository/common/img-qrcode.jpg");
+	qrcode.callback = read;
+	var r = qrcode.decode("http://localhost/static/repository/common/qrcode.png");
 
 });
 
