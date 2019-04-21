@@ -162,7 +162,7 @@ INSERT INTO `repo_user` (`repo_user_id`,`repo_user_name`,`repo_user_status`,`fav
 INSERT INTO `repo_user` (`repo_user_id`,`repo_user_name`,`repo_user_status`,`favorite_n`,`created`) VALUES (-2,'我是游客',1,0,now());
 
 
-insert into repo_knowledge_category values(1,0,'品牌',1,1);
+insert into repo_knowledge_category values(1,0,'品牌',1,1); 
 insert into repo_knowledge_category values(2,0,'客户',2,1);
 insert into repo_knowledge_category values(3,0,'渠道',3,1);
 
@@ -172,18 +172,18 @@ insert into repo_knowledge_category values(6,1,'常识',6,1);
 insert into repo_knowledge_category values(7,1,'技术',7,1);
 
 insert into repo_knowledge_category values(8,2,'竞争对手',8,1);
-insert into repo_knowledge_category values(9,3,'运营',9,1);
-insert into repo_knowledge_category values(10,3,'广告',10,1);
+insert into repo_knowledge_category values(9,3,'运营/经营',9,1);
+insert into repo_knowledge_category values(10,3,'广告/营销',10,1);
 
 insert into repo_knowledge_category values(11,2,'需求',11,1);
 
 
-INSERT INTO `repo_knowledge_usp` VALUES (1,'创意💡',1,1),(2,'营销💹',2,1),(3,'省钱💰',3,1),(4,'速度💥',4,1),
-(5,'好奇😲',5,1),(6,'玩乐😊',6,1),(7,'简单🔺',7,1);
+INSERT INTO `repo_knowledge_usp` VALUES (1,'创意💡',1,1),(3,'省钱💰',3,1),(4,'速度💥',4,1),
+(5,'好奇😲',5,1),(6,'玩乐😊',6,1),(7,'极简🔺',7,1);
 
 INSERT INTO `repo_knowledge_subject` (`subject_id`,`subject_name`,`subject_prio`,`subject_status`) 
-VALUES (1,'有设计的商品',1,1),(2,'必备小商品',2,1),(3,'国民用品',3,1),(4,'场景-雨天',4,1),
-(5,'场景-晴天',5,1),(6,'商品展示',6,1),(7,'商业模式',7,1),(8,'商业趋势',8,1),(9,'学习专题',9,1),(10,'相见恨晚',10,1);
+VALUES (1,'商品设计',1,1),(2,'必备小商品',2,1),(3,'国民用品',3,1),(4,'场景-雨天/晴天',4,1),
+(6,'商品展示',6,1),(7,'商业模式',7,1),(8,'商业趋势',8,1),(9,'学习专题',9,1),(10,'相见恨晚',10,1);
 
 
 
