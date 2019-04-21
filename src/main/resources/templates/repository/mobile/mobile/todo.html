@@ -28,7 +28,7 @@ function ok() {
 }
 
 $(function () {
-	var INPUT_LEN = 64;
+	var INPUT_LEN = 128;
 	var counter = $("#todoTitle").val().length;
 	$("#inputNumber").text(INPUT_LEN - counter);
 	$("#todoTitle").on("input propertychange", function() {
@@ -125,7 +125,7 @@ function cancelDelete(obj) {
     
     <li class="list-group-item">
     	<div class="row">
-    		<textarea maxlength="64" rows="3" style="width:25.2rem" class="form-control" id="todoTitle" name="todoTitle" placeholder="请输入标题" th:text="${pojo.todoTitle}"></textarea>
+    		<textarea maxlength="128" rows="3" style="width:25.2rem" class="form-control" id="todoTitle" name="todoTitle" placeholder="请输入标题" th:text="${pojo.todoTitle}"></textarea>
     		<div style="text-align: right;width:100%;font-size:0.865rem">你还可以输入<var style="color: #C00" id="inputNumber">--</var>个字符。</div>
     	</div>
     </li>
