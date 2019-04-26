@@ -57,10 +57,10 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
 	    <a id="orderName" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color:#f40;">最新</a>
 	    <div class="dropdown-menu" style="min-width:24.875rem;">
 	    	<a href="#" class="dropdown-item order-item" style="color:#f40;" onclick="orderBy(0, this)">
-	    		<span href="#" class="order-name">最新</span><span class="order-yes">✔</span>
+	    		<span class="order-name">最新</span><span class="order-yes">✔</span>
 	    	</a>
 	    	<a href="#" class="dropdown-item order-item" onclick="orderBy(1, this)">
-	    		<span href="#" class="order-name">推荐</span><span class="order-yes"></span>
+	    		<span class="order-name">推荐</span><span class="order-yes"></span>
 	    	</a>
 	    </div>
     </div>
@@ -68,11 +68,11 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
 		<input type="hidden" id="catId">
 	    <a id="catName" class="nav-link dropdown-toggle ellipsis" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color:#f40;max-width:10rem">全部类目</a>
 	    <div class="dropdown-menu" style="min-width:15rem;">
-	    	<a href="#" class="dropdown-item cat-item" style="" onclick="catSearch('', this)">
-	    		<span href="#" class="cat-name" >全部类目</span><span class="cat-yes">✔</span>
+	    	<a href="#" class="dropdown-item cat-item" style="color:#f40;" onclick="catSearch('', this)">
+	    		<span class="cat-name">全部类目</span><span class="cat-yes">✔</span>
 	    	</a>
 	    	<a th:each="item:${catList}" href="#" class="dropdown-item cat-item" th:onclick="'catSearch(' + ${item.catId} + ', this)'">
-	    		<span href="#" class="cat-name" th:text="${item.catName}"></span><span class="cat-yes"></span>
+	    		<span class="cat-name" th:text="${item.catName}"></span><span class="cat-yes"></span>
 	    	</a>
 	    </div>
     </div>
