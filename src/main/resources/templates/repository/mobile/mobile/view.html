@@ -144,7 +144,7 @@ $(function() {
 
 #bottomDiv {position: fixed; bottom: 0; width: 25.875rem; background-color: #f0f0f0;z-index:9999;padding: 0.2rem 1rem; display: flex; justify-content: space-around;align-items:center;}
 
-.edit-action {background-color: orange;padding:0.4rem 1.5rem;border-radius: 0.865rem;cursor: pointer;}
+.edit-action {background-color: orange;padding:0.4rem 1.2rem;border-radius: 0.865rem;cursor: pointer;}
 .select-class {display: flex;justify-content:space-between;}
 
 .edit-subject-action::after {
@@ -252,7 +252,6 @@ function subjectSelect(val, obj) {
 </script>
 
 <div id="bottomDiv">
-	
 	<a id="subjectName" th:if="${action!='readonly'}" class="edit-action edit-subject-action" data-toggle="dropdown" role="button" style="color:white;">修改专题 </a>
     <div class="dropdown-menu" style="min-width:15rem;font-size:0.865rem;">
     	<a th:each="item:${subjectList}" href="#" class="dropdown-item subject-item select-class" th:style="${item.checked ? 'color:#f40' : ''}" th:onclick="'subjectSelect(' + ${item.subjectId} + ', this)'">
@@ -261,9 +260,9 @@ function subjectSelect(val, obj) {
     	</a>
     </div>
 	
-	<button type="button" id="preDeleteButton" th:if="${action!='readonly'}" style="width:8rem" class="btn btn-sm btn-link iconfont icon-iconfontshanchu1" onclick="preDelete(this)"></button>
-	<div id="deleteAction" th:if="${action!='readonly'}" style="display: none;width:8rem">
-			<button type="button"  onclick="doDelete(this)" class="btn btn-sm btn-link" style="color:red">确定</button>|<button type="button" onclick="cancelDelete(this)" class="btn btn-sm btn-link">取消</button>
+	<button type="button" id="preDeleteButton" th:if="${action!='readonly'}" style="width:6.5rem" class="btn btn-sm btn-link iconfont icon-iconfontshanchu1" onclick="preDelete(this)"></button>
+	<div id="deleteAction" th:if="${action!='readonly'}" style="display: none;width:6.5rem;">
+		<button type="button"  onclick="doDelete(this)" class="btn btn-sm btn-link" style="color:red">确定</button>|<button type="button" onclick="cancelDelete(this)" class="btn btn-sm btn-link">取消</button>
 	</div>
 	
 	<div style="text-align: center;cursor: pointer;" onclick="favorite()">
