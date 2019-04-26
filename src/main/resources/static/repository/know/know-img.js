@@ -149,8 +149,8 @@ img.click = function(obj) {
 	}
 	else {
 		$("#viewImg").css("margin-top", 0);
-		$("#viewImg").css("width",  $(document.body).height()*initWidth/initHeight);
-		$("#viewImg").css("height", $(document.body).height());
+		$("#viewImg").css("width",  $(window).height()*initWidth/initHeight);
+		$("#viewImg").css("height", $(window).height());
 	}
 	$("#viewImg").attr("src", obj.src);
 	$("#imgBackground").css({width:$(window).width(), height:$(window).height()});
@@ -206,10 +206,8 @@ function textToImg() {
 		kContent = newKContent.join("\n");
 		
 		var html = marked(kContent);
-		var iframeBody = $('#kContentIframe');// $('#kContentIframe').contents().find('body');
-		
+		var iframeBody = $('#kContentIframe');
 		iframeBody.html(html);
-		
 		
 		var color = $("[name=background]:checked").val();
 		var url = $("[name=background]:checked").parent().find("img").attr("src");
