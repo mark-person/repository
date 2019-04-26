@@ -144,19 +144,7 @@ ALTER TABLE `repository`.`repo_knowledge_map_subject` ADD INDEX `idx_map_subject
 
 /**
  * # 初始化数据
- * # 导有表情的 mysqldump -u root -pPASSWORD repository repo_knowledge_usp --default-character-set=utf8mb4 >c:\test.sql
- * # 只导出数据 /home/ppx/mysql/bin/mysqldump --socket /home/ppx/mysql/mysql.sock -u root -p@Dengppx123456 -t repository --default-character-set=utf8mb4 > repository.sql
-	
- * 报错：mysqldump: Got error: 2002: Can't connect to local MySQL server through socket '/data/mysql/mysql.sock' (2) when trying to connect
- * 找到正确的套接字的路径 netstat -ln | grep mysql
- * /home/ppx/mysql/mysql.sock
- * --socket
- * 
- * 
- * tar -zcvf img.tar.gz /home/ppx/img
- **/
-
-
+ */
 
 INSERT INTO `repo_user` (`repo_user_id`,`repo_user_name`,`repo_user_status`,`favorite_n`,`created`) VALUES (-1,'我是小丑',1,0,now());
 INSERT INTO `repo_user` (`repo_user_id`,`repo_user_name`,`repo_user_status`,`favorite_n`,`created`) VALUES (-2,'我是游客',1,0,now());
