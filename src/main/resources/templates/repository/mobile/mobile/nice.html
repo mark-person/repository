@@ -28,7 +28,7 @@ function recommendSearch(val, obj) {
 	$(obj).css("color", "#f40");
 	$(obj).find(".recommend-yes").text("✔");
 	$("#recommend").val(val);
-	$("#recommendName").text($(obj).find(".recommend-name").text());
+	$("#recommendName").html($(obj).find(".recommend-name").html());
 	queryPage(1);
 }
 </script>
@@ -39,6 +39,8 @@ body {margin-top:2.75rem;margin-bottom:3rem}
 input::-webkit-input-placeholder {padding-top:0.175rem;}
 
 .dropdown-item {display: flex;justify-content:space-between;}
+
+.icon-shoucang1 {color:orange;}
 </style>
 </head>
 
@@ -61,22 +63,28 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
 	    <a id="recommendName" class="nav-link dropdown-toggle ellipsis" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color:#f40;max-width:12.1rem">全部推荐</a>
 	    <div class="dropdown-menu" style="min-width:15rem;font-size:0.865rem;">
 	    	<a href="#" class="dropdown-item recommend-item" style="display: flex;justify-content:space-between;color:#f40" onclick="recommendSearch('', this)">
-	    		<span href="#" class="recommend-name">全部推荐</span><span class="recommend-yes">✔</span>
+	    		<span class="recommend-name">全部推荐</span><span class="recommend-yes">✔</span>
 	    	</a>
 	    	<a href="#" class="dropdown-item recommend-item" style="display: flex;justify-content:space-between;color:#f40" onclick="recommendSearch('5', this)">
-	    		<span href="#" class="recommend-name">⭐⭐⭐⭐⭐</span><span class="recommend-yes"></span>
+	    		<span class="recommend-name">
+	    			<b class="iconfont icon-shoucang1"></b><b class="iconfont icon-shoucang1"></b><b class="iconfont icon-shoucang1"></b><b class="iconfont icon-shoucang1"></b><b class="iconfont icon-shoucang1"></b>
+	    		</span>
+	    		<span class="recommend-yes"></span>
 	    	</a>
 	    	<a href="#" class="dropdown-item recommend-item" style="display: flex;justify-content:space-between;color:#f40" onclick="recommendSearch('4', this)">
-	    		<span href="#" class="recommend-name">⭐⭐⭐⭐</span><span class="recommend-yes"></span>
+	    		<span class="recommend-name">
+	    			<b class="iconfont icon-shoucang1"></b><b class="iconfont icon-shoucang1"></b><b class="iconfont icon-shoucang1"></b><b class="iconfont icon-shoucang1"></b>
+	    		</span>
+	    		<span class="recommend-yes"></span>
 	    	</a>
 	    	<a href="#" class="dropdown-item recommend-item" style="display: flex;justify-content:space-between;color:#f40" onclick="recommendSearch('3', this)">
-	    		<span href="#" class="recommend-name">⭐⭐⭐</span><span class="recommend-yes"></span>
+	    		<span class="recommend-name"><b class="iconfont icon-shoucang1"></b><b class="iconfont icon-shoucang1"></b><b class="iconfont icon-shoucang1"></b></span><span class="recommend-yes"></span>
 	    	</a>
 	    	<a href="#" class="dropdown-item recommend-item" style="display: flex;justify-content:space-between;color:#f40" onclick="recommendSearch('2', this)">
-	    		<span href="#" class="recommend-name">⭐⭐</span><span class="recommend-yes"></span>
+	    		<span class="recommend-name"><b class="iconfont icon-shoucang1"></b><b class="iconfont icon-shoucang1"></b></span><span class="recommend-yes"></span>
 	    	</a>
 	    	<a href="#" class="dropdown-item recommend-item" style="display: flex;justify-content:space-between;color:#f40" onclick="recommendSearch('1', this)">
-	    		<span href="#" class="recommend-name">⭐</span><span class="recommend-yes"></span>
+	    		<span class="recommend-name"><b class="iconfont icon-shoucang1"></b></span><span class="recommend-yes"></span>
 	    	</a>
 	    </div>
     </div>

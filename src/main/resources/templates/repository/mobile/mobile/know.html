@@ -76,7 +76,7 @@ function upload(files) {
 
 function insertOrUpdateKnowledge() {
 	($("#kTitle").val() == "") ? $("[name=kTitle]").val("无") : $("[name=kTitle]").val(getUspTitle());
-	$("[name=recommend]").val($("#recommend .star-show").length);
+	$("[name=recommend]").val($("#recommend .icon-shoucang1").length);
 	
 	var srcList = [];
 	$(".upload-img").each(function(i, o) {
@@ -122,11 +122,11 @@ function ok() {
 
 function refreshRecommend() {
 	$("#recommend span").click(function() {
-		$("#recommend b").removeClass("star-hide");
-		$("#recommend b").addClass("star-show");
+		$("#recommend b").removeClass("icon-shoucang");
+		$("#recommend b").addClass("icon-shoucang1");
 		$(this).nextAll().each(function(i, o) {
-			$(o).find("b").removeClass("star-show");
-			$(o).find("b").addClass("star-hide");
+			$(o).find("b").removeClass("icon-shoucang1");
+			$(o).find("b").addClass("icon-shoucang");
 		})
 	});
 }
@@ -161,8 +161,8 @@ function resetForm() {
 	$("#kContent").val(initkContent);
 	$(".upload-img").parent().parent().remove();
 	
-	$("#recommend").html('<span class="star"><b class="star-show">⭐</b></span><span class="star"><b class="star-show">⭐</b></span><span class="star"><b class="star-show">⭐</b></span>' +
-			'<span class="star"><b class="star-hide">⭐</b></span><span class="star"><b class="star-hide">⭐</b></span>');
+	$("#recommend").html('<span><b class="iconfont icon-shoucang1"></b></span><span><b class="iconfont icon-shoucang1"></b></span><span><b class="iconfont icon-shoucang1"></b></span>' +
+	    	'<span><b class="iconfont icon-shoucang"></b></span><span><b class="iconfont icon-shoucang"></b></span>');
 	refreshRecommend();
 	
 	$("#kTitle").val("");
@@ -271,9 +271,7 @@ function insertEmoji(obj) {
 </script>
 
 <style type="text/css">
-.star {border:1px solid rgba(0,0,0,.125);cursor: pointer;width:1.345rem;height:1.345rem}
-.star-show {visibility:visible}
-.star-hide {visibility:hidden}
+
 .img-action {margin-left:2rem;padding:0.5rem;color:blue;cursor: pointer;}
 .form-control {margin:-0.275rem 0rem}
 .select-class {display: flex;justify-content:space-between;}
@@ -284,6 +282,9 @@ function insertEmoji(obj) {
 #backDiv {position:fixed; z-index:9999;opacity:0.5;margin-top:-0.245rem;margin-left:0.9rem;cursor:pointer;}
 
 .contentAction  {display:flex;justify-content:space-between;width:100%;margin:0rem 1rem 1rem 1rem;}
+
+.icon-shoucang1 {color:orange;}
+.iconfont {cursor: pointer;}
 </style>
 </head>
 <body>
@@ -321,8 +322,8 @@ function insertEmoji(obj) {
 	    	</a>
 	    </div>
 	    <div id="recommend" style="width:12rem;margin-top:0.4rem">
-	    	<span class="star" th:each="item:${starList}"><b class="star-show">⭐</b></span>
-	    	<span class="star" th:each="item:${noStarList}"><b class="star-hide">⭐</b></span>
+	    	<span th:each="item:${starList}"><b class="iconfont icon-shoucang1"></b></span>
+	    	<span th:each="item:${noStarList}"><b class="iconfont icon-shoucang"></b></span>
     	</div>
     </li>
     <li class="list-group-item">
