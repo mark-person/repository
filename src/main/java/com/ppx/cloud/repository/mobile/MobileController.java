@@ -41,10 +41,30 @@ public class MobileController {
     private KnowledgeSubjectService subjectService;
     
     public ModelAndView home(ModelAndView mv) {
+    	String args = AuthContext.getLoginAccount().getArgs();
+    	Integer defaultCatId = null;
+    	if (Strings.isNotEmpty(args)) {
+    		defaultCatId = Integer.parseInt(args);
+    	}
+    	mv.addObject("defaultCatId", defaultCatId);
     	
-		mv.addObject("list", homeSearch(new MPage(), null, null, null));
-		mv.addObject("catList", categoryService.list());
+    	List<KnowledgeCategory> catList = categoryService.list();
+    	mv.addObject("catList", catList);
+    	String defaultCatName = "全部类目";
+    	for (KnowledgeCategory c : catList) {
+    		if (defaultCatId != null && c.getCatId().intValue() == defaultCatId) {
+    			defaultCatName = c.getCatName();
+        		break;
+    		}
+		}
+    	mv.addObject("defaultCatName", defaultCatName);
+		
+		
+		mv.addObject("list", homeSearch(new MPage(), null, defaultCatId, null));
 		mv.addObject("uspList", uspService.list());
+		
+		
+		
 		return mv;
 	}
     
@@ -70,8 +90,23 @@ public class MobileController {
 		mv.addObject("uspList", uspService.list());
 		
 		// init_cat
-		pojo.setCatId(catList.get(0).getCatId());
-		pojo.setCatName(catList.get(0).getCatName());
+		String args = AuthContext.getLoginAccount().getArgs();
+    	Integer defaultCatId = catList.get(0).getCatId();
+    	if (Strings.isNotEmpty(args)) {
+    		defaultCatId = Integer.parseInt(args);
+    	}
+    	mv.addObject("defaultCatId", defaultCatId);
+    	
+    	mv.addObject("catList", catList);
+    	String defaultCatName = catList.get(0).getCatName();
+    	for (KnowledgeCategory c : catList) {
+    		if (defaultCatId != null && c.getCatId().intValue() == defaultCatId) {
+    			defaultCatName = c.getCatName();
+        		break;
+    		}
+		}
+		pojo.setCatId(defaultCatId);
+		pojo.setCatName(defaultCatName);
 		
 		// init_recommend
 		mv.addObject("starList", (List<String>)List.of("", "", ""));

@@ -66,13 +66,13 @@ input::-webkit-input-placeholder {padding-top:0.175rem;}
     </div>
     <div class="nav-item dropdown">
 		<input type="hidden" id="catId">
-	    <a id="catName" class="nav-link dropdown-toggle ellipsis" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color:#f40;max-width:10rem">全部类目</a>
+	    <a id="catName" class="nav-link dropdown-toggle ellipsis" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color:#f40;max-width:10rem" th:text="${defaultCatName}"></a>
 	    <div class="dropdown-menu" style="min-width:15rem;">
-	    	<a href="#" class="dropdown-item cat-item" style="color:#f40;" onclick="catSearch('', this)">
-	    		<span class="cat-name">全部类目</span><span class="cat-yes">✔</span>
+	    	<a href="#" class="dropdown-item cat-item" th:style="${defaultCatId == null ? 'color:#f40' : ''}"  onclick="catSearch('', this)">
+	    		<span class="cat-name">全部类目</span><span class="cat-yes" th:text="${defaultCatId == null ? '✔' : ''}"></span>
 	    	</a>
-	    	<a th:each="item:${catList}" href="#" class="dropdown-item cat-item" th:onclick="'catSearch(' + ${item.catId} + ', this)'">
-	    		<span class="cat-name" th:text="${item.catName}"></span><span class="cat-yes"></span>
+	    	<a th:each="item:${catList}" href="#" class="dropdown-item cat-item" th:style="${item.catId == defaultCatId ? 'color:#f40' : ''}" th:onclick="'catSearch(' + ${item.catId} + ', this)'">
+	    		<span class="cat-name" th:text="${item.catName}"></span><span class="cat-yes" th:text="${item.catId == defaultCatId ? '✔' : ''}"></span>
 	    	</a>
 	    </div>
     </div>
