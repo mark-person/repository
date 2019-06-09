@@ -7,7 +7,7 @@
  * /home/ppx/mysql/mysql.sock
  * --socket
  * 
- * 
+ * cd /home/ppx/ftp
  * tar -zcvf img.tar.gz /home/ppx/img
  **/
  
