@@ -64,7 +64,7 @@ img.loadImg = function(f, n, encoder) {
 		    	var jObj = $($("#imgTemplate").html());
 		    	var imgObj = jObj.find(".upload-img");
 		    	if (f[n].name && f[n].name.indexOf(".gif") > 0) {
-		    		if (f[n].size > 2*1024*1024) {
+		    		if (f[n].size > 4*1024*1024) {
 		    			alertWarning("gif图片不能大于4M");
 		    			return
 		    		}
