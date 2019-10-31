@@ -55,7 +55,7 @@ function upload(files) {
 		}
 	});
 	
-	$.ajax({url:[[@{/auto/uploadImg/uploadKnowledge}]], type:"POST", contentType:false, data:formData ,processData:false,
+	$.ajax({url:[[@{/auto/uploadImg/uploadKnowledge?v=1}]], type:"POST", contentType:false, data:formData ,processData:false,
 		success:function(r) {
 			if (r.errcode === 0) {
 				var imgIndex = 0;
