@@ -10,6 +10,9 @@ public class RepoIndexController {
 	
     @GetMapping(value="/")
     public ModelAndView edit(ModelAndView mv) {
+    	
+    	
+    	
     	mv.setViewName("repository/home/index");
     	
 		return mv;
